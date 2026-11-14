@@ -7,7 +7,7 @@
   C.APP = {
     name: 'mania!',
     version: '0.1.0 prototype',
-    storageKey: 'mania.settings.v2',
+    storageKey: 'mania.settings.v3',
     scoresKey: 'mania.scores.v1'
   };
 
@@ -67,16 +67,16 @@
   };
 
   C.PLAYFIELD = {
-    widthRatio: 0.6,      /* lane area vs viewport width (clamped) */
-    maxWidth: 620,
+    widthRatio: 0.5,      /* lane area vs viewport width (clamped) */
+    maxWidth: 560,
     minWidth: 240,
     hitLineRatio: 0.84    /* receptor position as fraction of playfield height */
   };
 
   C.NOTE = {
-    heightRatio: 0.52,    /* note height relative to lane width */
-    minHeight: 18,
-    maxHeight: 78
+    heightRatio: 0.42,    /* note height relative to lane width (before the Note size option) */
+    minHeight: 14,
+    maxHeight: 72
   };
 
   C.SCROLL = {

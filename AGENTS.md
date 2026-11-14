@@ -101,3 +101,13 @@ context cannot start in headless mode — verify audio through `tests/audio.test
   (`C.KEY_MODES[*].colors`, mirrored by `Renderer.maniaLaneColor` for skins); notes are
   rounded-square heads with a white border, long notes are a capsule body plus a tail cap; receptors
   are outlined lane-wide bars that fill and glow when pressed. Default scroll is **down**.
+- Note heads must ALWAYS span the lane width — in mania the style only changes corner rounding.
+  An earlier `circle` style drew a literal `arc()` with diameter = note height, which showed a tiny
+  dot floating in a wide lane. `drawNoteShape` now always fills `roundRect(laneW, noteH)` and picks
+  the radius via `cornerRadius(style, w, h)`. Never branch the note geometry on the style.
+- Note height is `laneW * C.NOTE.heightRatio * noteScale`, where `noteScale` is the user-facing
+  "Note size" option threaded through every `R.resize({...})` call. If you add a new resize call,
+  pass `noteScale` too or the slider silently stops working.
+- `index.html` links every script with a `?v=N` query string. GitHub Pages caches for ~10 minutes;
+  without the stamp a fresh push looks unchanged in a browser that already loaded the old files.
+  Bump `N` whenever you want to be sure clients pick up new JS.

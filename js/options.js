@@ -61,9 +61,10 @@
     {
       id: 'visual', title: 'Visuals', icon: 'star', items: [
         { key: 'laneWidth', label: 'Lane width', type: 'range', min: 0.4, max: 1, step: 0.02, format: 'pct' },
+        { key: 'noteScale', label: 'Note size', type: 'range', min: 0.6, max: 1.8, step: 0.05, format: 'x' },
         { key: 'noteStyle', label: 'Note style', type: 'select', options: [
-          { value: 'circle', label: 'Circle' }, { value: 'square', label: 'Square' },
-          { value: 'bar', label: 'Bar' }
+          { value: 'square', label: 'Rectangle (mania)' }, { value: 'circle', label: 'Rounded' },
+          { value: 'bar', label: 'Thin bar' }
         ] },
         { key: 'laneSkin', label: 'Lane skin', type: 'select', options: [
           { value: 'classic', label: 'Classic' }, { value: 'rainbow', label: 'Rainbow' },
@@ -131,7 +132,8 @@
     keyRepeatGuard: true,
 
     laneWidth: 0.6,
-    noteStyle: 'circle',
+    noteScale: 1,
+    noteStyle: 'square',
     laneSkin: 'classic',
     bgDim: 0.6,
     bgAnimation: true,

@@ -180,7 +180,7 @@
   let resizeTimer = null;
   function handleResize() {
     const all = O.all();
-    R.resize({ keys: all.keys, laneWidth: all.laneWidth, dir: all.scrollDir });
+    R.resize({ keys: all.keys, laneWidth: all.laneWidth, dir: all.scrollDir, noteScale: all.noteScale });
     Input.setGeometry(R.geometry());
     if (app.current && app.current.resize) app.current.resize();
     if (app.gameScreen && app.gameScreen !== app.current && app.gameScreen.resize) app.gameScreen.resize();

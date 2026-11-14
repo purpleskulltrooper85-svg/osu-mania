@@ -578,7 +578,7 @@
         particles: all.particles
       });
       engine.onEnd = finish;
-      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir });
+      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir, noteScale: all.noteScale });
       Input.setGeometry(R.geometry());
       Input.setMode(keys);
       hudSub.textContent = chart.difficulty.name + ' · ' + keys + 'K · ' + spec.bpm + ' BPM' + (O.modsList().length ? ' · ' + O.modsList().join(' ') : '');
@@ -588,7 +588,7 @@
       ended = false;
       paused = false;
       build();
-      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir });
+      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir, noteScale: all.noteScale });
       const music = chart.music;
       song = A.playSong({ events: music.events, lengthMs: Math.max(chart.lengthMs, music.lengthMs) }, {
         leadIn: 1.6,
@@ -690,7 +690,7 @@
     root.onEnter = function (params) {
       Input.attach(document.getElementById('app'));
       Input.listen();
-      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir });
+      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir, noteScale: all.noteScale });
       Input.setGeometry(R.geometry());
       Input.setMode(keys);
       Input.releaseAll();
@@ -727,7 +727,7 @@
     };
 
     root.resize = function () {
-      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir });
+      R.resize({ keys: keys, laneWidth: all.laneWidth, dir: all.scrollDir, noteScale: all.noteScale });
       Input.setGeometry(R.geometry());
     };
 

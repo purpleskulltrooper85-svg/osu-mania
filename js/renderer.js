@@ -69,14 +69,15 @@
     canvas.style.height = vh + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    R.computeGeometry(opts.keys || 4, opts.laneWidth, opts.dir);
+    R.computeGeometry(opts.keys || 4, opts.laneWidth, opts.dir, opts.noteScale);
     return geom;
   };
 
-  R.computeGeometry = function (keys, laneWidth, dir) {
+  R.computeGeometry = function (keys, laneWidth, dir, noteScale) {
     keys = keys || geom.keys;
     laneWidth = laneWidth === undefined ? 0.6 : laneWidth;
     dir = dir || geom.dir || 'down';
+    noteScale = noteScale === undefined ? 1 : noteScale;
 
     let w = vw * laneWidth;
     w = U.clamp(w, C.PLAYFIELD.minWidth, C.PLAYFIELD.maxWidth);
@@ -92,7 +93,7 @@
     geom.h = vh;
     geom.laneW = w / keys;
     geom.dir = dir;
-    geom.noteH = U.clamp(geom.laneW * C.NOTE.heightRatio, C.NOTE.minHeight, C.NOTE.maxHeight);
+    geom.noteH = U.clamp(geom.laneW * C.NOTE.heightRatio * noteScale, C.NOTE.minHeight, C.NOTE.maxHeight);
     geom.hitY = vh * (dir === 'up' ? 0.17 : 0.84);
     return geom;
   };
@@ -234,65 +235,59 @@
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
   }
 
-  /* A mania note head: a rounded square with a bright border and a subtle
-     top highlight, exactly the shape the game uses. */
+  /* A mania note head. Notes ALWAYS span the lane width — the style only
+     changes the corner rounding. A small corner radius reads as the classic
+     osu!mania rectangle; a large one gives the rounded "pill" look. */
   function drawNoteShape(c, x, y, w, h, color, style, alpha) {
-    const pad = style === 'bar' ? Math.max(1, w * 0.02) : Math.max(1.5, w * 0.06);
-    const nx = x + pad, ny = y + Math.max(0.5, h * 0.04);
-    const nw = w - pad * 2, nh = h - Math.max(1, h * 0.08);
+    const pad = Math.max(1.5, w * 0.035);
+    const nx = x + pad;
+    const ny = y + Math.max(0.5, h * 0.05);
+    const nw = w - pad * 2;
+    const nh = h - Math.max(1, h * 0.1);
     c.globalAlpha = alpha;
 
-    const round = style === 'circle' ? Math.min(nw, nh) / 2
-      : style === 'bar' ? Math.max(2, nh * 0.16)
-        : Math.min(nw, nh) * 0.22;
-    const cx = nx + nw / 2, cy = ny + nh / 2;
-
-    function shape(inset) {
-      if (style === 'circle') {
-        c.beginPath();
-        c.arc(cx, cy, Math.max(1, Math.min(nw, nh) / 2 - inset), 0, Math.PI * 2);
-      } else {
-        roundRect(c, nx + inset, ny + inset, nw - inset * 2, nh - inset * 2, Math.max(2, round - inset));
-      }
-    }
+    const round = cornerRadius(style, nw, nh);
+    const cx = nx + nw / 2;
 
     /* drop shadow for depth */
     c.save();
-    c.shadowColor = 'rgba(0,0,0,0.55)';
-    c.shadowBlur = Math.min(10, nw * 0.16);
-    c.shadowOffsetY = 1.5;
+    c.shadowColor = 'rgba(0,0,0,0.5)';
+    c.shadowBlur = Math.min(12, nw * 0.12);
+    c.shadowOffsetY = 2;
     c.fillStyle = color;
-    shape(0);
+    roundRect(c, nx, ny, nw, nh, round);
     c.fill();
     c.restore();
 
-    /* soft inner gradient from the lane colour to its darker edge */
+    /* soft vertical gradient from a bright top to a darker bottom */
     const g = c.createLinearGradient(nx, ny, nx, ny + nh);
-    g.addColorStop(0, hexA('#ffffff', 0.55));
-    g.addColorStop(0.35, color);
-    g.addColorStop(1, shade(color, 0.62));
+    g.addColorStop(0, hexA('#ffffff', 0.5));
+    g.addColorStop(0.32, color);
+    g.addColorStop(1, shade(color, 0.6));
     c.fillStyle = g;
-    shape(0);
+    roundRect(c, nx, ny, nw, nh, round);
     c.fill();
 
-    /* bright border */
-    c.lineWidth = Math.max(1.4, nw * 0.075);
-    c.strokeStyle = style === 'circle' ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)';
-    shape(c.lineWidth / 2);
+    /* bright border — the signature mania note outline */
+    c.lineWidth = Math.max(1.6, Math.min(nw, nh) * 0.09);
+    c.strokeStyle = 'rgba(255,255,255,0.9)';
+    roundRect(c, nx + c.lineWidth / 2, ny + c.lineWidth / 2,
+      nw - c.lineWidth, nh - c.lineWidth, Math.max(1, round - c.lineWidth / 2));
     c.stroke();
 
-    /* top gloss */
-    c.globalAlpha = alpha * 0.5;
-    c.fillStyle = 'rgba(255,255,255,0.85)';
-    if (style === 'circle') {
-      c.beginPath();
-      c.ellipse(cx, cy - nh * 0.24, nw * 0.3, nh * 0.16, 0, 0, Math.PI * 2);
-      c.fill();
-    } else {
-      roundRect(c, nx + nw * 0.16, ny + nh * 0.13, nw * 0.68, Math.max(1.5, nh * 0.18), Math.max(1, nh * 0.09));
-      c.fill();
-    }
+    /* top gloss strip */
+    c.globalAlpha = alpha * 0.45;
+    c.fillStyle = 'rgba(255,255,255,0.9)';
+    const gw = nw * 0.72, gh = Math.max(1.5, nh * 0.16);
+    roundRect(c, cx - gw / 2, ny + nh * 0.12, gw, gh, gh / 2);
+    c.fill();
     c.globalAlpha = 1;
+  }
+
+  function cornerRadius(style, w, h) {
+    if (style === 'circle' || style === 'pill') return Math.min(w, h) / 2;
+    if (style === 'bar') return Math.max(2, h * 0.16);
+    return Math.max(2, Math.min(w, h) * 0.2);   /* square = rounded rectangle */
   }
 
   function shade(hex, f) {
@@ -376,27 +371,19 @@
 
   /* The long-note tail cap, shaped like a note head but slimmer. */
   function drawHoldCap(lx, tailY, laneW, noteH, color, alpha, style) {
+    const pad = Math.max(1.5, laneW * 0.035);
+    const capH = Math.max(6, noteH * 0.62);
+    const nw = laneW - pad * 2;
+    const round = cornerRadius(style, nw, capH);
     ctx.globalAlpha = alpha;
     ctx.fillStyle = color;
-    const capH = noteH * 0.5;
-    if (style === 'circle') {
-      ctx.beginPath();
-      ctx.arc(lx + laneW / 2, tailY, Math.max(2, (laneW - laneW * 0.4) / 2), 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      roundRect(ctx, lx + laneW * 0.2, tailY - capH / 2, laneW * 0.6, capH, capH / 2);
-      ctx.fill();
-    }
-    ctx.lineWidth = Math.max(1.2, laneW * 0.04);
+    roundRect(ctx, lx + pad, tailY - capH / 2, nw, capH, round);
+    ctx.fill();
+    ctx.lineWidth = Math.max(1.4, capH * 0.12);
     ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-    if (style === 'circle') {
-      ctx.beginPath();
-      ctx.arc(lx + laneW / 2, tailY, Math.max(2, (laneW - laneW * 0.4) / 2), 0, Math.PI * 2);
-      ctx.stroke();
-    } else {
-      roundRect(ctx, lx + laneW * 0.2, tailY - capH / 2, laneW * 0.6, capH, capH / 2);
-      ctx.stroke();
-    }
+    roundRect(ctx, lx + pad + ctx.lineWidth / 2, tailY - capH / 2 + ctx.lineWidth / 2,
+      nw - ctx.lineWidth, capH - ctx.lineWidth, Math.max(1, round - ctx.lineWidth / 2));
+    ctx.stroke();
     ctx.globalAlpha = 1;
   }
 

@@ -1,0 +1,14 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Logs and local scratch
+*.log
+.agent_tmp/
+
+# Node (tests only; the app itself has no dependencies)
+node_modules/

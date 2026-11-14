@@ -6,11 +6,17 @@ Everything is generated at runtime. The music is synthesised live with the Web A
 beatmaps are generated from the music's own event grid, so there are **no audio files, no images and
 no dependencies**. Open `index.html` and play.
 
+## Play it
+
+**https://purpleskulltrooper85-svg.github.io/osu-mania/** — no install, works on desktop and mobile.
+
+To run it locally instead, serve the folder over HTTP and open it:
+
 ```
 python3 -m http.server 12000     # then open http://localhost:12000
 ```
 
-A static server is only needed so the browser will load the ES-free `<script>` modules; the game
+A static server is only needed so the browser will load the classic `<script>` tags; the game
 itself is plain HTML, CSS and canvas.
 
 ## Controls

@@ -7,7 +7,7 @@
   C.APP = {
     name: 'mania!',
     version: '0.1.0 prototype',
-    storageKey: 'mania.settings.v1',
+    storageKey: 'mania.settings.v2',
     scoresKey: 'mania.scores.v1'
   };
 
@@ -38,6 +38,8 @@
     };
   };
 
+  /* osu!mania column colours: white outer columns, blue inner columns and a
+     yellow "special" (centre) column. */
   const W = '#f1f3f5', B = '#4dabf7', Y = '#ffd43b', R = '#ff6b81', P = '#b197fc', G = '#69db7c';
 
   C.KEY_MODES = {
@@ -66,15 +68,15 @@
 
   C.PLAYFIELD = {
     widthRatio: 0.6,      /* lane area vs viewport width (clamped) */
-    maxWidth: 900,
+    maxWidth: 620,
     minWidth: 240,
     hitLineRatio: 0.84    /* receptor position as fraction of playfield height */
   };
 
   C.NOTE = {
-    heightRatio: 0.115,   /* note height relative to lane width */
-    minHeight: 11,
-    maxHeight: 40
+    heightRatio: 0.52,    /* note height relative to lane width */
+    minHeight: 18,
+    maxHeight: 78
   };
 
   C.SCROLL = {

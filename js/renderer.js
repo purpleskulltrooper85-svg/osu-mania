@@ -42,7 +42,20 @@
     }
     return C.modeInfo(keys).colors.slice();
   }
+  /* osu!mania lane colours: the outer columns are white, the inner columns
+     take the mode's accent, and the special (centre) column is yellow. */
   R.skinColors = skinColors;
+
+  function maniaLaneColor(keys, i, skin) {
+    if (skin === 'rainbow') return 'hsl(' + Math.round((i / keys) * 320) + ' 85% 68%)';
+    if (skin === 'mono') return i % 2 === 0 ? '#e9ecef' : '#adb5bd';
+    if (skin === 'neon') {
+      const palette = ['#39ff14', '#00f0ff', '#ff00e0', '#fff200', '#ff5c00', '#00ff9d', '#7c4dff'];
+      return palette[i % palette.length];
+    }
+    const info = C.modeInfo(keys);
+    return info.colors[i] || '#ffffff';
+  }
 
   R.resize = function (opts) {
     opts = opts || {};
@@ -149,31 +162,43 @@
 
   function drawLanes(engine, colors, opts) {
     const { x, w, h, laneW, keys } = geom;
+
+    /* Dark, slightly transparent backdrop so notes pop. */
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(x, 0, w, h);
+    ctx.restore();
+
     ctx.save();
     ctx.beginPath();
     ctx.rect(x, 0, w, h);
     ctx.clip();
 
-    /* lane panels */
     for (let i = 0; i < keys; i++) {
       const lx = x + i * laneW;
-      const shade = i % 2 === 0 ? 0.5 : 0.62;
-      ctx.fillStyle = 'rgba(0,0,0,' + shade * 0.55 + ')';
-      ctx.fillRect(lx, 0, laneW, h);
+      const held = engine && engine.laneGlow && engine.laneGlow[i] > 0.01;
+      const press = engine ? Math.max(engine.laneGlow[i] || 0, engine.laneFlash[i] || 0) : 0;
 
-      const held = engine && engine.holdNote && engine.holdNote[i] ? 1 : 0;
-      const glow = engine ? (engine.laneGlow[i] || 0) : 0;
-      if (glow > 0.01 || held) {
-        const g = ctx.createLinearGradient(0, geom.dir === 'up' ? 0 : h, 0, geom.dir === 'up' ? geom.hitY : geom.hitY);
-        g.addColorStop(0, 'rgba(255,255,255,0)');
-        g.addColorStop(1, hexA(colors[i], 0.14 + glow * 0.18));
+      /* subtle alternating lane tint */
+      if (i % 2 === 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.025)';
+        ctx.fillRect(lx, 0, laneW, h);
+      }
+
+      /* lane light column, brightest near the receptor */
+      if (press > 0.01 || held) {
+        const near = geom.dir === 'up' ? 0 : h;
+        const far = geom.hitY;
+        const g = ctx.createLinearGradient(0, near, 0, far);
+        g.addColorStop(0, hexA(colors[i], 0));
+        g.addColorStop(1, hexA(colors[i], 0.10 + press * 0.22));
         ctx.fillStyle = g;
         ctx.fillRect(lx, 0, laneW, h);
       }
     }
 
-    /* lane dividers */
-    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    /* column separators: crisp, like mania's lane borders */
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
     ctx.lineWidth = 1;
     for (let i = 0; i <= keys; i++) {
       const lx = Math.round(x + i * laneW) + 0.5;
@@ -182,6 +207,21 @@
       ctx.lineTo(lx, h);
       ctx.stroke();
     }
+    ctx.restore();
+
+    /* playfield edge highlight */
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(Math.round(x) + 0.5, 0, Math.round(w), h);
+
+    /* hit line across the playfield */
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, geom.hitY + 0.5);
+    ctx.lineTo(x + w, geom.hitY + 0.5);
+    ctx.stroke();
     ctx.restore();
   }
 
@@ -194,38 +234,62 @@
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
   }
 
+  /* A mania note head: a rounded square with a bright border and a subtle
+     top highlight, exactly the shape the game uses. */
   function drawNoteShape(c, x, y, w, h, color, style, alpha) {
+    const pad = style === 'bar' ? Math.max(1, w * 0.02) : Math.max(1.5, w * 0.06);
+    const nx = x + pad, ny = y + Math.max(0.5, h * 0.04);
+    const nw = w - pad * 2, nh = h - Math.max(1, h * 0.08);
     c.globalAlpha = alpha;
-    if (style === 'bar') {
-      c.fillStyle = color;
-      roundRect(c, x + 2, y, w - 4, h, Math.min(4, h / 2));
-      c.fill();
-      c.globalAlpha = alpha * 0.9;
-      c.fillStyle = 'rgba(255,255,255,0.85)';
-      roundRect(c, x + 4, y + h * 0.3, w - 8, Math.max(2, h * 0.16), 2);
-      c.fill();
-    } else if (style === 'flat') {
-      c.fillStyle = color;
-      roundRect(c, x + 1, y, w - 2, h, 6);
-      c.fill();
-      c.globalAlpha = alpha * 0.55;
-      c.fillStyle = '#ffffff';
-      roundRect(c, x + 3, y + 2, w - 6, Math.max(2, h * 0.22), 4);
+
+    const round = style === 'circle' ? Math.min(nw, nh) / 2
+      : style === 'bar' ? Math.max(2, nh * 0.16)
+        : Math.min(nw, nh) * 0.22;
+    const cx = nx + nw / 2, cy = ny + nh / 2;
+
+    function shape(inset) {
+      if (style === 'circle') {
+        c.beginPath();
+        c.arc(cx, cy, Math.max(1, Math.min(nw, nh) / 2 - inset), 0, Math.PI * 2);
+      } else {
+        roundRect(c, nx + inset, ny + inset, nw - inset * 2, nh - inset * 2, Math.max(2, round - inset));
+      }
+    }
+
+    /* drop shadow for depth */
+    c.save();
+    c.shadowColor = 'rgba(0,0,0,0.55)';
+    c.shadowBlur = Math.min(10, nw * 0.16);
+    c.shadowOffsetY = 1.5;
+    c.fillStyle = color;
+    shape(0);
+    c.fill();
+    c.restore();
+
+    /* soft inner gradient from the lane colour to its darker edge */
+    const g = c.createLinearGradient(nx, ny, nx, ny + nh);
+    g.addColorStop(0, hexA('#ffffff', 0.55));
+    g.addColorStop(0.35, color);
+    g.addColorStop(1, shade(color, 0.62));
+    c.fillStyle = g;
+    shape(0);
+    c.fill();
+
+    /* bright border */
+    c.lineWidth = Math.max(1.4, nw * 0.075);
+    c.strokeStyle = style === 'circle' ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)';
+    shape(c.lineWidth / 2);
+    c.stroke();
+
+    /* top gloss */
+    c.globalAlpha = alpha * 0.5;
+    c.fillStyle = 'rgba(255,255,255,0.85)';
+    if (style === 'circle') {
+      c.beginPath();
+      c.ellipse(cx, cy - nh * 0.24, nw * 0.3, nh * 0.16, 0, 0, Math.PI * 2);
       c.fill();
     } else {
-      c.shadowColor = color;
-      c.shadowBlur = 12;
-      const g = c.createLinearGradient(x, y, x, y + h);
-      g.addColorStop(0, '#ffffff');
-      g.addColorStop(0.35, color);
-      g.addColorStop(1, shade(color, 0.55));
-      c.fillStyle = g;
-      roundRect(c, x + 1, y, w - 2, h, 6);
-      c.fill();
-      c.shadowBlur = 0;
-      c.globalAlpha = alpha * 0.9;
-      c.fillStyle = 'rgba(255,255,255,0.9)';
-      roundRect(c, x + 3, y + 1.5, w - 6, Math.max(2, h * 0.2), 3);
+      roundRect(c, nx + nw * 0.16, ny + nh * 0.13, nw * 0.68, Math.max(1.5, nh * 0.18), Math.max(1, nh * 0.09));
       c.fill();
     }
     c.globalAlpha = 1;
@@ -243,8 +307,8 @@
     const { x, w, h, laneW, noteH } = geom;
     const now = engine.time;
     const speed = engine.speed;
-    const style = opts.noteStyle || 'glow';
-    const cullTop = -80, cullBot = vh + 80;
+    const style = opts.noteStyle || 'circle';
+    const cullTop = -120, cullBot = vh + 120;
 
     ctx.save();
     ctx.beginPath();
@@ -254,105 +318,137 @@
     for (let col = 0; col < geom.keys; col++) {
       const list = engine.colNotes[col];
       const lx = x + col * laneW;
+      const color = colors[col];
       for (let i = 0; i < list.length; i++) {
         const n = list[i];
         if (n.state === 2) continue;
         const headY = noteY(n.t, now, speed);
+
+        let alpha = 1;
+        if (engine.hidden) {
+          const prog = geom.dir === 'up' ? (headY - geom.hitY) / (h * 0.7) : (geom.hitY - headY) / (h * 0.7);
+          alpha = U.clamp(1 - prog, 0, 1);
+          if (alpha <= 0.02) continue;
+        }
+
         if (!n.ln) {
           if (headY < cullTop || headY > cullBot) continue;
-          let alpha = 1;
-          if (engine.hidden) {
-            const prog = geom.dir === 'up' ? (headY - geom.hitY) / (h * 0.7) : (geom.hitY - headY) / (h * 0.7);
-            alpha = U.clamp(1 - prog, 0, 1);
-            if (alpha <= 0.02) continue;
-          }
-          drawNoteShape(ctx, lx, headY - noteH / 2, laneW, noteH, colors[col], style, alpha);
+          drawNoteShape(ctx, lx, headY - noteH / 2, laneW, noteH, color, style, alpha);
         } else {
           const tailY = noteY(n.end, now, speed);
           const top = Math.min(headY, tailY);
           const bot = Math.max(headY, tailY);
           if (bot < cullTop || top > cullBot) continue;
-          let alpha = 1;
-          if (engine.hidden) {
-            const prog = geom.dir === 'up' ? (headY - geom.hitY) / (h * 0.7) : (geom.hitY - headY) / (h * 0.7);
-            alpha = U.clamp(1 - prog, 0, 1);
-            if (alpha <= 0.02) continue;
-          }
           const holding = n.state === 1;
-          ctx.globalAlpha = alpha * (holding ? 0.95 : 0.62);
-          const g = ctx.createLinearGradient(lx, top, lx, bot);
-          g.addColorStop(0, hexA(colors[col], 0.85));
-          g.addColorStop(1, hexA(colors[col], 0.3));
-          ctx.fillStyle = g;
-          roundRect(ctx, lx + laneW * 0.22, top, laneW * 0.56, bot - top, laneW * 0.2);
-          ctx.fill();
-          ctx.globalAlpha = alpha * 0.7;
-          ctx.strokeStyle = hexA(colors[col], 0.9);
-          ctx.lineWidth = 2;
-          roundRect(ctx, lx + laneW * 0.22, top, laneW * 0.56, bot - top, laneW * 0.2);
-          ctx.stroke();
-          ctx.globalAlpha = 1;
-          drawNoteShape(ctx, lx, headY - noteH / 2, laneW, noteH, colors[col], style, alpha);
-          if (n.state === 1) {
-            ctx.globalAlpha = 0.9;
-            ctx.fillStyle = '#ffffff';
-            roundRect(ctx, lx + laneW * 0.22, tailY - 3, laneW * 0.56, 6, 3);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-          }
+          drawHoldBody(lx, top, bot, laneW, color, alpha, holding);
+          /* tail cap sits at the far end of the hold */
+          drawHoldCap(lx, tailY, laneW, noteH, color, alpha, style);
+          /* head is drawn last so it sits above the body */
+          drawNoteShape(ctx, lx, headY - noteH / 2, laneW, noteH, color, style, alpha);
         }
       }
     }
     ctx.restore();
   }
 
+  /* The long-note body: a rounded capsule down the middle of the lane with a
+     bright rim, filled with the lane colour. */
+  function drawHoldBody(lx, top, bot, laneW, color, alpha, holding) {
+    const inset = laneW * 0.2;
+    const bw = laneW - inset * 2;
+    const r = Math.min(bw / 2, (bot - top) / 2);
+    const grad = ctx.createLinearGradient(lx, top, lx, bot);
+    grad.addColorStop(0, hexA(color, holding ? 0.85 : 0.6));
+    grad.addColorStop(0.5, hexA(color, holding ? 0.7 : 0.42));
+    grad.addColorStop(1, hexA(color, holding ? 0.85 : 0.6));
+
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = grad;
+    roundRect(ctx, lx + inset, top, bw, bot - top, r);
+    ctx.fill();
+
+    ctx.lineWidth = Math.max(1.5, laneW * 0.05);
+    ctx.strokeStyle = hexA('#ffffff', holding ? 0.95 : 0.6);
+    roundRect(ctx, lx + inset, top, bw, bot - top, r);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  /* The long-note tail cap, shaped like a note head but slimmer. */
+  function drawHoldCap(lx, tailY, laneW, noteH, color, alpha, style) {
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    const capH = noteH * 0.5;
+    if (style === 'circle') {
+      ctx.beginPath();
+      ctx.arc(lx + laneW / 2, tailY, Math.max(2, (laneW - laneW * 0.4) / 2), 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      roundRect(ctx, lx + laneW * 0.2, tailY - capH / 2, laneW * 0.6, capH, capH / 2);
+      ctx.fill();
+    }
+    ctx.lineWidth = Math.max(1.2, laneW * 0.04);
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    if (style === 'circle') {
+      ctx.beginPath();
+      ctx.arc(lx + laneW / 2, tailY, Math.max(2, (laneW - laneW * 0.4) / 2), 0, Math.PI * 2);
+      ctx.stroke();
+    } else {
+      roundRect(ctx, lx + laneW * 0.2, tailY - capH / 2, laneW * 0.6, capH, capH / 2);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
   function drawReceptors(engine, colors, opts) {
-    const { x, laneW, hitY, keys } = geom;
+    const { x, laneW, hitY, keys, noteH } = geom;
     const bindKeys = (window.Mania.Options.all().keybinds[keys] || C.modeInfo(keys).keys);
     const scale = opts.judgeScale || 1;
-    const rh = geom.noteH * 1.05 * scale;
+    const rh = Math.max(noteH * 1.02, laneW * 0.42) * scale;
 
     ctx.save();
     for (let i = 0; i < keys; i++) {
       const lx = x + i * laneW;
       const flash = engine ? engine.laneFlash[i] : 0;
       const held = engine ? (engine.laneGlow[i] || 0) : 0;
+      const press = Math.max(flash, held);
       const cx = lx + laneW / 2;
 
-      ctx.globalAlpha = 0.28 + flash * 0.7;
-      ctx.fillStyle = colors[i];
-      roundRect(ctx, lx + 2, hitY - rh / 2, laneW - 4, rh, 6);
+      /* mania receptor: a lane-wide rounded bar, outlined and dim when idle,
+         filled and glowing when pressed */
+      const pad = Math.max(1.5, laneW * 0.05);
+      const rx = lx + pad, rw = laneW - pad * 2;
+      const ry = hitY - rh / 2;
+      const rad = Math.max(3, rw * 0.16);
+
+      ctx.fillStyle = 'rgba(0,0,0,' + (0.24 + press * 0.2) + ')';
+      roundRect(ctx, rx, ry, rw, rh, rad);
       ctx.fill();
 
-      if (flash > 0.01) {
-        ctx.globalAlpha = flash * 0.85;
-        ctx.shadowColor = colors[i];
-        ctx.shadowBlur = 26 * flash;
-        ctx.fillStyle = '#ffffff';
-        roundRect(ctx, lx + 2, hitY - rh / 2, laneW - 4, rh, 6);
+      if (press > 0.01) {
+        ctx.globalAlpha = press * 0.35;
+        ctx.fillStyle = colors[i];
+        roundRect(ctx, rx, ry, rw, rh, rad);
         ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha = 0.9;
 
+      ctx.lineWidth = Math.max(1.6, rw * 0.06);
+      ctx.strokeStyle = hexA(colors[i], 0.4 + press * 0.6);
+      if (press > 0.01) { ctx.shadowColor = colors[i]; ctx.shadowBlur = 20 * press; }
+      roundRect(ctx, rx + ctx.lineWidth / 2, ry + ctx.lineWidth / 2,
+        rw - ctx.lineWidth, rh - ctx.lineWidth, Math.max(2, rad - ctx.lineWidth / 2));
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      /* key label just past the receptor, away from the note stream */
       const label = keyLabel(bindKeys[i]);
-      ctx.fillStyle = 'rgba(255,255,255,' + (0.55 + flash * 0.45) + ')';
-      ctx.font = '600 ' + Math.round(U.clamp(geom.laneW * 0.24, 9, 17)) + 'px "Trebuchet MS", system-ui, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,' + (0.42 + press * 0.5) + ')';
+      ctx.font = '700 ' + Math.round(U.clamp(laneW * 0.26, 10, 18)) + 'px "Trebuchet MS", system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(label, cx, hitY + (geom.dir === 'up' ? rh * 0.95 : -rh * 0.95));
-      ctx.globalAlpha = 1;
+      ctx.fillText(label, cx, hitY + (geom.dir === 'up' ? rh * 1.25 : -rh * 1.25));
     }
-    ctx.restore();
-
-    /* hit line */
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(x, hitY + 0.5);
-    ctx.lineTo(x + geom.w, hitY + 0.5);
-    ctx.stroke();
     ctx.restore();
   }
 
@@ -419,12 +515,16 @@
           ctx.fill();
         }
       } else if (fx.type === 'tap') {
-        const life = 240;
+        const life = 220;
         const t = U.clamp(age / life, 0, 1);
-        ctx.globalAlpha = (1 - t) * 0.4;
-        ctx.fillStyle = '#ffffff';
-        roundRect(ctx, x + fx.lane * laneW + 2, geom.hitY - geom.noteH / 2, laneW - 4, geom.noteH, 6);
-        ctx.fill();
+        const cx = x + fx.lane * laneW + laneW / 2;
+        const rad = laneW * (0.32 + t * 0.3);
+        ctx.globalAlpha = (1 - t) * (fx.empty ? 0.28 : 0.7);
+        ctx.lineWidth = Math.max(1.5, laneW * 0.05);
+        ctx.strokeStyle = fx.color || '#ffffff';
+        ctx.beginPath();
+        ctx.arc(cx, geom.hitY, rad, 0, Math.PI * 2);
+        ctx.stroke();
       }
     }
     ctx.globalAlpha = 1;
@@ -462,7 +562,8 @@
     const hue = opts.hue === undefined ? 280 : opts.hue;
     drawBackground(performance.now() / 1000, { hue: hue, visualiser: opts.visualiser !== false });
     dimOverlay(opts.bgDim || 0);
-    const colors = skinColors(geom.keys, opts.laneSkin);
+    const colors = [];
+    for (let i = 0; i < geom.keys; i++) colors.push(maniaLaneColor(geom.keys, i, opts.laneSkin));
     drawLanes(engine, colors, opts);
     drawNotes(engine, colors, opts);
     drawReceptors(engine, colors, opts);

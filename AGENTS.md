@@ -89,3 +89,15 @@ context cannot start in headless mode — verify audio through `tests/audio.test
   button. This is what caught both the scrim overlay and the below-the-fold Play button.
 - On song select the info panels scroll inside `.select-side-scroll` while `.select-actions` stays
   pinned; on mobile the list caps at `max-height: 42%` so the action bar is always reachable.
+- `app.go('pause')` stacks an overlay over the live game. Any screen shown *from* pause (Options)
+  replaces the pause overlay, so the pause branch must detach the previous screen and re-attach the
+  live game screen. Otherwise the stale menu stays in `#screen-root` underneath and "menus just
+  stay there". `#rotate-hint` also carries class `overlay`, so never count overlays by class alone.
+- Long notes: a key already held when the head enters the window is latched by `latchHeld`, and the
+  head is judged when it reaches the line (not on the first key event). This is what makes an early
+  press score MAX instead of dropping the note. `laneDown` tracks physical key state separately
+  from `holdNote`.
+- osu!mania visuals: lane colours are white outer / blue inner / yellow centre
+  (`C.KEY_MODES[*].colors`, mirrored by `Renderer.maniaLaneColor` for skins); notes are
+  rounded-square heads with a white border, long notes are a capsule body plus a tail cap; receptors
+  are outlined lane-wide bars that fill and glow when pressed. Default scroll is **down**.

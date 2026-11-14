@@ -62,7 +62,8 @@
       id: 'visual', title: 'Visuals', icon: 'star', items: [
         { key: 'laneWidth', label: 'Lane width', type: 'range', min: 0.4, max: 1, step: 0.02, format: 'pct' },
         { key: 'noteStyle', label: 'Note style', type: 'select', options: [
-          { value: 'glow', label: 'Glow' }, { value: 'flat', label: 'Flat' }, { value: 'bar', label: 'Bar' }
+          { value: 'circle', label: 'Circle' }, { value: 'square', label: 'Square' },
+          { value: 'bar', label: 'Bar' }
         ] },
         { key: 'laneSkin', label: 'Lane skin', type: 'select', options: [
           { value: 'classic', label: 'Classic' }, { value: 'rainbow', label: 'Rainbow' },
@@ -111,7 +112,7 @@
     keys: 4,
     difficulty: 2,
     speed: 1.35,
-    scrollDir: 'up',
+    scrollDir: 'down',
     od: 8,
     drain: 1,
     judgeScale: 1,
@@ -130,7 +131,7 @@
     keyRepeatGuard: true,
 
     laneWidth: 0.6,
-    noteStyle: 'glow',
+    noteStyle: 'circle',
     laneSkin: 'classic',
     bgDim: 0.6,
     bgAnimation: true,

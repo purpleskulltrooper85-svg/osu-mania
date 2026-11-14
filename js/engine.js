@@ -54,6 +54,7 @@
       effects: [],
       laneFlash: new Array(keys).fill(0),
       laneGlow: new Array(keys).fill(0),
+      laneDown: new Array(keys).fill(false),
       lastHitAt: new Array(keys).fill(-1e9),
       notePointer: new Array(keys).fill(0),
       holdNote: new Array(keys).fill(null),
@@ -72,6 +73,9 @@
       n.judgement = null;
       n.judgeTime = 0;
       n.missTime = 0;
+      n.headTime = 0;
+      n.headPending = false;
+      n.headJudgement = null;
       n.lnMs = n.ln ? Math.max(0, n.end - n.t) : 0;
     }
 
@@ -144,6 +148,9 @@
         combo: engine.combo,
         t: time
       });
+      if (key !== 'miss') {
+        addEffect('tap', note.col, { t: time, color: j.color });
+      }
       if (key !== 'miss' && settings.particles) {
         addEffect('burst', note.col, { judgement: key, color: j.color, t: time });
       }
@@ -181,20 +188,52 @@
 
     /* ---------- press / release ---------- */
 
+    /* Long notes accept the head as soon as the key is down and the head is
+       inside the widest window, which lets a player hold the key slightly
+       early (how mania is actually played) instead of having to tap exactly
+       on the head. The head is judged when it actually reaches the line, so
+       holding through it earns a MAX. */
+    function latchHeld(lane) {
+      if (!engine.laneDown[lane] || engine.holdNote[lane]) return;
+      const now = engine.time;
+      const list = colNotes[lane];
+      /* Only the column's first unjudged note can be latched, otherwise an
+         earlier tap would be skipped and missed. */
+      let first = null;
+      for (let i = engine.notePointer[lane]; i < list.length; i++) {
+        const n = list[i];
+        if (n.state === STATE.DONE) continue;
+        first = n;
+        break;
+      }
+      if (!first || !first.ln) return;
+      const d = first.t - now;
+      if (d > windows.p50 || d < -windows.p50) return;
+      first.state = STATE.HOLDING;
+      first.headTime = first.t;
+      first.headPending = d > windows.max;
+      first.headJudgement = first.headPending ? null : windowFor(now, first.t);
+      engine.holdNote[lane] = first;
+      engine.laneFlash[lane] = 1;
+      engine.laneGlow[lane] = 1;
+      addEffect('lnstart', lane, { t: now, note: first });
+    }
+
     function press(lane) {
       if (engine.state !== 'running') return;
       const now = engine.time;
+      engine.laneDown[lane] = true;
       engine.lastHitAt[lane] = now;
       const n = findHittable(lane, now);
       if (!n) {
-        addEffect('tap', lane, { t: now, empty: true });
+        addEffect('tap', lane, { t: now, empty: true, color: C.modeInfo(keys).colors[lane] });
         return;
       }
       const key = windowFor(now, n.t) || 'p100';
       if (n.ln) {
         n.state = STATE.HOLDING;
         n.headJudgement = key;
-        n.headTime = now;
+        n.headTime = n.t;
         engine.holdNote[lane] = n;
         if (engine.hitsound !== 'none') A.hit(engine.hitsound, engine.hitsoundVolume * 0.8, key === 'max' || key === 'p300');
         engine.laneFlash[lane] = 1;
@@ -220,6 +259,7 @@
 
     function release(lane) {
       if (engine.state !== 'running') return;
+      engine.laneDown[lane] = false;
       const now = engine.time;
       const n = engine.holdNote[lane];
       if (!n) return;
@@ -230,8 +270,17 @@
     /* Held long notes complete on their own once the tail is reached. */
     function updateHoldNotes(now) {
       for (let c = 0; c < keys; c++) {
+        if (engine.laneDown[c]) latchHeld(c);
         const n = engine.holdNote[c];
         if (!n) continue;
+        /* The key went down early: judge the head the moment it reaches the
+           line so holding through it scores a MAX. */
+        if (n.headPending && now >= n.t) {
+          n.headPending = false;
+          n.headJudgement = windowFor(now, n.t) || 'max';
+          engine.laneFlash[c] = 1;
+          engine.laneGlow[c] = 1;
+        }
         if (now >= n.end) {
           engine.holdNote[c] = null;
           completeHold(n, now, true);
@@ -347,7 +396,8 @@
       clock.pauseAt = performance.now();
       clock.running = false;
       for (let c = 0; c < keys; c++) {
-        if (engine.holdNote[c]) { engine.holdNote[c] = null; }
+        engine.holdNote[c] = null;
+        engine.laneDown[c] = false;
       }
     };
 
@@ -363,6 +413,7 @@
     engine.release = release;
     engine.forceReleaseAll = function () {
       for (let c = 0; c < keys; c++) {
+        engine.laneDown[c] = false;
         if (engine.holdNote[c]) release(c);
       }
     };

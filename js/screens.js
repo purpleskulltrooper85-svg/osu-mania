@@ -58,8 +58,8 @@
       A.ui('select');
       const r = Math.floor(Math.random() * S.LIST.length);
       app.state.songId = S.LIST[r].id;
+      app.state.diffIndex = Math.min(app.state.diffIndex || 0, B.difficulties(S.LIST[r]).length - 1);
       app.go('select');
-      setTimeout(function () { app.screens.select && app.screens.select.play(); }, 220);
     });
     const opts = U.el('button', { class: 'btn', html: U.icon('gear') + '<span>Options</span>' });
     opts.addEventListener('click', function () { A.ui('select'); app.go('options', { from: 'title' }); });

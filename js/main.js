@@ -50,7 +50,7 @@
 
   app.go = function (name, params) {
     params = params || {};
-    const prev = this.current;
+    let prev = this.current;
 
     /* Screens read their construction params during SC[name]() below, before
        onEnter() runs, so expose them on the app for that window. */
@@ -59,6 +59,17 @@
     /* ---- pause is an overlay stacked over the live game ---- */
     if (name === 'pause') {
       if (this.pauseScreen) return;
+      /* Pause can be opened from a full screen (e.g. Options). Hide it so the
+         overlay always sits over the game, never on top of a stale menu. */
+      const cur = this.current;
+      if (cur && cur !== this.gameScreen) {
+        if (cur.onExit) cur.onExit();
+        detach(cur.el || cur);
+      }
+      /* Keep the live HUD visible behind the overlay. */
+      if (this.gameScreen && !(this.gameScreen.el || this.gameScreen).parentNode) {
+        root.appendChild(this.gameScreen.el || this.gameScreen);
+      }
       const s = SC.pause(this);
       s.el = s;
       this.pauseScreen = s;
@@ -70,11 +81,18 @@
       return;
     }
 
+    /* closePause() already ran onExit for the overlay; don't run it twice. */
+    const closingPause = this.pauseScreen && this.pauseScreen === prev;
     closePause();
+    if (closingPause) prev = null;
 
     /* ---- resuming an in-progress run ---- */
     if (name === 'game' && !params.fresh && this.gameScreen && this.gameScreen.isLive && this.gameScreen.isLive()) {
       const g = this.gameScreen;
+      if (prev && prev !== g) {
+        if (prev.onExit) prev.onExit();
+        detach(prev.el || prev);
+      }
       if (!(g.el || g).parentNode) root.appendChild(g.el || g);
       this.current = g;
       this.currentName = 'game';

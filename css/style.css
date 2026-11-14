@@ -3,11 +3,11 @@
    ============================================================ */
 
 :root {
-  --bg: #07050d;
-  --bg-2: #100b1c;
-  --panel: rgba(20, 14, 34, 0.72);
-  --panel-solid: #150f24;
-  --panel-2: rgba(32, 22, 52, 0.66);
+  --bg: #04030a;
+  --bg-2: #120a1f;
+  --panel: rgba(16, 10, 28, 0.74);
+  --panel-solid: #120c20;
+  --panel-2: rgba(28, 18, 46, 0.66);
   --line: rgba(255, 255, 255, 0.10);
   --line-strong: rgba(255, 255, 255, 0.20);
 
@@ -15,12 +15,17 @@
   --text-dim: #b0a6c9;
   --text-faint: #7a7095;
 
+  /* osu!mania signature palette */
   --accent: #ff66aa;
   --accent-2: #b197fc;
   --accent-3: #4dabf7;
   --good: #69db7c;
   --warn: #ffd43b;
   --bad: #ff6b81;
+
+  --lane-white: #f1f3f5;
+  --lane-blue: #4dabf7;
+  --lane-yellow: #ffd43b;
 
   --radius: 14px;
   --radius-sm: 9px;
@@ -585,9 +590,16 @@ select option { background: var(--panel-solid); color: var(--text); }
 .hud-sub { font-size: 0.72em; color: var(--text-dim); text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
 .hud-right { margin-left: auto; display: flex; align-items: center; gap: 0.5em; }
 
-.score-box { text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
-.score-box .score { font-size: 1.5em; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
-.score-box .acc { font-size: 0.78em; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.score-box { text-align: right; text-shadow: 0 2px 12px rgba(0,0,0,0.85); }
+.score-box .score {
+  font-size: 2.1em; font-weight: 800; font-variant-numeric: tabular-nums;
+  line-height: 1; letter-spacing: -0.01em;
+}
+.score-box .acc {
+  font-size: 0.95em; font-weight: 700; color: var(--text);
+  font-variant-numeric: tabular-nums; margin-top: 0.15em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+}
 
 .hud-bottom {
   position: absolute; bottom: 0; left: 0; right: 0;

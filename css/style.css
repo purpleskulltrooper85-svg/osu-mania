@@ -81,6 +81,8 @@ html, body {
   inset: 0;
   display: flex;
   flex-direction: column;
+  /* Contain descendant z-indexes so the -1 scrim can never escape behind the canvas. */
+  isolation: isolate;
   animation: screenIn 0.34s var(--ease);
 }
 @keyframes screenIn {
@@ -91,11 +93,13 @@ html, body {
 .scrim {
   position: absolute;
   inset: 0;
+  z-index: -1;
   background:
     radial-gradient(120% 80% at 50% -10%, rgba(255, 102, 170, 0.16), transparent 60%),
     radial-gradient(100% 70% at 90% 110%, rgba(77, 171, 247, 0.14), transparent 60%),
     linear-gradient(180deg, rgba(7, 5, 13, 0.55), rgba(7, 5, 13, 0.86));
   backdrop-filter: blur(3px);
+  pointer-events: none;
 }
 
 .btn {
@@ -277,9 +281,21 @@ html, body {
   flex-direction: column;
   gap: 0.85em;
   min-height: 0;
+}
+/* Only the info panels scroll; the action bar below stays pinned and reachable. */
+.select-side-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85em;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.22) transparent;
 }
+.select-side-scroll::-webkit-scrollbar { width: 9px; }
+.select-side-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 9px; }
 .panel {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -343,7 +359,6 @@ html, body {
 .select-actions { display: flex; gap: 0.6em; }
 .select-actions .btn { flex: 1; }
 .select-actions .btn.play { flex: 1.6; height: 52px; font-size: 1.05em; }
-
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); gap: 0.6em; }
 .stat {
   background: rgba(255,255,255,0.035);
@@ -759,9 +774,11 @@ select option { background: var(--panel-solid); color: var(--text); }
    ============================================================ */
 
 @media (max-width: 900px) {
-  .select-body { flex-direction: column; }
-  .song-list { flex: 1 1 auto; }
-  .select-side { flex: none; max-width: none; }
+  /* Stack vertically: the song list and the info panels scroll, the action bar
+     stays pinned so Play is always reachable, even on short landscape screens. */
+  .select-body { flex-direction: column; overflow: hidden; }
+  .song-list { flex: 0 1 auto; max-height: 42%; }
+  .select-side { flex: 1 1 auto; max-width: none; min-height: 0; }
   .big-cover { aspect-ratio: 1 / 0.34; }
   .options-body { flex-direction: column; }
   .opt-tabs { flex-direction: row; width: auto; overflow-x: auto; padding-bottom: 0.2em; }

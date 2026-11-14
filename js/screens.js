@@ -107,19 +107,20 @@
     const body = U.el('div', { class: 'select-body' });
     const list = U.el('div', { class: 'song-list', role: 'listbox', 'aria-label': 'Songs' });
     const side = U.el('div', { class: 'select-side' });
+    const sideScroll = U.el('div', { class: 'select-side-scroll' });
 
     const cover = U.el('div', { class: 'big-cover' });
     const coverTitle = U.el('h2', {});
     const coverArtist = U.el('p', {});
     cover.appendChild(coverTitle);
     cover.appendChild(coverArtist);
-    side.appendChild(cover);
+    sideScroll.appendChild(cover);
 
     const diffPanel = U.el('div', { class: 'panel' });
     diffPanel.appendChild(U.el('h3', { text: 'Difficulty' }));
     const diffList = U.el('div', { class: 'diff-list' });
     diffPanel.appendChild(diffList);
-    side.appendChild(diffPanel);
+    sideScroll.appendChild(diffPanel);
 
     const statPanel = U.el('div', { class: 'panel' });
     statPanel.appendChild(U.el('h3', { text: 'Chart' }));
@@ -127,7 +128,9 @@
     statPanel.appendChild(statGrid);
     const bestRow = U.el('div', { class: 'best-row' });
     statPanel.appendChild(bestRow);
-    side.appendChild(statPanel);
+    sideScroll.appendChild(statPanel);
+
+    side.appendChild(sideScroll);
 
     const actions = U.el('div', { class: 'select-actions' });
     const playBtn = U.el('button', { class: 'btn primary play', html: U.icon('play') + '<span>Play</span>' });

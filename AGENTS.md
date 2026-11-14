@@ -79,3 +79,13 @@ context cannot start in headless mode — verify audio through `tests/audio.test
   early must count as a miss.
 - Canvas sizing is DPR-aware; always read geometry from `Renderer.geometry()` rather than assuming
   CSS pixels.
+- `.scrim` carries `backdrop-filter`, so it paints in the positioned layer. Without `z-index: -1`
+  and `pointer-events: none` it covers the static menu buttons, blurring them and eating clicks.
+  Each `.screen` also sets `isolation: isolate` so that negative z-index cannot escape behind the
+  canvas.
+- JS `.click()` bypasses hit-testing, so it will happily "pass" on a button that is actually
+  covered or off-screen. Smoke-test navigation with real input events
+  (`Input.dispatchMouseEvent`) and assert `document.elementFromPoint` resolves to the target
+  button. This is what caught both the scrim overlay and the below-the-fold Play button.
+- On song select the info panels scroll inside `.select-side-scroll` while `.select-actions` stays
+  pinned; on mobile the list caps at `max-height: 42%` so the action bar is always reachable.

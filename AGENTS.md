@@ -111,3 +111,16 @@ context cannot start in headless mode — verify audio through `tests/audio.test
 - `index.html` links every script with a `?v=N` query string. GitHub Pages caches for ~10 minutes;
   without the stamp a fresh push looks unchanged in a browser that already loaded the old files.
   Bump `N` whenever you want to be sure clients pick up new JS.
+- `osu_mania_4k_minimalist_rhythm_game.html` is a **single-file** variant of the game (all markup,
+  CSS and JS inline) that someone drops in from outside. It does NOT use `index.html`/`js/`. It
+  must stay self-contained: never depend on a runtime CDN. It once loaded
+  `<script src="https://cdn.tailwindcss.com">`, and when that request failed (offline, adblocker,
+  proxy) every utility class was missing, so the whole UI collapsed to `position:static` and the
+  page showed only plain text. The fix is a compiled Tailwind (v3.4.17) `<style>` block inlined in
+  `<head>`. If you edit the markup, regenerate that CSS (see below) or new classes will silently
+  do nothing.
+  - Regenerate: `npx tailwindcss@3.4.17 -i input.css -o out.css --content ./osu_mania_4k_minimalist_rhythm_game.html --minify`,
+    then paste `out.css` between the first `<style>...</style>` pair. Verify by blocking
+    `*cdn.tailwindcss.com*` in DevTools: the layout must not change.
+- Verify a "looks broken / only text" report by diffing a CDN-blocked render against a CDN-allowed
+  one — identical pixels means the inlined CSS is complete and the real problem is elsewhere.

@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>osu!mania 4K</title>
+  <!-- Tailwind CSS (v3.4.17) compiled inline so the page renders with no network
+       dependency. Previously this loaded cdn.tailwindcss.com at runtime; when that
+       request failed (offline / adblock / proxy) every utility class was missing and
+       the UI collapsed to unstyled text. -->
+  <style>
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.-left-24{left:-6rem}.-top-20{top:-5rem}.left-16{left:4rem}.left-3{left:.75rem}.right-1\/4{right:25%}.right-2\.5{right:.625rem}.top-1\/2{top:50%}.top-1\/3{top:33.333333%}.top-1\/4{top:25%}.top-3{top:.75rem}.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.col-span-1{grid-column:span 1/span 1}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-2{margin-bottom:.5rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.ml-1{margin-left:.25rem}.mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-14{height:3.5rem}.h-3\.5{height:.875rem}.h-5{height:1.25rem}.h-64{height:16rem}.h-8{height:2rem}.h-96{height:24rem}.h-\[34rem\]{height:34rem}.h-full{height:100%}.max-h-\[92vh\]{max-height:92vh}.min-h-0{min-height:0}.w-1\.5{width:.375rem}.w-10{width:2.5rem}.w-14{width:3.5rem}.w-3{width:.75rem}.w-3\.5{width:.875rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-64{width:16rem}.w-8{width:2rem}.w-96{width:24rem}.w-\[34rem\]{width:34rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%}.-translate-y-1\/2,.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-stretch{align-items:stretch}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.gap-0\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-x-3{-moz-column-gap:.75rem;column-gap:.75rem}.gap-y-0\.5{row-gap:.125rem}.space-y-1\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-2xl{border-top-left-radius:1rem;border-bottom-left-radius:1rem}.border{border-width:1px}.border-y{border-top-width:1px}.border-b,.border-y{border-bottom-width:1px}.border-l{border-left-width:1px}.border-t{border-top-width:1px}.border-\[\#F7B2BD\]{--tw-border-opacity:1;border-color:rgb(247 178 189/var(--tw-border-opacity,1))}.border-\[\#F7B2BD\]\/40{border-color:rgba(247,178,189,.4)}.border-amber-400{--tw-border-opacity:1;border-color:rgb(251 191 36/var(--tw-border-opacity,1))}.border-neutral-700{--tw-border-opacity:1;border-color:rgb(64 64 64/var(--tw-border-opacity,1))}.border-neutral-800{--tw-border-opacity:1;border-color:rgb(38 38 38/var(--tw-border-opacity,1))}.border-neutral-800\/70{border-color:rgba(38,38,38,.7)}.border-neutral-800\/80{border-color:rgba(38,38,38,.8)}.border-neutral-800\/90{border-color:rgba(38,38,38,.9)}.border-neutral-900{--tw-border-opacity:1;border-color:rgb(23 23 23/var(--tw-border-opacity,1))}.border-white{--tw-border-opacity:1;border-color:rgb(255 255 255/var(--tw-border-opacity,1))}.border-white\/80{border-color:hsla(0,0%,100%,.8)}.bg-\[\#050505\]{--tw-bg-opacity:1;background-color:rgb(5 5 5/var(--tw-bg-opacity,1))}.bg-\[\#F7B2BD\]{--tw-bg-opacity:1;background-color:rgb(247 178 189/var(--tw-bg-opacity,1))}.bg-\[\#F7B2BD\]\/10{background-color:rgba(247,178,189,.1)}.bg-\[\#F7B2BD\]\/15{background-color:rgba(247,178,189,.15)}.bg-amber-500\/20{background-color:rgba(245,158,11,.2)}.bg-black\/70{background-color:rgba(0,0,0,.7)}.bg-black\/80{background-color:rgba(0,0,0,.8)}.bg-black\/85{background-color:rgba(0,0,0,.85)}.bg-black\/90{background-color:rgba(0,0,0,.9)}.bg-neutral-800{--tw-bg-opacity:1;background-color:rgb(38 38 38/var(--tw-bg-opacity,1))}.bg-neutral-900{--tw-bg-opacity:1;background-color:rgb(23 23 23/var(--tw-bg-opacity,1))}.bg-neutral-900\/50{background-color:hsla(0,0%,9%,.5)}.bg-neutral-900\/60{background-color:hsla(0,0%,9%,.6)}.bg-neutral-900\/65{background-color:hsla(0,0%,9%,.65)}.bg-neutral-900\/70{background-color:hsla(0,0%,9%,.7)}.bg-neutral-900\/75{background-color:hsla(0,0%,9%,.75)}.bg-neutral-900\/85{background-color:hsla(0,0%,9%,.85)}.bg-neutral-900\/90{background-color:hsla(0,0%,9%,.9)}.bg-neutral-950{--tw-bg-opacity:1;background-color:rgb(10 10 10/var(--tw-bg-opacity,1))}.bg-neutral-950\/90{background-color:hsla(0,0%,4%,.9)}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.from-\[\#F7B2BD\]{--tw-gradient-from:#f7b2bd var(--tw-gradient-from-position);--tw-gradient-to:rgba(247,178,189,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-\[\#F497A6\]{--tw-gradient-to:rgba(244,151,166,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#f497a6 var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-\[\#F9C86B\]{--tw-gradient-to:#f9c86b var(--tw-gradient-to-position)}.p-0\.5{padding:.125rem}.p-1\.5{padding:.375rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-\[3px\]{padding:3px}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-2{padding-bottom:.5rem}.pl-2{padding-left:.5rem}.pl-3{padding-left:.75rem}.pr-0{padding-right:0}.pr-1{padding-right:.25rem}.pr-7{padding-right:1.75rem}.pt-1{padding-top:.25rem}.pt-2{padding-top:.5rem}.pt-2\.5{padding-top:.625rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.font-sans{font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji}.text-5xl{font-size:3rem;line-height:1}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[8px\]{font-size:8px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.025em}.tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}.text-\[\#EAEAEA\]{--tw-text-opacity:1;color:rgb(234 234 234/var(--tw-text-opacity,1))}.text-\[\#F7B2BD\]{--tw-text-opacity:1;color:rgb(247 178 189/var(--tw-text-opacity,1))}.text-\[\#F9C86B\]{--tw-text-opacity:1;color:rgb(249 200 107/var(--tw-text-opacity,1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.text-black{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.text-blue-400{--tw-text-opacity:1;color:rgb(96 165 250/var(--tw-text-opacity,1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249/var(--tw-text-opacity,1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.text-neutral-200{--tw-text-opacity:1;color:rgb(229 229 229/var(--tw-text-opacity,1))}.text-neutral-300{--tw-text-opacity:1;color:rgb(212 212 212/var(--tw-text-opacity,1))}.text-neutral-400{--tw-text-opacity:1;color:rgb(163 163 163/var(--tw-text-opacity,1))}.text-neutral-500{--tw-text-opacity:1;color:rgb(115 115 115/var(--tw-text-opacity,1))}.text-purple-400{--tw-text-opacity:1;color:rgb(192 132 252/var(--tw-text-opacity,1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.placeholder-neutral-500::-moz-placeholder{--tw-placeholder-opacity:1;color:rgb(115 115 115/var(--tw-placeholder-opacity,1))}.placeholder-neutral-500::placeholder{--tw-placeholder-opacity:1;color:rgb(115 115 115/var(--tw-placeholder-opacity,1))}.opacity-25{opacity:.25}.opacity-85{opacity:.85}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-2xl,.shadow-lg{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.shadow-\[\#F7B2BD\]\/20{--tw-shadow-color:rgba(247,178,189,.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-black\/60{--tw-shadow-color:rgba(0,0,0,.6);--tw-shadow:var(--tw-shadow-colored)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px)}.backdrop-blur-md,.backdrop-blur-sm{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-opacity{transition-duration:.15s}.ease-in-out{transition-timing-function:cubic-bezier(.4,0,.2,1)}.hover\:border-\[\#F7B2BD\]\/60:hover{border-color:rgba(247,178,189,.6)}.hover\:border-neutral-700:hover{--tw-border-opacity:1;border-color:rgb(64 64 64/var(--tw-border-opacity,1))}.hover\:bg-neutral-200:hover{--tw-bg-opacity:1;background-color:rgb(229 229 229/var(--tw-bg-opacity,1))}.hover\:bg-neutral-800:hover{--tw-bg-opacity:1;background-color:rgb(38 38 38/var(--tw-bg-opacity,1))}.hover\:bg-neutral-900:hover{--tw-bg-opacity:1;background-color:rgb(23 23 23/var(--tw-bg-opacity,1))}.hover\:bg-neutral-900\/80:hover{background-color:hsla(0,0%,9%,.8)}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.hover\:opacity-100:hover{opacity:1}.focus\:border-\[\#F7B2BD\]:focus{--tw-border-opacity:1;border-color:rgb(247 178 189/var(--tw-border-opacity,1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95}.active\:scale-95:active,.active\:scale-\[0\.99\]:active{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:scale-\[0\.99\]:active{--tw-scale-x:0.99;--tw-scale-y:0.99}.group:hover .group-hover\:text-neutral-300{--tw-text-opacity:1;color:rgb(212 212 212/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:flex{display:flex}.sm\:h-11{height:2.75rem}.sm\:h-16{height:4rem}.sm\:w-11{width:2.75rem}.sm\:w-16{width:4rem}.sm\:gap-2{gap:.5rem}.sm\:p-6{padding:1.5rem}.sm\:px-4{padding-left:1rem;padding-right:1rem}.sm\:px-5{padding-left:1.25rem;padding-right:1.25rem}.sm\:py-3{padding-top:.75rem;padding-bottom:.75rem}.sm\:pl-8{padding-left:2rem}.sm\:text-base{font-size:1rem;line-height:1.5rem}.sm\:text-sm{font-size:.875rem;line-height:1.25rem}.sm\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:768px){.md\:col-span-5{grid-column:span 5/span 5}.md\:col-span-7{grid-column:span 7/span 7}.md\:flex{display:flex}.md\:w-64{width:16rem}.md\:grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:items-start{align-items:flex-start}.md\:items-end{align-items:flex-end}}@media (min-width:1024px){.lg\:col-span-4{grid-column:span 4/span 4}.lg\:col-span-8{grid-column:span 8/span 8}.lg\:inline{display:inline}}
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: none;
+    }
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000000;
+    }
+    /* Custom subtle range slider styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #262626;
+      height: 4px;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #eaeaea;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #ffffff;
+    }
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border: 2px solid #444444;
+      border-radius: 9999px;
+    }
+    /* Custom subtle scrollbar for song carousel & score list */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes pulseRing {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.035); }
+    }
+    .osu-cookie-btn:hover {
+      animation: pulseRing 1.6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Full-viewport High-DPI Game Canvas -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- In-Game Minimal Top-Left Controls (Visible only while playing/paused) -->
+  <div id="inGameTopControls" class="hidden fixed top-3 left-3 z-20 flex items-center gap-2">
+    <button id="btnOpenSettingsInGame" aria-label="Settings and Pause"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 hover:text-white text-xs font-medium tracking-wide transition active:scale-95">
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      <span>Pause / Skin</span>
+    </button>
+    <button id="btnRestartQuick" title="Quick Retry (`)"
+      class="px-2.5 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-800 border border-neutral-800 text-neutral-400 hover:text-white text-xs font-medium transition active:scale-95">
+      Retry
+    </button>
+    <button id="btnBackToSongSelect" title="Song Select"
+      class="px-2.5 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-800 border border-neutral-800 text-neutral-400 hover:text-white text-xs font-medium transition active:scale-95">
+      Songs
+    </button>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- OSU! SONG SELECT SCREEN (Minimalist Dark & Pastel Theme)                -->
+  <!-- ======================================================================= -->
+  <div id="songSelectScreen" class="fixed inset-0 z-20 flex flex-col justify-between bg-[#050505] text-white overflow-hidden select-none">
+    <!-- Subtle Geometric Background Accent -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden opacity-25">
+      <div class="absolute -left-24 top-1/4 w-96 h-96 rounded-full border border-neutral-800"></div>
+      <div class="absolute left-16 top-1/3 w-64 h-64 rounded-full border border-neutral-800/70"></div>
+      <div class="absolute right-1/4 -top-20 w-[34rem] h-[34rem] rounded-full border border-neutral-900"></div>
+    </div>
+
+    <!-- TOP BAR: Beatmap Metadata (Left) + Sort / Search Controls (Right) -->
+    <div class="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-2 px-3 sm:px-5 pt-2.5 pb-2 border-b border-neutral-900 bg-black/80 backdrop-blur-md">
+      <!-- Top-Left Selected Beatmap Metadata Header -->
+      <div class="flex items-start gap-3 min-w-0">
+        <div id="metaAccentBar" class="w-1.5 self-stretch rounded-full bg-[#F7B2BD] shrink-0"></div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 id="metaTitle" class="text-base sm:text-xl font-bold tracking-tight text-white truncate">
+              nekodex - circles! [tap stream]
+            </h1>
+            <span id="metaBadge" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-[#F7B2BD]/15 text-[#F7B2BD] border border-[#F7B2BD]/40">
+              NO LN • TAP HEAVY
+            </span>
+          </div>
+          <p id="metaMapper" class="text-[11px] text-neutral-400">
+            Mapped by <span class="text-neutral-200 font-medium">pishifat // 4K convert</span>
+          </p>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] font-mono text-neutral-300 mt-1">
+            <span>Length: <strong id="metaLength" class="text-white">01:15</strong></span>
+            <span>BPM: <strong id="metaBpm" class="text-[#F9C86B]">184</strong></span>
+            <span>Objects: <strong id="metaObjects" class="text-white">486</strong></span>
+            <span class="text-neutral-400">Taps: <strong id="metaTaps" class="text-[#EAEAEA]">484</strong> Hold: <strong id="metaHolds" class="text-neutral-400">2</strong></span>
+          </div>
+          <!-- Star Rating Row -->
+          <div class="flex items-center gap-1.5 mt-1">
+            <div id="metaStars" class="flex items-center gap-0.5 text-[#F9C86B] text-xs"></div>
+            <span id="metaStarNum" class="text-[10px] font-mono text-neutral-400 ml-1">4.79★ • OD8 • 4K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top-Right Group / Sort / Search Controls (Like Reference Image) -->
+      <div class="flex flex-col items-stretch md:items-end gap-1.5 shrink-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center gap-1.5 bg-neutral-900/90 border border-neutral-800 rounded-xl px-2.5 py-1">
+            <span class="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">Sort</span>
+            <select id="sortSelect" class="bg-transparent text-xs font-medium text-white outline-none cursor-pointer">
+              <option value="default" class="bg-neutral-950">By Difficulty</option>
+              <option value="bpm" class="bg-neutral-950">By BPM</option>
+              <option value="taps" class="bg-neutral-950">Tap Density</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-1 bg-neutral-900/90 border border-neutral-800 rounded-xl p-0.5 text-[11px]">
+            <button data-filter="all" class="filter-tab px-2.5 py-1 rounded-lg bg-white text-black font-semibold transition">All Maps</button>
+            <button data-filter="tap" class="filter-tab px-2.5 py-1 rounded-lg text-neutral-400 hover:text-white transition">Pure Taps</button>
+            <button data-filter="ln" class="filter-tab px-2.5 py-1 rounded-lg text-neutral-400 hover:text-white transition">LN Hybrid</button>
+          </div>
+        </div>
+
+        <!-- Search Input Pill -->
+        <div class="relative w-full md:w-64">
+          <input id="songSearchInput" type="text" placeholder="Search: Type to search!"
+            class="w-full pl-3 pr-7 py-1 rounded-xl bg-neutral-900/90 border border-neutral-800 focus:border-[#F7B2BD] text-xs text-white placeholder-neutral-500 outline-none transition" />
+          <svg class="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CENTER STAGE: Left Leaderboard Panel + Right Cascading Song Carousel -->
+    <div class="relative z-10 flex-1 grid grid-cols-1 md:grid-cols-12 gap-3 px-3 sm:px-5 py-2.5 min-h-0 overflow-hidden">
+      <!-- LEFT COLUMN: Ranking / Leaderboard & Personal Best (5 cols on desktop) -->
+      <div class="hidden md:flex md:col-span-5 lg:col-span-4 flex-col min-h-0">
+        <div class="flex items-center justify-between mb-1.5 px-1">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-neutral-200 tracking-wide">Local & Top Ranking</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-neutral-400">4K</span>
+          </div>
+          <span class="text-[10px] font-mono text-neutral-500">Top Scores</span>
+        </div>
+
+        <!-- Scrollable Score Cards List -->
+        <div id="leaderboardList" class="flex-1 overflow-y-auto no-scrollbar space-y-1.5 pr-1">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Personal Best Footer Card -->
+        <div class="mt-2 pt-2 border-t border-neutral-900">
+          <div class="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold mb-1 px-1">Personal Best</div>
+          <div id="personalBestBox" class="rounded-xl bg-neutral-900/70 border border-neutral-800/90 px-3 py-2 text-xs text-neutral-400">
+            No personal record set yet
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Curved / Cascading Song Cards (7 cols on desktop, full on mobile) -->
+      <div class="col-span-1 md:col-span-7 lg:col-span-8 flex flex-col justify-center min-h-0 relative">
+        <div id="songCarouselList" class="flex flex-col gap-2 overflow-y-auto no-scrollbar py-2 pl-2 sm:pl-8 pr-0">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM BAR: osu! Footer Controls + Player Card + Large Circular Start Button -->
+    <div class="relative z-10 flex items-center justify-between gap-2 px-3 sm:px-5 py-2 border-t border-neutral-900 bg-black/90 backdrop-blur-md">
+      <!-- Bottom-Left Action Buttons (Like Mode / Random / Beatmap Options in Reference Image) -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button id="btnRandomSong" class="flex flex-col items-center justify-center px-3 sm:px-4 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-white transition active:scale-95">
+          <span class="text-xs font-semibold">Random</span>
+          <span class="text-[9px] font-mono text-neutral-500">F2</span>
+        </button>
+
+        <button id="btnOpenCustomizeMenu" class="flex flex-col items-center justify-center px-3 sm:px-4 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-[#F7B2BD]/60 text-white transition active:scale-95">
+          <span class="text-xs font-semibold text-[#F7B2BD]">Skin & Keys</span>
+          <span class="text-[9px] font-mono text-neutral-500">F3</span>
+        </button>
+
+        <button id="btnQuickHitsoundCycle" class="hidden sm:flex flex-col items-center justify-center px-3.5 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-white transition active:scale-95">
+          <span class="text-xs font-semibold">SFX: <span id="footerHitsoundLabel" class="text-[#F9C86B]">Pop</span></span>
+          <span class="text-[9px] font-mono text-neutral-500">Click to test</span>
+        </button>
+      </div>
+
+      <!-- Bottom-Center Minimal Player Profile Card -->
+      <div class="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-2xl bg-neutral-900/75 border border-neutral-800/90">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#F7B2BD] to-[#F9C86B] flex items-center justify-center text-black font-black text-xs">
+          4K
+        </div>
+        <div class="text-left leading-tight">
+          <div class="text-xs font-bold text-white flex items-center gap-2">
+            <span>Player</span>
+            <span id="profileLevel" class="text-[10px] font-mono text-[#F9C86B]">Lv1</span>
+          </div>
+          <div class="text-[10px] font-mono text-neutral-400">
+            Total Score: <span id="profileTotalScore" class="text-neutral-200">0</span> • Plays: <span id="profilePlayCount" class="text-neutral-200">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom-Right Large Circular Play / osu! Button -->
+      <div class="flex items-center gap-3">
+        <span class="hidden lg:inline text-[11px] font-mono text-neutral-500">Press <strong class="text-neutral-300">ENTER</strong> to play</span>
+        <button id="btnLaunchSelected" aria-label="Play Selected Beatmap"
+          class="osu-cookie-btn relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#F7B2BD] via-[#F497A6] to-[#F9C86B] p-[3px] shadow-lg shadow-[#F7B2BD]/20 transition active:scale-95 cursor-pointer">
+          <div class="w-full h-full rounded-full bg-neutral-950/90 hover:bg-neutral-900/80 flex flex-col items-center justify-center transition">
+            <span class="text-xs sm:text-sm font-black tracking-tight text-white">PLAY</span>
+            <span class="text-[8px] font-mono uppercase tracking-widest text-[#F7B2BD]">osu!4k</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- PAUSE / SKIN & KEYBIND CUSTOMIZATION MODAL                              -->
+  <!-- ======================================================================= -->
+  <div id="overlayModal" class="hidden fixed inset-0 z-30 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-opacity duration-150">
+    <div class="w-full max-w-md bg-neutral-950 border border-neutral-800 rounded-2xl p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            <span>Skin, Audio & Keybinds</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-neutral-900 border border-neutral-800 text-[#F7B2BD]">4K</span>
+          </h2>
+          <p id="overlaySubtitle" class="text-xs text-neutral-400 mt-0.5">Customize your receptor keys, note colors & hitsound</p>
+        </div>
+        <button id="btnCloseModal" class="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-900 transition" title="Close (Esc)">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Keybinds Customization -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold">Keybinds (Click to Rebind)</label>
+          <span id="rebindHint" class="text-[11px] text-amber-300 hidden animate-pulse">Press any key...</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <button data-lane="0" class="keybind-btn h-11 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 font-mono text-sm font-bold text-white transition flex flex-col items-center justify-center">
+            <span class="key-label">D</span>
+            <span class="text-[9px] text-neutral-500 font-sans">Lane 1</span>
+          </button>
+          <button data-lane="1" class="keybind-btn h-11 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 font-mono text-sm font-bold text-white transition flex flex-col items-center justify-center">
+            <span class="key-label">F</span>
+            <span class="text-[9px] text-neutral-500 font-sans">Lane 2</span>
+          </button>
+          <button data-lane="2" class="keybind-btn h-11 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 font-mono text-sm font-bold text-white transition flex flex-col items-center justify-center">
+            <span class="key-label">J</span>
+            <span class="text-[9px] text-neutral-500 font-sans">Lane 3</span>
+          </button>
+          <button data-lane="3" class="keybind-btn h-11 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 font-mono text-sm font-bold text-white transition flex flex-col items-center justify-center">
+            <span class="key-label">K</span>
+            <span class="text-[9px] text-neutral-500 font-sans">Lane 4</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Note Colors Customization -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold">Note Colors</label>
+          <div class="flex items-center gap-1">
+            <button data-theme="reference" class="color-theme-btn px-2 py-0.5 rounded-md bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-[10px] text-neutral-300">Default</button>
+            <button data-theme="classic" class="color-theme-btn px-2 py-0.5 rounded-md bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-[10px] text-neutral-300">White/Blue</button>
+            <button data-theme="mono" class="color-theme-btn px-2 py-0.5 rounded-md bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-[10px] text-neutral-300">Mono</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <label class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-neutral-900/70 border border-neutral-800 cursor-pointer hover:border-neutral-700 transition">
+            <input type="color" id="colorLane0" value="#EAEAEA" class="w-8 h-8" />
+            <span class="text-[10px] font-mono text-neutral-400" id="hexLane0">#EAEAEA</span>
+          </label>
+          <label class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-neutral-900/70 border border-neutral-800 cursor-pointer hover:border-neutral-700 transition">
+            <input type="color" id="colorLane1" value="#F7B2BD" class="w-8 h-8" />
+            <span class="text-[10px] font-mono text-neutral-400" id="hexLane1">#F7B2BD</span>
+          </label>
+          <label class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-neutral-900/70 border border-neutral-800 cursor-pointer hover:border-neutral-700 transition">
+            <input type="color" id="colorLane2" value="#EAEAEA" class="w-8 h-8" />
+            <span class="text-[10px] font-mono text-neutral-400" id="hexLane2">#EAEAEA</span>
+          </label>
+          <label class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-neutral-900/70 border border-neutral-800 cursor-pointer hover:border-neutral-700 transition">
+            <input type="color" id="colorLane3" value="#F9C86B" class="w-8 h-8" />
+            <span class="text-[10px] font-mono text-neutral-400" id="hexLane3">#F9C86B</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Hitsound Type Selector -->
+      <div class="mb-4">
+        <label class="block text-[11px] uppercase tracking-wider text-neutral-400 font-semibold mb-1.5">Hitsound Style (Click to Preview)</label>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button data-sfx="pop" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
+            <div class="text-xs font-bold text-white">Pop</div>
+            <div class="text-[10px] text-neutral-400">Bubble Snap</div>
+          </button>
+          <button data-sfx="soft" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
+            <div class="text-xs font-bold text-white">Soft Click</div>
+            <div class="text-[10px] text-neutral-400">osu! Normal</div>
+          </button>
+          <button data-sfx="tick" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
+            <div class="text-xs font-bold text-white">Crisp Tick</div>
+            <div class="text-[10px] text-neutral-400">Metronome</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sliders: Scroll Speed, Audio Offset, Hitsound Volume -->
+      <div class="space-y-3 mb-5 bg-neutral-900/50 border border-neutral-800/80 rounded-xl p-3">
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-neutral-300">Scroll Speed</span>
+            <span id="valScrollSpeed" class="font-mono text-white">26</span>
+          </div>
+          <input type="range" id="sliderScrollSpeed" min="12" max="42" step="1" value="26" class="w-full" />
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-neutral-300">Audio Offset</span>
+            <span id="valAudioOffset" class="font-mono text-white">0 ms</span>
+          </div>
+          <input type="range" id="sliderAudioOffset" min="-100" max="100" step="1" value="0" class="w-full" />
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-neutral-300">Hitsound Volume</span>
+            <span id="valHitsoundVol" class="font-mono text-white">80%</span>
+          </div>
+          <input type="range" id="sliderHitsoundVol" min="0" max="100" step="1" value="80" class="w-full" />
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-xs text-neutral-300">Synth Backing Beat</span>
+          <button id="toggleMusic" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-neutral-800 text-white border border-neutral-700 transition">
+            ON
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="btnPlayResume" class="flex-1 py-2.5 px-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-sm tracking-wide transition active:scale-[0.99]">
+          Done
+        </button>
+        <button id="btnModalSongSelect" class="hidden py-2.5 px-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 text-xs font-semibold transition">
+          Song Select
+        </button>
+        <button id="btnResetDefaults" class="py-2.5 px-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 hover:text-white text-xs font-medium transition">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Summary Overlay (Shown when non-endless track finishes) -->
+  <div id="resultsModal" class="hidden fixed inset-0 z-30 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="w-full max-w-sm bg-neutral-950 border border-neutral-800 rounded-2xl p-6 text-center shadow-2xl">
+      <div id="resultBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase mb-2 bg-neutral-900 border border-neutral-700 text-white">
+        CLEARED
+      </div>
+      <div id="resultGrade" class="text-5xl font-black tracking-tight text-white mb-1">SS</div>
+      <div id="resultScore" class="text-xl font-mono text-neutral-200 mb-4">00000000</div>
+
+      <div class="grid grid-cols-2 gap-2 text-xs bg-neutral-900/70 border border-neutral-800 rounded-xl p-3 mb-4 font-mono">
+        <div class="flex justify-between px-1"><span class="text-cyan-300">MARVELOUS</span><span id="resMarv">0</span></div>
+        <div class="flex justify-between px-1"><span class="text-amber-300">PERFECT</span><span id="resPerf">0</span></div>
+        <div class="flex justify-between px-1"><span class="text-emerald-400">GREAT</span><span id="resGreat">0</span></div>
+        <div class="flex justify-between px-1"><span class="text-blue-400">GOOD</span><span id="resGood">0</span></div>
+        <div class="flex justify-between px-1"><span class="text-purple-400">BAD</span><span id="resBad">0</span></div>
+        <div class="flex justify-between px-1"><span class="text-rose-500">MISS</span><span id="resMiss">0</span></div>
+      </div>
+
+      <div class="flex justify-around text-xs text-neutral-400 mb-5 font-mono">
+        <div>Accuracy: <span id="resAcc" class="text-white font-bold">100.00%</span></div>
+        <div>Max Combo: <span id="resMaxCombo" class="text-white font-bold">0</span></div>
+      </div>
+
+      <div class="flex gap-2">
+        <button id="btnResultsSongSelect" class="flex-1 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-white font-semibold text-sm transition">
+          Song Select
+        </button>
+        <button id="btnPlayAgain" class="flex-1 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-sm transition">
+          Retry
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      // =========================================================================
+      // 1. CONFIGURATION, PERSISTENCE & BEATMAP CATALOG
+      // =========================================================================
+      const STORAGE_KEY = 'osumania_4k_minimal_cfg_v2';
+      const SCORES_KEY  = 'osumania_4k_scores_v2';
+
+      const DEFAULT_CONFIG = {
+        keybinds: ['KeyD', 'KeyF', 'KeyJ', 'KeyK'],
+        keyLabels: ['D', 'F', 'J', 'K'],
+        noteColors: ['#EAEAEA', '#F7B2BD', '#EAEAEA', '#F9C86B'],
+        scrollSpeed: 26,      // 12 to 42
+        audioOffset: 0,       // ms (-100 to +100)
+        hitsoundVolume: 0.85, // 0 to 1
+        hitsoundType: 'pop',  // 'pop' | 'soft' | 'tick'
+        musicEnabled: true,
+        selectedSongId: 'circles_tap'
+      };
+
+      const COLOR_THEMES = {
+        reference: ['#EAEAEA', '#F7B2BD', '#EAEAEA', '#F9C86B'],
+        classic:   ['#EAEAEA', '#67C8FF', '#67C8FF', '#EAEAEA'],
+        mono:      ['#EAEAEA', '#BDBDBD', '#BDBDBD', '#EAEAEA']
+      };
+
+      // Curated Song / Beatmap Library
+      const SONG_CATALOG = [
+        {
+          id: 'circles_tap',
+          title: 'circles!',
+          artist: 'nekodex',
+          diffName: 'tap stream!',
+          mapper: 'pishifat // 4K tap edit',
+          bpm: 184,
+          durationSec: 75,
+          stars: 4.79,
+          lnChance: 0.012, // Barely any hold notes (1-2 tiny accents max!)
+          jumpChance: 0.28,
+          burstChance: 0.45,
+          category: 'tap',
+          badge: '99% TAP • NO LN',
+          accent: '#F7B2BD',
+          chordRoots: [130.81, 98.00, 110.00, 87.31] // C3, G2, A2, F2
+        },
+        {
+          id: 'circles_insane',
+          title: 'circles!',
+          artist: 'nekodex',
+          diffName: 'insane! [pure taps]',
+          mapper: 'pishifat // zero-LN',
+          bpm: 196,
+          durationSec: 80,
+          stars: 5.42,
+          lnChance: 0.0, // Literally zero hold notes
+          jumpChance: 0.38,
+          burstChance: 0.55,
+          category: 'tap',
+          badge: '100% SINGLE TAPS',
+          accent: '#F9C86B',
+          chordRoots: [146.83, 110.00, 123.47, 98.00]
+        },
+        {
+          id: 'new_beginnings',
+          title: 'new beginnings',
+          artist: 'nekodex',
+          diffName: 'crisp rhythm',
+          mapper: 'JustALeaf',
+          bpm: 152,
+          durationSec: 65,
+          stars: 3.35,
+          lnChance: 0.03, // Almost pure taps, super clean
+          jumpChance: 0.16,
+          burstChance: 0.25,
+          category: 'tap',
+          badge: 'LOW LN • WARMUP',
+          accent: '#EAEAEA',
+          chordRoots: [110.00, 87.31, 98.00, 82.41]
+        },
+        {
+          id: 'chill_groove',
+          title: 'midnight monochrome',
+          artist: 'kurokotei',
+          diffName: 'chill groove',
+          mapper: 'osumania4k',
+          bpm: 132,
+          durationSec: 75,
+          stars: 3.85,
+          lnChance: 0.32,
+          jumpChance: 0.18,
+          burstChance: 0.15,
+          category: 'ln',
+          badge: 'LN HYBRID',
+          accent: '#F7B2BD',
+          chordRoots: [110.00, 87.31, 98.00, 82.41]
+        },
+        {
+          id: 'clean_stream',
+          title: 'velocity pulse',
+          artist: 'camellia',
+          diffName: 'clean stream',
+          mapper: 'osumania4k',
+          bpm: 175,
+          durationSec: 80,
+          stars: 4.95,
+          lnChance: 0.16,
+          jumpChance: 0.14,
+          burstChance: 0.48,
+          category: 'ln',
+          badge: '1/4 STREAM',
+          accent: '#F9C86B',
+          chordRoots: [98.00, 73.42, 82.41, 65.41]
+        },
+        {
+          id: 'endless_practice',
+          title: 'endless tap endurance',
+          artist: 'nekodex',
+          diffName: 'infinite stamina',
+          mapper: 'osumania4k',
+          bpm: 168,
+          durationSec: 9999,
+          stars: 4.60,
+          lnChance: 0.02,
+          jumpChance: 0.24,
+          burstChance: 0.38,
+          category: 'tap',
+          badge: 'ENDLESS • TAP FOCUS',
+          accent: '#EAEAEA',
+          endless: true,
+          chordRoots: [130.81, 98.00, 110.00, 87.31]
+        }
+      ];
+
+      // Simulated benchmark leaderboard entries per map (matching reference style)
+      const BENCHMARK_SCORES = [
+        { name: 'Ukase',       grade: 'SS', score: 994210, combo: 612, acc: 99.88, tag: '4K' },
+        { name: 'siina',       grade: 'S',  score: 968450, combo: 598, acc: 99.53, tag: '4K' },
+        { name: 'MightyDoc',   grade: 'S',  score: 941200, combo: 580, acc: 98.93, tag: '4K' },
+        { name: 'czumpi',      grade: 'S',  score: 929800, combo: 575, acc: 99.05, tag: '4K' },
+        { name: 'Zyphox',      grade: 'S',  score: 912340, combo: 560, acc: 99.17, tag: '4K' },
+        { name: 'angelkanna',  grade: 'A',  score: 884120, combo: 510, acc: 98.78, tag: '4K' }
+      ];
+
+      // Authentic osu!mania timing windows in milliseconds
+      const TIMING = {
+        MARVELOUS: 16.5,
+        PERFECT:   40.0,
+        GREAT:     73.0,
+        GOOD:      103.0,
+        BAD:       127.0,
+        MISS:      155.0
+      };
+
+      const JUDGEMENT_META = {
+        MARVELOUS: { label: 'MARVELOUS!', color: '#FFFFFF', weight: 305, scoreWeight: 320, hp: 0.008 },
+        PERFECT:   { label: 'PERFECT!',   color: '#FFE680', weight: 300, scoreWeight: 300, hp: 0.006 },
+        GREAT:     { label: 'GREAT!',     color: '#8CE99A', weight: 200, scoreWeight: 200, hp: 0.002 },
+        GOOD:      { label: 'GOOD',       color: '#74C0FC', weight: 100, scoreWeight: 100, hp: -0.01 },
+        BAD:       { label: 'BAD',        color: '#D0BFFF', weight: 50,  scoreWeight: 50,  hp: -0.03 },
+        MISS:      { label: 'MISS',       color: '#FF6B6B', weight: 0,   scoreWeight: 0,   hp: -0.065 }
+      };
+
+      let config = loadConfig();
+      let savedScores = loadSavedScores();
+
+      function loadConfig() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return structuredClone(DEFAULT_CONFIG);
+          const parsed = JSON.parse(raw);
+          return {
+            ...structuredClone(DEFAULT_CONFIG),
+            ...parsed,
+            keybinds: Array.isArray(parsed.keybinds) && parsed.keybinds.length === 4 ? parsed.keybinds : [...DEFAULT_CONFIG.keybinds],
+            keyLabels: Array.isArray(parsed.keyLabels) && parsed.keyLabels.length === 4 ? parsed.keyLabels : [...DEFAULT_CONFIG.keyLabels],
+            noteColors: Array.isArray(parsed.noteColors) && parsed.noteColors.length === 4 ? parsed.noteColors : [...DEFAULT_CONFIG.noteColors]
+          };
+        } catch (e) {
+          return structuredClone(DEFAULT_CONFIG);
+        }
+      }
+
+      function saveConfig() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+        } catch (e) {}
+      }
+
+      function loadSavedScores() {
+        try {
+          const raw = localStorage.getItem(SCORES_KEY);
+          if (!raw) return { bySong: {}, totalScore: 0, playCount: 0 };
+          return JSON.parse(raw);
+        } catch (e) {
+          return { bySong: {}, totalScore: 0, playCount: 0 };
+        }
+      }
+
+      function recordLocalScore(songId, scoreVal, accVal, maxComboVal, gradeStr) {
+        savedScores.totalScore = (savedScores.totalScore || 0) + Math.floor(scoreVal);
+        savedScores.playCount = (savedScores.playCount || 0) + 1;
+        if (!savedScores.bySong[songId]) savedScores.bySong[songId] = [];
+
+        savedScores.bySong[songId].push({
+          name: 'You (Local)',
+          grade: gradeStr,
+          score: Math.floor(scoreVal),
+          combo: maxComboVal,
+          acc: Number(accVal.toFixed(2)),
+          isPlayer: true
+        });
+        savedScores.bySong[songId].sort((a, b) => b.score - a.score);
+        savedScores.bySong[songId] = savedScores.bySong[songId].slice(0, 5);
+
+        try {
+          localStorage.setItem(SCORES_KEY, JSON.stringify(savedScores));
+        } catch (e) {}
+      }
+
+      function getSelectedSong() {
+        return SONG_CATALOG.find(s => s.id === config.selectedSongId) || SONG_CATALOG[0];
+      }
+
+      // =========================================================================
+      // 2. LOW-LATENCY WEB AUDIO ENGINE ("POP" HITSOUND + SYNTH BACKING TRACK)
+      // =========================================================================
+      class SoundEngine {
+        constructor() {
+          this.ctx = null;
+          this.masterGain = null;
+          this.buffers = {
+            pop: null,
+            soft: null,
+            tick: null
+          };
+          this.releaseBuffer = null;
+          this.nextBeatTime = 0;
+          this.beatIndex = 0;
+        }
+
+        init() {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx({ latencyHint: 'interactive' });
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = 1.0;
+            this.masterGain.connect(this.ctx.destination);
+            this._buildHitsoundBuffers();
+          }
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+        }
+
+        _buildHitsoundBuffers() {
+          const sr = this.ctx.sampleRate;
+
+          // 1. "POP" Hitsound (Default): Crisp bubble/cork pop with fast downward pitch drop + snappy transient
+          {
+            const len = Math.floor(sr * 0.048);
+            const buf = this.ctx.createBuffer(1, len, sr);
+            const data = buf.getChannelData(0);
+            let phase = 0;
+            for (let i = 0; i < len; i++) {
+              const t = i / sr;
+              // Bubble pop frequency trajectory: quick upward blip (360->640Hz in 4ms) then rapid drop to 135Hz
+              const freq = t < 0.004
+                ? 360 + (t / 0.004) * 280
+                : 135 + 505 * Math.exp(-(t - 0.004) * 145);
+              phase += (2 * Math.PI * freq) / sr;
+              const popBody = Math.sin(phase) * Math.exp(-t * 95);
+              // Subtle 2nd harmonic warmth
+              const harm = Math.sin(phase * 2.0) * Math.exp(-t * 170) * 0.22;
+              // Ultra-short crisp finger-tap transient (first 3.5ms)
+              const click = (Math.random() * 2 - 1) * Math.exp(-t * 650) * 0.45;
+              data[i] = Math.tanh((popBody * 1.15 + harm + click) * 1.35);
+            }
+            this.buffers.pop = buf;
+          }
+
+          // 2. "SOFT" Hitsound: Classic osu! soft-hitnormal
+          {
+            const len = Math.floor(sr * 0.065);
+            const buf = this.ctx.createBuffer(1, len, sr);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < len; i++) {
+              const t = i / sr;
+              const freq = 135 + 345 * Math.exp(-t * 95);
+              const body = Math.sin(2 * Math.PI * freq * t) * Math.exp(-t * 68);
+              const noise = (Math.random() * 2 - 1) * Math.exp(-t * 380) * 0.65;
+              const tick = Math.sin(2 * Math.PI * 2450 * t) * Math.exp(-t * 260) * 0.25;
+              data[i] = Math.tanh((body * 0.85 + noise + tick) * 1.4);
+            }
+            this.buffers.soft = buf;
+          }
+
+          // 3. "TICK" Hitsound: Ultra-tight high-precision osu!mania metronome tick
+          {
+            const len = Math.floor(sr * 0.032);
+            const buf = this.ctx.createBuffer(1, len, sr);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < len; i++) {
+              const t = i / sr;
+              const body = Math.sin(2 * Math.PI * 1680 * t) * Math.exp(-t * 190);
+              const sub = Math.sin(2 * Math.PI * 420 * t) * Math.exp(-t * 140) * 0.6;
+              const snap = (Math.random() * 2 - 1) * Math.exp(-t * 720) * 0.5;
+              data[i] = Math.tanh((body * 0.7 + sub + snap) * 1.4);
+            }
+            this.buffers.tick = buf;
+          }
+
+          // 4. Subtle LN tail release pop
+          {
+            const rLen = Math.floor(sr * 0.032);
+            const rBuf = this.ctx.createBuffer(1, rLen, sr);
+            const rData = rBuf.getChannelData(0);
+            for (let i = 0; i < rLen; i++) {
+              const t = i / sr;
+              const f = 220 + 420 * Math.exp(-t * 180);
+              const s = Math.sin(2 * Math.PI * f * t) * Math.exp(-t * 140) * 0.5;
+              rData[i] = s;
+            }
+            this.releaseBuffer = rBuf;
+          }
+        }
+
+        playHit() {
+          if (config.hitsoundVolume <= 0.001) return;
+          this.init();
+          const chosenBuf = this.buffers[config.hitsoundType] || this.buffers.pop;
+          const src = this.ctx.createBufferSource();
+          src.buffer = chosenBuf;
+          const gain = this.ctx.createGain();
+          gain.gain.value = config.hitsoundVolume * 0.85;
+          src.connect(gain);
+          gain.connect(this.masterGain);
+          src.start(0);
+        }
+
+        playRelease() {
+          if (config.hitsoundVolume <= 0.001) return;
+          this.init();
+          const src = this.ctx.createBufferSource();
+          src.buffer = this.releaseBuffer;
+          const gain = this.ctx.createGain();
+          gain.gain.value = config.hitsoundVolume * 0.45;
+          src.connect(gain);
+          gain.connect(this.masterGain);
+          src.start(0);
+        }
+
+        // Schedule energetic backing beat tailored to the selected song's BPM & chord progression
+        scheduleMusic(songTimeMs, song, isPlaying) {
+          if (!isPlaying || !config.musicEnabled || !this.ctx || this.ctx.state !== 'running') return;
+
+          const beatSec = 60 / song.bpm;
+          const now = this.ctx.currentTime;
+
+          if (this.nextBeatTime < now - 0.1) {
+            this.nextBeatTime = now + 0.02;
+          }
+
+          while (this.nextBeatTime < now + 0.15) {
+            const step = this.beatIndex % 16;
+            const t = this.nextBeatTime;
+
+            // Four-on-the-floor kick on 0, 4, 8, 12
+            if (step % 4 === 0) {
+              this._triggerKick(t);
+            }
+            // Crisp offbeat hi-hat on 2, 6, 10, 14
+            if (step % 4 === 2) {
+              this._triggerHat(t, 0.055);
+            } else if (step % 2 === 1) {
+              this._triggerHat(t, 0.02);
+            }
+            // Melodic synth arpeggio / chord bass matching song roots
+            if (step === 0 || step === 3 || step === 6 || step === 8 || step === 11 || step === 14) {
+              const bar = Math.floor(this.beatIndex / 16) % 4;
+              const roots = song.chordRoots || [130.81, 98.00, 110.00, 87.31];
+              const mult = (step === 3 || step === 11) ? 2.0 : (step === 6 || step === 14 ? 1.5 : 1.0);
+              this._triggerPluck(t, roots[bar] * mult);
+            }
+
+            this.nextBeatTime += beatSec / 4;
+            this.beatIndex++;
+          }
+        }
+
+        _triggerKick(time) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(132, time);
+          osc.frequency.exponentialRampToValueAtTime(44, time + 0.085);
+          gain.gain.setValueAtTime(0.15, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + 0.13);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(time);
+          osc.stop(time + 0.14);
+        }
+
+        _triggerHat(time, vol) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(7200, time);
+          gain.gain.setValueAtTime(vol, time);
+          gain.gain.exponentialRampToValueAtTime(0.0008, time + 0.028);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(time);
+          osc.stop(time + 0.032);
+        }
+
+        _triggerPluck(time, freq) {
+          const osc = this.ctx.createOscillator();
+          const filter = this.ctx.createBiquadFilter();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, time);
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(720, time);
+          filter.frequency.exponentialRampToValueAtTime(190, time + 0.16);
+          gain.gain.setValueAtTime(0.075, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(time);
+          osc.stop(time + 0.19);
+        }
+      }
+
+      const sound = new SoundEngine();
+
+      // =========================================================================
+      // 3. BEATMAP GENERATOR (DETERMINISTIC PER SONG + TAP-HEAVY SUPPORT)
+      // =========================================================================
+      // Seeded PRNG so every song keeps consistent object counts & patterns
+      function mulberry32(seed) {
+        return function () {
+          let t = (seed += 0x6D2B79F5);
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function hashString(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      class BeatmapEngine {
+        constructor() {
+          this.notes = [];
+          this.song = SONG_CATALOG[0];
+          this.bpm = 184;
+          this.endless = false;
+          this.generatedUntilMs = 0;
+          this.laneBusyUntil = [0, 0, 0, 0];
+          this.lastSingleLane = -1;
+          this.totalDurationMs = 75000;
+          this.rng = mulberry32(12345);
+        }
+
+        reset(songObj) {
+          this.song = songObj || getSelectedSong();
+          this.bpm = this.song.bpm;
+          this.endless = Boolean(this.song.endless);
+          this.notes = [];
+          this.laneBusyUntil = [0, 0, 0, 0];
+          this.lastSingleLane = -1;
+          this.generatedUntilMs = 1800; // 1.8s lead-in
+          this.totalDurationMs = this.song.durationSec * 1000;
+          this.rng = mulberry32(hashString(this.song.id));
+
+          const initialHorizon = this.endless ? 25000 : this.totalDurationMs;
+          this.generateUpTo(initialHorizon);
+        }
+
+        generateUpTo(targetMs) {
+          const beatMs = 60000 / this.bpm;
+          const stepMs = beatMs / 2; // 8th-note base grid
+          const song = this.song;
+
+          while (this.generatedUntilMs < targetMs) {
+            const t = this.generatedUntilMs;
+            const freeLanes = [];
+            for (let l = 0; l < 4; l++) {
+              if (t >= this.laneBusyUntil[l] + stepMs * 0.72) {
+                freeLanes.push(l);
+              }
+            }
+
+            if (freeLanes.length > 0) {
+              const isJump = freeLanes.length >= 2 && this.rng() < song.jumpChance;
+              const count = isJump ? 2 : 1;
+
+              const chosen = [];
+              let candidates = [...freeLanes];
+              if (count === 1 && candidates.length > 1) {
+                candidates = candidates.filter(l => l !== this.lastSingleLane);
+              }
+
+              for (let c = 0; c < count && candidates.length > 0; c++) {
+                const idx = Math.floor(this.rng() * candidates.length);
+                const lane = candidates.splice(idx, 1)[0];
+                chosen.push(lane);
+                this.lastSingleLane = lane;
+              }
+
+              for (const lane of chosen) {
+                // Only place hold notes according to song.lnChance (0.012 for circles! = barely any LNs)
+                const makeLN = !isJump && this.rng() < song.lnChance;
+                if (makeLN) {
+                  const holdBeats = [1, 1.5, 2][Math.floor(this.rng() * 3)];
+                  const endTime = t + holdBeats * beatMs;
+                  if (this.endless || endTime <= this.totalDurationMs + 400) {
+                    this.notes.push({
+                      lane,
+                      time: t,
+                      endTime,
+                      isLN: true,
+                      hit: false,
+                      holding: false,
+                      released: false,
+                      dropped: false,
+                      missed: false
+                    });
+                    this.laneBusyUntil[lane] = endTime + stepMs * 0.5;
+                  }
+                } else {
+                  this.notes.push({
+                    lane,
+                    time: t,
+                    endTime: t,
+                    isLN: false,
+                    hit: false,
+                    holding: false,
+                    released: false,
+                    dropped: false,
+                    missed: false
+                  });
+                  this.laneBusyUntil[lane] = t + stepMs * 0.38;
+                }
+              }
+            }
+
+            // Advance by 8th note or crisp 16th-note stream burst
+            const fastBurst = this.rng() < song.burstChance;
+            this.generatedUntilMs += fastBurst ? stepMs * 0.5 : stepMs;
+          }
+        }
+      }
+
+      const beatmap = new BeatmapEngine();
+
+      // =========================================================================
+      // 4. GAMEPLAY STATE & HIGH-PRECISION TIMING
+      // =========================================================================
+      const state = {
+        status: 'SONG_SELECT', // 'SONG_SELECT' | 'PLAYING' | 'PAUSED' | 'RESULTS'
+        startPerfTime: 0,
+        pausePerfTime: 0,
+        songTimeMs: 0,
+        lanePressed: [false, false, false, false],
+        activeHoldNotes: [null, null, null, null],
+
+        score: 0,
+        combo: 0,
+        maxCombo: 0,
+        health: 1.0,
+        counts: {
+          MARVELOUS: 0,
+          PERFECT: 0,
+          GREAT: 0,
+          GOOD: 0,
+          BAD: 0,
+          MISS: 0
+        },
+        totalWeightEarned: 0,
+        totalWeightMax: 0,
+
+        judgement: null,
+        hitErrors: [],
+        lastFrameTime: performance.now(),
+        frameDeltaMs: 0.91
+      };
+
+      function getAccuracy() {
+        if (state.totalWeightMax === 0) return 100.0;
+        return (state.totalWeightEarned / state.totalWeightMax) * 100;
+      }
+
+      function getGrade(acc) {
+        if (acc === 100) return 'SS';
+        if (acc >= 95) return 'S';
+        if (acc >= 90) return 'A';
+        if (acc >= 80) return 'B';
+        if (acc >= 70) return 'C';
+        return 'D';
+      }
+
+      function enterSongSelect() {
+        state.status = 'SONG_SELECT';
+        state.lanePressed = [false, false, false, false];
+        state.activeHoldNotes = [null, null, null, null];
+        document.getElementById('songSelectScreen').classList.remove('hidden');
+        document.getElementById('inGameTopControls').classList.add('hidden');
+        document.getElementById('overlayModal').classList.add('hidden');
+        document.getElementById('resultsModal').classList.add('hidden');
+        renderSongSelectUI();
+      }
+
+      function startSelectedSong() {
+        const song = getSelectedSong();
+        beatmap.reset(song);
+
+        state.songTimeMs = 0;
+        state.lanePressed = [false, false, false, false];
+        state.activeHoldNotes = [null, null, null, null];
+        state.score = 0;
+        state.combo = 0;
+        state.maxCombo = 0;
+        state.health = 1.0;
+        state.counts = { MARVELOUS: 0, PERFECT: 0, GREAT: 0, GOOD: 0, BAD: 0, MISS: 0 };
+        state.totalWeightEarned = 0;
+        state.totalWeightMax = 0;
+        state.judgement = null;
+        state.hitErrors = [];
+        sound.nextBeatTime = 0;
+        sound.beatIndex = 0;
+
+        sound.init();
+        sound.playHit();
+        state.startPerfTime = performance.now();
+        state.status = 'PLAYING';
+
+        document.getElementById('songSelectScreen').classList.add('hidden');
+        document.getElementById('overlayModal').classList.add('hidden');
+        document.getElementById('resultsModal').classList.add('hidden');
+        document.getElementById('inGameTopControls').classList.remove('hidden');
+      }
+
+      function pauseGame() {
+        if (state.status !== 'PLAYING') return;
+        state.status = 'PAUSED';
+        state.pausePerfTime = performance.now();
+        openSettingsModal(true);
+      }
+
+      function resumeGame() {
+        if (state.status !== 'PAUSED') return;
+        sound.init();
+        const pausedDuration = performance.now() - state.pausePerfTime;
+        state.startPerfTime += pausedDuration;
+        sound.nextBeatTime = 0;
+        state.status = 'PLAYING';
+        document.getElementById('overlayModal').classList.add('hidden');
+      }
+
+      function showResults() {
+        state.status = 'RESULTS';
+        document.getElementById('inGameTopControls').classList.add('hidden');
+        const acc = getAccuracy();
+        const grade = getGrade(acc);
+        const finalScore = Math.floor(state.score);
+
+        // Save score to local leaderboard & player profile
+        recordLocalScore(getSelectedSong().id, finalScore, acc, state.maxCombo, grade);
+
+        document.getElementById('resultBadge').textContent = `${getSelectedSong().title} [${getSelectedSong().diffName}]`;
+        document.getElementById('resultGrade').textContent = grade;
+        document.getElementById('resultScore').textContent = String(finalScore).padStart(8, '0');
+        document.getElementById('resMarv').textContent = state.counts.MARVELOUS;
+        document.getElementById('resPerf').textContent = state.counts.PERFECT;
+        document.getElementById('resGreat').textContent = state.counts.GREAT;
+        document.getElementById('resGood').textContent = state.counts.GOOD;
+        document.getElementById('resBad').textContent = state.counts.BAD;
+        document.getElementById('resMiss').textContent = state.counts.MISS;
+        document.getElementById('resAcc').textContent = acc.toFixed(2) + '%';
+        document.getElementById('resMaxCombo').textContent = state.maxCombo;
+
+        document.getElementById('resultsModal').classList.remove('hidden');
+      }
+
+      // =========================================================================
+      // 5. HIT DETECTION & JUDGEMENT ENGINE
+      // =========================================================================
+      function classifyTiming(absDiffMs) {
+        if (absDiffMs <= TIMING.MARVELOUS) return 'MARVELOUS';
+        if (absDiffMs <= TIMING.PERFECT)   return 'PERFECT';
+        if (absDiffMs <= TIMING.GREAT)     return 'GREAT';
+        if (absDiffMs <= TIMING.GOOD)      return 'GOOD';
+        if (absDiffMs <= TIMING.BAD)       return 'BAD';
+        return 'MISS';
+      }
+
+      function registerJudgement(type, errorMs = null) {
+        const meta = JUDGEMENT_META[type];
+        state.counts[type]++;
+        state.totalWeightEarned += meta.weight;
+        state.totalWeightMax += 305;
+
+        if (type === 'MISS' || type === 'BAD') {
+          state.combo = 0;
+        } else {
+          state.combo++;
+          if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+        }
+
+        const comboBonus = 1 + Math.min(state.combo, 500) * 0.0025;
+        state.score += meta.scoreWeight * comboBonus * 3.2;
+        state.health = Math.max(0, Math.min(1, state.health + meta.hp));
+
+        state.judgement = {
+          type,
+          label: meta.label,
+          color: meta.color,
+          spawnTime: performance.now()
+        };
+
+        if (errorMs !== null && Math.abs(errorMs) <= TIMING.MISS) {
+          state.hitErrors.push({
+            errorMs,
+            spawnTime: performance.now()
+          });
+          if (state.hitErrors.length > 32) {
+            state.hitErrors.shift();
+          }
+        }
+      }
+
+      function handleLaneDown(lane) {
+        if (state.lanePressed[lane]) return;
+        state.lanePressed[lane] = true;
+
+        // Instantaneous "Pop" hitsound
+        sound.playHit();
+
+        if (state.status !== 'PLAYING') return;
+
+        const effectiveTime = state.songTimeMs - config.audioOffset;
+
+        let candidate = null;
+        for (let i = 0; i < beatmap.notes.length; i++) {
+          const n = beatmap.notes[i];
+          if (n.lane !== lane || n.hit || n.missed) continue;
+          const diff = effectiveTime - n.time;
+          if (diff < -TIMING.MISS) break;
+          if (Math.abs(diff) <= TIMING.MISS) {
+            candidate = n;
+            break;
+          }
+        }
+
+        if (!candidate) return;
+
+        const errorMs = effectiveTime - candidate.time;
+        const absDiff = Math.abs(errorMs);
+        const judgeType = classifyTiming(absDiff);
+
+        candidate.hit = true;
+        registerJudgement(judgeType, errorMs);
+
+        if (candidate.isLN) {
+          if (judgeType === 'MISS') {
+            candidate.dropped = true;
+          } else {
+            candidate.holding = true;
+            state.activeHoldNotes[lane] = candidate;
+          }
+        }
+      }
+
+      function handleLaneUp(lane) {
+        if (!state.lanePressed[lane]) return;
+        state.lanePressed[lane] = false;
+
+        if (state.status !== 'PLAYING') return;
+
+        const holdNote = state.activeHoldNotes[lane];
+        if (!holdNote) return;
+
+        state.activeHoldNotes[lane] = null;
+        holdNote.holding = false;
+
+        if (holdNote.released || holdNote.dropped) return;
+
+        const effectiveTime = state.songTimeMs - config.audioOffset;
+        const releaseError = effectiveTime - holdNote.endTime;
+        const absReleaseDiff = Math.abs(releaseError);
+
+        if (absReleaseDiff <= TIMING.MISS * 1.35) {
+          holdNote.released = true;
+          sound.playRelease();
+          const relJudge = classifyTiming(absReleaseDiff / 1.35);
+          registerJudgement(relJudge, releaseError);
+        } else {
+          holdNote.dropped = true;
+          registerJudgement('MISS', null);
+        }
+      }
+
+      // =========================================================================
+      // 6. HIGH-DPI RESPONSIVE CANVAS RENDERER (EXACT REFERENCE SKIN)
+      // =========================================================================
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d', { alpha: false });
+
+      let viewW = window.innerWidth;
+      let viewH = window.innerHeight;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function resizeCanvas() {
+        viewW = window.innerWidth;
+        viewH = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(viewW * dpr);
+        canvas.height = Math.floor(viewH * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function getLayout() {
+        const maxStageW = Math.min(viewW * 0.90, Math.max(270, viewH * 0.43));
+        const stageW = Math.floor(maxStageW);
+        const stageLeft = Math.floor((viewW - stageW) / 2);
+        const stageRight = stageLeft + stageW;
+        const laneW = stageW / 4;
+        const noteRadius = laneW * 0.43;
+        const hitLineY = Math.floor(viewH - Math.max(68, noteRadius * 1.65));
+        const pxPerMs = (viewH / 760) * (config.scrollSpeed * 0.052);
+
+        return {
+          stageW,
+          stageLeft,
+          stageRight,
+          laneW,
+          noteRadius,
+          hitLineY,
+          pxPerMs
+        };
+      }
+
+      function render(now) {
+        const rawDelta = now - state.lastFrameTime;
+        state.lastFrameTime = now;
+        state.frameDeltaMs = state.frameDeltaMs * 0.85 + Math.min(rawDelta, 50) * 0.15;
+
+        if (state.status === 'PLAYING') {
+          state.songTimeMs = now - state.startPerfTime;
+
+          if (beatmap.endless && state.songTimeMs + 15000 > beatmap.generatedUntilMs) {
+            beatmap.generateUpTo(state.songTimeMs + 25000);
+          }
+
+          sound.scheduleMusic(state.songTimeMs, beatmap.song, true);
+
+          const effectiveTime = state.songTimeMs - config.audioOffset;
+
+          for (let i = 0; i < beatmap.notes.length; i++) {
+            const n = beatmap.notes[i];
+            if (!n.hit && !n.missed && effectiveTime - n.time > TIMING.MISS) {
+              n.missed = true;
+              registerJudgement('MISS', null);
+            }
+            if (n.isLN && n.holding && !n.released && !n.dropped && effectiveTime - n.endTime > TIMING.MISS * 1.35) {
+              n.holding = false;
+              n.released = true;
+              state.activeHoldNotes[n.lane] = null;
+              registerJudgement('GOOD', TIMING.MISS);
+            }
+          }
+
+          if (!beatmap.endless && state.songTimeMs > beatmap.totalDurationMs + 1500) {
+            showResults();
+          }
+        }
+
+        // Only draw full gameplay canvas when in PLAYING or PAUSED state
+        if (state.status === 'PLAYING' || state.status === 'PAUSED') {
+          const L = getLayout();
+
+          // 1. Pure Solid Black Background (#000000)
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(0, 0, viewW, viewH);
+
+          // 2. Vertical Playfield Borders & Right-Side Health Bar
+          ctx.strokeStyle = '#4A4A4A';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(L.stageLeft, 0);
+          ctx.lineTo(L.stageLeft, viewH);
+          ctx.moveTo(L.stageRight, 0);
+          ctx.lineTo(L.stageRight, viewH);
+          ctx.stroke();
+
+          const hpBarX = L.stageRight + 8;
+          const hpMaxH = viewH * 0.44;
+          const hpBottomY = viewH - 28;
+          const hpCurrentH = hpMaxH * state.health;
+          ctx.fillStyle = '#EAEAEA';
+          ctx.fillRect(hpBarX, hpBottomY - hpCurrentH, 2.5, hpCurrentH);
+
+          // 3. Horizontal Judgement Line
+          ctx.strokeStyle = 'rgba(180, 180, 180, 0.45)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(L.stageLeft, L.hitLineY);
+          ctx.lineTo(L.stageRight, L.hitLineY);
+          ctx.stroke();
+
+          // 4. Bottom Circular Hit Receptors
+          for (let lane = 0; lane < 4; lane++) {
+            const cx = L.stageLeft + L.laneW * (lane + 0.5);
+            const cy = L.hitLineY;
+            const pressed = state.lanePressed[lane];
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, L.noteRadius, 0, Math.PI * 2);
+
+            if (pressed) {
+              ctx.fillStyle = '#EAEAEA';
+              ctx.fill();
+              ctx.lineWidth = 2.5;
+              ctx.strokeStyle = '#FFFFFF';
+              ctx.stroke();
+            } else {
+              ctx.lineWidth = 2.2;
+              ctx.strokeStyle = '#6A6A6A';
+              ctx.stroke();
+            }
+          }
+
+          // 5. Render Falling Notes & Rare LNs
+          const effectiveTime = state.songTimeMs - config.audioOffset;
+
+          for (let i = 0; i < beatmap.notes.length; i++) {
+            const n = beatmap.notes[i];
+            if (!n.isLN && n.hit) continue;
+            if (n.isLN && n.released) continue;
+
+            const headTime = n.holding ? Math.max(n.time, effectiveTime) : n.time;
+            const headY = L.hitLineY - (headTime - effectiveTime) * L.pxPerMs;
+            const tailY = L.hitLineY - (n.endTime - effectiveTime) * L.pxPerMs;
+
+            if (tailY > viewH + L.noteRadius * 2) continue;
+            if (headY < -L.noteRadius * 2) break;
+
+            const cx = L.stageLeft + L.laneW * (n.lane + 0.5);
+            const color = n.dropped ? '#555555' : config.noteColors[n.lane];
+
+            if (n.isLN) {
+              const topY = Math.min(headY, tailY);
+              const botY = Math.max(headY, tailY);
+              const pillHeight = botY - topY;
+
+              if (pillHeight > 0.5) {
+                ctx.fillStyle = n.dropped ? 'rgba(65, 65, 65, 0.5)' : 'rgba(115, 115, 115, 0.72)';
+                ctx.beginPath();
+                ctx.roundRect(
+                  cx - L.noteRadius,
+                  topY - L.noteRadius,
+                  L.noteRadius * 2,
+                  pillHeight + L.noteRadius * 2,
+                  L.noteRadius
+                );
+                ctx.fill();
+              }
+
+              const drawHeadY = n.holding ? L.hitLineY : headY;
+              ctx.fillStyle = color;
+              ctx.beginPath();
+              ctx.arc(cx, drawHeadY, L.noteRadius, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
+              ctx.fillStyle = color;
+              ctx.beginPath();
+              ctx.arc(cx, headY, L.noteRadius, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          // 6. Center-Stage Combo & Judgement Text
+          const centerX = L.stageLeft + L.stageW * 0.5;
+          const comboY = viewH * 0.24;
+
+          if (state.combo > 0) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = `400 ${Math.round(L.laneW * 0.54)}px "JetBrains Mono", monospace`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(state.combo), centerX, comboY);
+          }
+
+          if (state.judgement) {
+            const age = now - state.judgement.spawnTime;
+            if (age < 480) {
+              const popScale = age < 60 ? 1.12 - (age / 60) * 0.12 : 1.0;
+              const alpha = age > 320 ? Math.max(0, 1 - (age - 320) / 160) : 1.0;
+
+              ctx.save();
+              ctx.translate(centerX, comboY + L.laneW * 0.44);
+              ctx.scale(popScale, popScale);
+              ctx.globalAlpha = alpha;
+              ctx.font = `900 ${Math.round(L.laneW * 0.30)}px "Inter", sans-serif`;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+
+              ctx.lineWidth = 4;
+              ctx.strokeStyle = 'rgba(0, 0, 0, 0.85)';
+              ctx.strokeText(state.judgement.label, 0, 0);
+
+              ctx.fillStyle = state.judgement.color;
+              ctx.fillText(state.judgement.label, 0, 0);
+              ctx.restore();
+            }
+          }
+
+          // 7. Hit Error Bar
+          const errBarY = Math.min(viewH - 12, L.hitLineY + L.noteRadius + 16);
+          const errHalfW = L.stageW * 0.34;
+          const barH = 3;
+
+          const goodRatio = TIMING.GOOD / TIMING.MISS;
+          const greatRatio = TIMING.GREAT / TIMING.MISS;
+          const marvRatio = TIMING.MARVELOUS / TIMING.MISS;
+
+          ctx.fillStyle = '#D9822B';
+          ctx.fillRect(centerX - errHalfW * goodRatio, errBarY - barH / 2, errHalfW * goodRatio * 2, barH);
+          ctx.fillStyle = '#52B788';
+          ctx.fillRect(centerX - errHalfW * greatRatio, errBarY - barH / 2, errHalfW * greatRatio * 2, barH);
+          ctx.fillStyle = '#38BDF8';
+          ctx.fillRect(centerX - errHalfW * marvRatio, errBarY - barH / 2, errHalfW * marvRatio * 2, barH);
+
+          for (let i = state.hitErrors.length - 1; i >= 0; i--) {
+            const item = state.hitErrors[i];
+            const age = now - item.spawnTime;
+            if (age > 1600) {
+              state.hitErrors.splice(i, 1);
+              continue;
+            }
+            const alpha = Math.max(0, 1 - age / 1600);
+            const norm = Math.max(-1, Math.min(1, item.errorMs / TIMING.GOOD));
+            const tx = centerX + norm * (errHalfW * goodRatio);
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.75})`;
+            ctx.fillRect(tx - 1, errBarY - 5, 2, 10);
+          }
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(centerX - 1, errBarY - 6, 2, 12);
+
+          // 8. Top-Right Score & Accuracy Pie
+          const padRight = Math.max(14, viewW * 0.016);
+          const topY = Math.max(12, viewH * 0.018);
+          const scoreFontSize = Math.max(18, Math.min(28, viewW * 0.022));
+
+          ctx.fillStyle = '#EAEAEA';
+          ctx.font = `400 ${Math.round(scoreFontSize)}px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'top';
+          const formattedScore = String(Math.min(99999999, Math.floor(state.score))).padStart(8, '0');
+          ctx.fillText(formattedScore, viewW - padRight, topY);
+
+          const acc = getAccuracy();
+          const accText = acc.toFixed(2).replace('.', ',') + '%';
+          const accFontSize = Math.max(12, Math.round(scoreFontSize * 0.54));
+          const accY = topY + scoreFontSize + 5;
+
+          ctx.font = `400 ${accFontSize}px "JetBrains Mono", monospace`;
+          ctx.fillStyle = '#D4D4D4';
+          ctx.fillText(accText, viewW - padRight, accY);
+
+          const accTextW = ctx.measureText(accText).width;
+          const pieR = accFontSize * 0.62;
+          const pieX = viewW - padRight - accTextW - pieR - 8;
+          const pieY = accY + accFontSize * 0.52;
+
+          ctx.beginPath();
+          ctx.arc(pieX, pieY, pieR, 0, Math.PI * 2);
+          ctx.strokeStyle = '#EAEAEA';
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(pieX, pieY);
+          ctx.arc(pieX, pieY, pieR - 1.5, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2) * (acc / 100));
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(234, 234, 234, 0.7)';
+          ctx.fill();
+
+          // 9. Bottom-Right Green Frametime Badge
+          const badgeText = state.frameDeltaMs.toFixed(2).replace('.', ',') + 'ms';
+          ctx.font = '500 10px "JetBrains Mono", monospace';
+          const bTextW = ctx.measureText(badgeText).width;
+          const bW = bTextW + 10;
+          const bH = 16;
+          const bX = viewW - bW - 8;
+          const bY = viewH - bH - 6;
+
+          ctx.fillStyle = '#94D82D';
+          ctx.beginPath();
+          ctx.roundRect(bX, bY, bW, bH, 4);
+          ctx.fill();
+
+          ctx.fillStyle = '#111111';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(badgeText, bX + bW / 2, bY + bH / 2 + 0.5);
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      // =========================================================================
+      // 7. OSU! SONG SELECT UI RENDERING & INTERACTIONS
+      // =========================================================================
+      let currentFilter = 'all';
+      let currentSort = 'default';
+      let searchQuery = '';
+
+      function getSongObjectCounts(song) {
+        // Compute exact tap & hold counts deterministically for metadata display
+        const temp = new BeatmapEngine();
+        temp.reset(song);
+        let taps = 0;
+        let holds = 0;
+        for (const n of temp.notes) {
+          if (n.isLN) holds++;
+          else taps++;
+        }
+        return { total: temp.notes.length, taps, holds };
+      }
+
+      function renderStarsHTML(starVal, maxStars = 8) {
+        const full = Math.round(starVal);
+        let html = '';
+        for (let i = 0; i < maxStars; i++) {
+          if (i < full) {
+            html += `<span>★</span>`;
+          } else {
+            html += `<span class="opacity-25">★</span>`;
+          }
+        }
+        return html;
+      }
+
+      function renderSongSelectUI() {
+        const selected = getSelectedSong();
+        const counts = getSongObjectCounts(selected);
+
+        // 1. Update Top-Left Metadata Header
+        document.getElementById('metaAccentBar').style.backgroundColor = selected.accent;
+        document.getElementById('metaTitle').textContent = `${selected.artist} - ${selected.title} [${selected.diffName}]`;
+        document.getElementById('metaBadge').textContent = selected.badge;
+        document.getElementById('metaMapper').innerHTML = `Mapped by <span class="text-neutral-200 font-medium">${selected.mapper}</span>`;
+        const mins = Math.floor(selected.durationSec / 60);
+        const secs = String(selected.durationSec % 60).padStart(2, '0');
+        document.getElementById('metaLength').textContent = selected.endless ? '∞' : `${String(mins).padStart(2, '0')}:${secs}`;
+        document.getElementById('metaBpm').textContent = selected.bpm;
+        document.getElementById('metaObjects').textContent = selected.endless ? '∞' : counts.total;
+        document.getElementById('metaTaps').textContent = selected.endless ? '98%' : counts.taps;
+        document.getElementById('metaHolds').textContent = selected.endless ? '2%' : counts.holds;
+        document.getElementById('metaStars').innerHTML = renderStarsHTML(selected.stars);
+        document.getElementById('metaStarNum').textContent = `${selected.stars.toFixed(2)}★ • OD8 • 4K`;
+
+        // 2. Update Left Column Leaderboard & Personal Best
+        const lbContainer = document.getElementById('leaderboardList');
+        const playerScores = savedScores.bySong[selected.id] || [];
+        const combined = [...playerScores, ...BENCHMARK_SCORES]
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 7);
+
+        lbContainer.innerHTML = combined.map((entry, idx) => {
+          const gradeColor =
+            entry.grade === 'SS' ? 'text-[#F9C86B]' :
+            entry.grade === 'S'  ? 'text-[#EAEAEA]' :
+            entry.grade === 'A'  ? 'text-emerald-400' : 'text-neutral-400';
+
+          return `
+            <div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl border transition ${
+              entry.isPlayer
+                ? 'bg-[#F7B2BD]/10 border-[#F7B2BD]/40'
+                : 'bg-neutral-900/65 border-neutral-800/80'
+            }">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="text-[11px] font-mono text-neutral-500 w-3">${idx + 1}</span>
+                <span class="text-lg font-black w-6 text-center ${gradeColor}">${entry.grade}</span>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white truncate">${entry.name}</div>
+                  <div class="text-[10px] font-mono text-neutral-400">
+                    Score: ${entry.score.toLocaleString()} (${entry.combo}x)
+                  </div>
+                </div>
+              </div>
+              <div class="text-right font-mono shrink-0">
+                <div class="text-[10px] text-neutral-400">${entry.tag || '4K'}</div>
+                <div class="text-xs font-semibold text-neutral-200">${entry.acc.toFixed(2).replace('.', ',')}%</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const pbBox = document.getElementById('personalBestBox');
+        if (playerScores.length > 0) {
+          const best = playerScores[0];
+          pbBox.innerHTML = `
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base font-black text-[#F7B2BD]">${best.grade}</span>
+                <div>
+                  <div class="text-xs font-bold text-white font-mono">${best.score.toLocaleString()}</div>
+                  <div class="text-[10px] text-neutral-400 font-mono">Max Combo: ${best.combo}x</div>
+                </div>
+              </div>
+              <div class="text-xs font-mono font-bold text-[#F9C86B]">${best.acc.toFixed(2)}%</div>
+            </div>
+          `;
+        } else {
+          pbBox.textContent = 'No personal record set yet — play to set a score!';
+        }
+
+        // 3. Filter & Sort Right-Side Cascading Song Carousel
+        let filtered = SONG_CATALOG.filter((s) => {
+          if (currentFilter === 'tap' && s.category !== 'tap') return false;
+          if (currentFilter === 'ln' && s.category !== 'ln') return false;
+          if (searchQuery) {
+            const hay = `${s.title} ${s.artist} ${s.diffName} ${s.badge}`.toLowerCase();
+            if (!hay.includes(searchQuery.toLowerCase())) return false;
+          }
+          return true;
+        });
+
+        if (currentSort === 'bpm') {
+          filtered.sort((a, b) => b.bpm - a.bpm);
+        } else if (currentSort === 'taps') {
+          filtered.sort((a, b) => a.lnChance - b.lnChance);
+        }
+
+        const carousel = document.getElementById('songCarouselList');
+        if (filtered.length === 0) {
+          carousel.innerHTML = `<div class="text-center text-xs text-neutral-500 py-8">No beatmaps match "${searchQuery}"</div>`;
+        } else {
+          const selectedIdx = filtered.findIndex(s => s.id === selected.id);
+          carousel.innerHTML = filtered.map((song, idx) => {
+            const isSelected = song.id === selected.id;
+            // Subtle curved horizontal stagger like osu!'s song wheel
+            const dist = selectedIdx === -1 ? idx : Math.abs(idx - selectedIdx);
+            const indentPx = isSelected ? 0 : Math.min(44, 14 + dist * 9);
+
+            return `
+              <button
+                data-song-id="${song.id}"
+                style="margin-left: ${indentPx}px;"
+                class="song-card group relative flex items-center justify-between text-left px-4 py-2.5 sm:py-3 rounded-l-2xl border-y border-l transition-all duration-150 cursor-pointer ${
+                  isSelected
+                    ? 'bg-neutral-900 border-white/80 shadow-lg shadow-black/60'
+                    : 'bg-neutral-950/90 hover:bg-neutral-900/80 border-neutral-800/90 opacity-85 hover:opacity-100'
+                }">
+                <!-- Left Colored Strip & Thumbnail Icon -->
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex flex-col items-center justify-center shrink-0 border border-neutral-800 bg-black/80">
+                    <span class="text-[11px] font-mono font-bold" style="color: ${song.accent}">${song.bpm}</span>
+                    <span class="text-[8px] font-mono text-neutral-500">BPM</span>
+                  </div>
+
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm sm:text-base font-bold text-white truncate">${song.title}</span>
+                      <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-black/70 border border-neutral-800 text-neutral-300 shrink-0">
+                        ${song.badge}
+                      </span>
+                    </div>
+                    <div class="text-[11px] text-neutral-400 truncate">
+                      ${song.artist} // <span class="text-neutral-300">${song.mapper}</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                      <span class="text-xs font-bold" style="color: ${song.accent}">${song.diffName}</span>
+                      <span class="text-[10px] tracking-tight text-[#F9C86B]">${renderStarsHTML(song.stars, 7)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Play Indicator on Active Card -->
+                <div class="pl-3 shrink-0 flex items-center gap-2">
+                  ${isSelected
+                    ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-white text-black">CLICK TO PLAY</span>`
+                    : `<span class="text-[11px] font-mono text-neutral-500 group-hover:text-neutral-300">${song.stars.toFixed(1)}★</span>`
+                  }
+                </div>
+              </button>
+            `;
+          }).join('');
+
+          // Attach click handlers to song cards
+          carousel.querySelectorAll('.song-card').forEach((card) => {
+            card.addEventListener('click', () => {
+              const id = card.dataset.songId;
+              if (config.selectedSongId === id) {
+                // Clicking already-selected card launches immediately (just like osu!)
+                startSelectedSong();
+              } else {
+                config.selectedSongId = id;
+                saveConfig();
+                sound.playHit();
+                renderSongSelectUI();
+              }
+            });
+          });
+        }
+
+        // 4. Update Bottom Footer Profile & Hitsound Label
+        const sfxNames = { pop: 'Pop', soft: 'Soft', tick: 'Tick' };
+        document.getElementById('footerHitsoundLabel').textContent = sfxNames[config.hitsoundType] || 'Pop';
+        document.getElementById('profileTotalScore').textContent = (savedScores.totalScore || 0).toLocaleString();
+        document.getElementById('profilePlayCount').textContent = savedScores.playCount || 0;
+        const lv = Math.max(1, Math.floor(Math.sqrt((savedScores.totalScore || 0) / 150000)) + 1);
+        document.getElementById('profileLevel').textContent = `Lv${lv}`;
+      }
+
+      // Song Select Filter, Sort & Search Event Listeners
+      document.querySelectorAll('.filter-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          currentFilter = btn.dataset.filter;
+          document.querySelectorAll('.filter-tab').forEach((b) => {
+            b.className = b === btn
+              ? 'filter-tab px-2.5 py-1 rounded-lg bg-white text-black font-semibold transition'
+              : 'filter-tab px-2.5 py-1 rounded-lg text-neutral-400 hover:text-white transition';
+          });
+          sound.playHit();
+          renderSongSelectUI();
+        });
+      });
+
+      document.getElementById('sortSelect').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        sound.playHit();
+        renderSongSelectUI();
+      });
+
+      document.getElementById('songSearchInput').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderSongSelectUI();
+      });
+
+      document.getElementById('btnRandomSong').addEventListener('click', () => {
+        const others = SONG_CATALOG.filter(s => s.id !== config.selectedSongId);
+        const pick = others[Math.floor(Math.random() * others.length)] || SONG_CATALOG[0];
+        config.selectedSongId = pick.id;
+        saveConfig();
+        sound.playHit();
+        renderSongSelectUI();
+      });
+
+      document.getElementById('btnOpenCustomizeMenu').addEventListener('click', () => {
+        sound.playHit();
+        openSettingsModal(false);
+      });
+
+      document.getElementById('btnQuickHitsoundCycle').addEventListener('click', () => {
+        const order = ['pop', 'soft', 'tick'];
+        const next = order[(order.indexOf(config.hitsoundType) + 1) % order.length];
+        config.hitsoundType = next;
+        saveConfig();
+        sound.playHit();
+        renderSongSelectUI();
+      });
+
+      document.getElementById('btnLaunchSelected').addEventListener('click', () => {
+        startSelectedSong();
+      });
+
+      // =========================================================================
+      // 8. ZERO-LAG KEYBOARD & MULTI-TOUCH INPUT HANDLERS
+      // =========================================================================
+      let rebindingLane = null;
+
+      function formatKeyLabel(code, key) {
+        if (code.startsWith('Key')) return code.slice(3);
+        if (code.startsWith('Digit')) return code.slice(5);
+        if (code === 'Space') return 'SPC';
+        if (code === 'ShiftLeft') return 'LSH';
+        if (code === 'ShiftRight') return 'RSH';
+        if (code === 'ControlLeft') return 'LCT';
+        if (code === 'ControlRight') return 'RCT';
+        if (code === 'AltLeft') return 'LAL';
+        if (code === 'AltRight') return 'RAL';
+        if (code === 'Semicolon') return ';';
+        if (code === 'Quote') return "'";
+        if (code === 'Comma') return ',';
+        if (code === 'Period') return '.';
+        if (code === 'Slash') return '/';
+        if (code === 'Backslash') return '\\';
+        if (code === 'BracketLeft') return '[';
+        if (code === 'BracketRight') return ']';
+        return (key || code).toUpperCase().slice(0, 4);
+      }
+
+      window.addEventListener('keydown', (e) => {
+        // Ignore shortcuts while typing inside search box
+        if (document.activeElement === document.getElementById('songSearchInput')) {
+          if (e.code === 'Escape' || e.code === 'Enter') {
+            document.activeElement.blur();
+          }
+          return;
+        }
+
+        // Keybind assignment mode
+        if (rebindingLane !== null) {
+          e.preventDefault();
+          if (e.code === 'Escape') {
+            rebindingLane = null;
+            updateSettingsUI();
+            return;
+          }
+          config.keybinds[rebindingLane] = e.code;
+          config.keyLabels[rebindingLane] = formatKeyLabel(e.code, e.key);
+          rebindingLane = null;
+          saveConfig();
+          updateSettingsUI();
+          return;
+        }
+
+        const settingsOpen = !document.getElementById('overlayModal').classList.contains('hidden');
+
+        // Global Escape handling
+        if (e.code === 'Escape') {
+          e.preventDefault();
+          if (settingsOpen) {
+            if (state.status === 'PAUSED') resumeGame();
+            else document.getElementById('overlayModal').classList.add('hidden');
+          } else if (state.status === 'PLAYING') {
+            pauseGame();
+          } else if (state.status === 'RESULTS') {
+            enterSongSelect();
+          }
+          return;
+        }
+
+        // Song Select keyboard navigation
+        if (state.status === 'SONG_SELECT' && !settingsOpen) {
+          if (e.code === 'ArrowDown' || e.code === 'ArrowUp') {
+            e.preventDefault();
+            const idx = SONG_CATALOG.findIndex(s => s.id === config.selectedSongId);
+            const dir = e.code === 'ArrowDown' ? 1 : -1;
+            const nextIdx = (idx + dir + SONG_CATALOG.length) % SONG_CATALOG.length;
+            config.selectedSongId = SONG_CATALOG[nextIdx].id;
+            saveConfig();
+            sound.playHit();
+            renderSongSelectUI();
+            return;
+          }
+          if (e.code === 'Enter' || e.code === 'Space') {
+            e.preventDefault();
+            startSelectedSong();
+            return;
+          }
+          if (e.code === 'F2') {
+            e.preventDefault();
+            document.getElementById('btnRandomSong').click();
+            return;
+          }
+          if (e.code === 'F3') {
+            e.preventDefault();
+            openSettingsModal(false);
+            return;
+          }
+        }
+
+        if (e.code === 'Backquote' && (state.status === 'PLAYING' || state.status === 'PAUSED')) {
+          e.preventDefault();
+          startSelectedSong();
+          return;
+        }
+
+        // Gameplay 4K lane triggers
+        const lane = config.keybinds.indexOf(e.code);
+        if (lane !== -1 && (state.status === 'PLAYING' || settingsOpen)) {
+          e.preventDefault();
+          handleLaneDown(lane);
+        }
+      }, { passive: false });
+
+      window.addEventListener('keyup', (e) => {
+        const lane = config.keybinds.indexOf(e.code);
+        if (lane !== -1) {
+          e.preventDefault();
+          handleLaneUp(lane);
+        }
+      }, { passive: false });
+
+      // Responsive Multi-Touch Support
+      const activeTouches = new Map();
+
+      function getLaneFromClientX(clientX) {
+        const L = getLayout();
+        if (clientX < L.stageLeft || clientX > L.stageRight) return -1;
+        const lane = Math.floor((clientX - L.stageLeft) / L.laneW);
+        return Math.max(0, Math.min(3, lane));
+      }
+
+      canvas.addEventListener('touchstart', (e) => {
+        if (state.status !== 'PLAYING') return;
+        e.preventDefault();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          const lane = getLaneFromClientX(t.clientX);
+          if (lane !== -1) {
+            activeTouches.set(t.identifier, lane);
+            handleLaneDown(lane);
+          }
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          const lane = activeTouches.get(t.identifier);
+          if (lane !== undefined) {
+            activeTouches.delete(t.identifier);
+            let stillHeld = false;
+            for (const l of activeTouches.values()) {
+              if (l === lane) stillHeld = true;
+            }
+            if (!stillHeld) handleLaneUp(lane);
+          }
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchcancel', (e) => {
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          const lane = activeTouches.get(t.identifier);
+          if (lane !== undefined) {
+            activeTouches.delete(t.identifier);
+            handleLaneUp(lane);
+          }
+        }
+      });
+
+      // =========================================================================
+      // 9. SETTINGS / CUSTOMIZATION MODAL BINDINGS
+      // =========================================================================
+      const overlayModal = document.getElementById('overlayModal');
+      const btnPlayResume = document.getElementById('btnPlayResume');
+      const btnModalSongSelect = document.getElementById('btnModalSongSelect');
+
+      function openSettingsModal(isPause = false) {
+        updateSettingsUI();
+        overlayModal.classList.remove('hidden');
+        if (isPause) {
+          btnPlayResume.textContent = 'Resume';
+          btnModalSongSelect.classList.remove('hidden');
+          document.getElementById('overlaySubtitle').textContent = 'Game Paused • Customize skin or resume';
+        } else {
+          btnPlayResume.textContent = 'Save & Close';
+          btnModalSongSelect.classList.add('hidden');
+          document.getElementById('overlaySubtitle').textContent = 'Customize receptor keys, note colors & hitsound';
+        }
+      }
+
+      function updateSettingsUI() {
+        // Keybind buttons
+        document.querySelectorAll('.keybind-btn').forEach((btn) => {
+          const lane = Number(btn.dataset.lane);
+          const isRebinding = rebindingLane === lane;
+          btn.querySelector('.key-label').textContent = isRebinding ? '...' : config.keyLabels[lane];
+          btn.className = isRebinding
+            ? 'keybind-btn h-11 rounded-xl bg-amber-500/20 border border-amber-400 font-mono text-sm font-bold text-amber-300 transition flex flex-col items-center justify-center'
+            : 'keybind-btn h-11 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 font-mono text-sm font-bold text-white transition flex flex-col items-center justify-center';
+        });
+
+        document.getElementById('rebindHint').classList.toggle('hidden', rebindingLane === null);
+
+        // Color pickers
+        for (let i = 0; i < 4; i++) {
+          const col = config.noteColors[i].toUpperCase();
+          document.getElementById(`colorLane${i}`).value = col;
+          document.getElementById(`hexLane${i}`).textContent = col;
+        }
+
+        // Hitsound style buttons
+        document.querySelectorAll('.sfx-btn').forEach((btn) => {
+          const active = btn.dataset.sfx === config.hitsoundType;
+          btn.className = active
+            ? 'sfx-btn py-2 px-2.5 rounded-xl border border-[#F7B2BD] bg-[#F7B2BD]/15 text-center transition'
+            : 'sfx-btn py-2 px-2.5 rounded-xl border border-neutral-800 bg-neutral-900/60 hover:bg-neutral-900 text-center transition';
+        });
+
+        // Sliders & toggles
+        document.getElementById('sliderScrollSpeed').value = config.scrollSpeed;
+        document.getElementById('valScrollSpeed').textContent = config.scrollSpeed;
+
+        document.getElementById('sliderAudioOffset').value = config.audioOffset;
+        document.getElementById('valAudioOffset').textContent = `${config.audioOffset} ms`;
+
+        const volPct = Math.round(config.hitsoundVolume * 100);
+        document.getElementById('sliderHitsoundVol').value = volPct;
+        document.getElementById('valHitsoundVol').textContent = `${volPct}%`;
+
+        const toggleMusic = document.getElementById('toggleMusic');
+        toggleMusic.textContent = config.musicEnabled ? 'ON' : 'OFF';
+        toggleMusic.className = config.musicEnabled
+          ? 'px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-black border border-white transition'
+          : 'px-2.5 py-1 rounded-lg text-xs font-medium bg-neutral-900 text-neutral-400 border border-neutral-800 transition';
+      }
+
+      // Keybind buttons
+      document.querySelectorAll('.keybind-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          rebindingLane = Number(btn.dataset.lane);
+          updateSettingsUI();
+        });
+      });
+
+      // Color pickers
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`colorLane${i}`).addEventListener('input', (e) => {
+          config.noteColors[i] = e.target.value.toUpperCase();
+          saveConfig();
+          updateSettingsUI();
+        });
+      }
+
+      // Quick color theme buttons
+      document.querySelectorAll('.color-theme-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const theme = COLOR_THEMES[btn.dataset.theme];
+          if (theme) {
+            config.noteColors = [...theme];
+            saveConfig();
+            updateSettingsUI();
+          }
+        });
+      });
+
+      // Hitsound style selector
+      document.querySelectorAll('.sfx-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          config.hitsoundType = btn.dataset.sfx;
+          saveConfig();
+          updateSettingsUI();
+          sound.playHit();
+          if (state.status === 'SONG_SELECT') renderSongSelectUI();
+        });
+      });
+
+      // Sliders
+      document.getElementById('sliderScrollSpeed').addEventListener('input', (e) => {
+        config.scrollSpeed = Number(e.target.value);
+        saveConfig();
+        updateSettingsUI();
+      });
+
+      document.getElementById('sliderAudioOffset').addEventListener('input', (e) => {
+        config.audioOffset = Number(e.target.value);
+        saveConfig();
+        updateSettingsUI();
+      });
+
+      document.getElementById('sliderHitsoundVol').addEventListener('input', (e) => {
+        config.hitsoundVolume = Number(e.target.value) / 100;
+        saveConfig();
+        updateSettingsUI();
+        sound.playHit();
+      });
+
+      document.getElementById('toggleMusic').addEventListener('click', () => {
+        config.musicEnabled = !config.musicEnabled;
+        saveConfig();
+        updateSettingsUI();
+      });
+
+      // In-Game Top-Left & Modal Buttons
+      document.getElementById('btnOpenSettingsInGame').addEventListener('click', () => {
+        if (state.status === 'PLAYING') pauseGame();
+        else openSettingsModal(state.status === 'PAUSED');
+      });
+
+      document.getElementById('btnRestartQuick').addEventListener('click', () => {
+        startSelectedSong();
+      });
+
+      document.getElementById('btnBackToSongSelect').addEventListener('click', () => {
+        enterSongSelect();
+      });
+
+      btnPlayResume.addEventListener('click', () => {
+        if (state.status === 'PAUSED') resumeGame();
+        else {
+          overlayModal.classList.add('hidden');
+          renderSongSelectUI();
+        }
+      });
+
+      document.getElementById('btnCloseModal').addEventListener('click', () => {
+        if (state.status === 'PAUSED') resumeGame();
+        else {
+          overlayModal.classList.add('hidden');
+          renderSongSelectUI();
+        }
+      });
+
+      btnModalSongSelect.addEventListener('click', () => {
+        enterSongSelect();
+      });
+
+      document.getElementById('btnResetDefaults').addEventListener('click', () => {
+        config = structuredClone(DEFAULT_CONFIG);
+        rebindingLane = null;
+        saveConfig();
+        updateSettingsUI();
+        if (state.status === 'SONG_SELECT') renderSongSelectUI();
+      });
+
+      document.getElementById('btnPlayAgain').addEventListener('click', () => {
+        startSelectedSong();
+      });
+
+      document.getElementById('btnResultsSongSelect').addEventListener('click', () => {
+        enterSongSelect();
+      });
+
+      // =========================================================================
+      // 10. INITIALIZE & START RENDER LOOP
+      // =========================================================================
+      window.onload = function () {
+        enterSongSelect();
+        state.lastFrameTime = performance.now();
+        requestAnimationFrame(render);
+      };
+    })();
+  </script>
+</body>
+</html>

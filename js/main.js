@@ -10,6 +10,14 @@
 
   const ENDS_RUN = { title: 1, select: 1, results: 1 };
 
+  /* The BossaBossa loop is the menu's background music: it plays on the title
+     menu and stops as soon as we leave it (song select uses its own previews,
+     gameplay uses the chart music). */
+  function syncMenuMusic(name) {
+    if (name === 'title') A.startMenuMusic();
+    else A.stopMenuMusic(0.5);
+  }
+
   const app = {
     state: {
       songId: 'neon-pulse',
@@ -51,6 +59,8 @@
   app.go = function (name, params) {
     params = params || {};
     let prev = this.current;
+
+    syncMenuMusic(name);
 
     /* Screens read their construction params during SC[name]() below, before
        onEnter() runs, so expose them on the app for that window. */
@@ -206,7 +216,10 @@
   function unlock() {
     if (unlocked) return;
     unlocked = true;
-    A.ensure().then(function () { O.applyAudio(); });
+    A.ensure().then(function () {
+      O.applyAudio();
+      if (app.currentName === 'title') A.startMenuMusic();
+    });
     window.removeEventListener('pointerdown', unlock);
     window.removeEventListener('keydown', unlock);
     window.removeEventListener('touchstart', unlock);
@@ -224,7 +237,14 @@
     handleResize();
     O.onChange(function (key) {
       if (key === 'uiScale') document.documentElement.style.setProperty('--ui-scale', O.get('uiScale'));
-      if (key === 'volMaster' || key === 'volMusic' || key === 'volEffects') O.applyAudio();
+      if (O.AUDIO_KEYS.indexOf(key) !== -1) O.applyAudio();
+      if (key === 'menuMusicEnabled' || key === 'menuMusicVolume') {
+        if (app.currentName === 'title' && O.get('menuMusicEnabled') && O.get('menuMusicVolume') > 0) {
+          A.startMenuMusic();
+        } else if (!O.get('menuMusicEnabled')) {
+          A.stopMenuMusic(0.3);
+        }
+      }
     });
     app.go('title');
     requestAnimationFrame(frame);

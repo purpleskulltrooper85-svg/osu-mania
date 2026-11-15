@@ -120,6 +120,27 @@
 
   /* ---------- background ---------- */
 
+  /* Persistent drifting orbs: sine wander + constant travel + wrap-around, so
+     the backdrop reads as clearly alive even between audio beats. */
+  let bgOrbs = null;
+  function seedOrbs() {
+    let s = 0x9e3779b9;
+    const rnd = function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    bgOrbs = [];
+    for (let i = 0; i < 26; i++) {
+      const big = i % 5 === 0;
+      bgOrbs.push({
+        bx: rnd(), by: rnd(),
+        r: big ? 120 + rnd() * 140 : 20 + rnd() * 90,
+        sp: 0.14 + rnd() * 0.5,
+        ax: (rnd() * 2 - 1) * 70, ay: (rnd() * 2 - 1) * 62,
+        vx: (rnd() * 2 - 1) * 16, vy: (rnd() * 2 - 1) * 13,
+        ph: rnd() * Math.PI * 2, pulse: 1 + rnd() * 2.2,
+        rot: (rnd() * 2 - 1) * 0.5, ring: rnd() > 0.42
+      });
+    }
+  }
+
   function drawBackground(t, opts) {
     const grad = ctx.createLinearGradient(0, 0, 0, vh);
     const hue = opts.hue === undefined ? 280 : opts.hue;
@@ -128,6 +149,38 @@
     grad.addColorStop(1, '#050308');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, vw, vh);
+
+    if (opts.visualiser !== false) {
+      if (!bgOrbs) seedOrbs();
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (const o of bgOrbs) {
+        let cx = o.bx * vw + Math.sin(t * o.sp + o.ph) * o.ax + o.vx * t;
+        let cy = o.by * vh + Math.cos(t * o.sp * 0.9 + o.ph) * o.ay + o.vy * t;
+        const span = o.r * 2;
+        cx = ((cx + span) % (vw + span * 2) + (vw + span * 2)) % (vw + span * 2) - span;
+        cy = ((cy + span) % (vh + span * 2) + (vh + span * 2)) % (vh + span * 2) - span;
+        const r = o.r * (1 + Math.sin(t * o.pulse + o.ph) * 0.16);
+        const h = (hue + o.ph * 40) % 360;
+        if (o.ring) {
+          const a0 = t * o.rot + o.ph;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, a0, a0 + Math.PI * 1.25);
+          ctx.strokeStyle = 'hsla(' + h + ' 90% 70% / 0.20)';
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+        } else {
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+          g.addColorStop(0, 'hsla(' + h + ' 90% 62% / 0.14)');
+          g.addColorStop(1, 'hsla(' + h + ' 90% 62% / 0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
 
     if (opts.visualiser && A.isReady()) {
       const data = A.getLevels();

@@ -125,6 +125,91 @@
         { name: 'chorus', bars: 8, i: 1.0 },
         { name: 'outro', bars: 4, i: 0.4 }
       ]
+    },
+    {
+      id: 'bossa-nova',
+      title: 'Bossa Nossa',
+      artist: 'mania! sound team',
+      bpm: 124,
+      root: 'A', scale: 'dorian',
+      mood: 'chill', swing: 0.18, seed: 5150,
+      color: '#ffa94d',
+      structure: [
+        { name: 'intro', bars: 4, i: 0.3 },
+        { name: 'verse', bars: 8, i: 0.55 },
+        { name: 'chorus', bars: 8, i: 0.8 },
+        { name: 'verse', bars: 8, i: 0.6 },
+        { name: 'chorus', bars: 8, i: 0.85 },
+        { name: 'outro', bars: 4, i: 0.35 }
+      ]
+    },
+    {
+      id: 'sunset-runner',
+      title: 'Sunset Runner',
+      artist: 'mania! sound team',
+      bpm: 138,
+      root: 'E', scale: 'major',
+      mood: 'energetic', swing: 0.06, seed: 8181,
+      color: '#ff8787',
+      structure: [
+        { name: 'intro', bars: 4, i: 0.35 },
+        { name: 'verse', bars: 8, i: 0.6 },
+        { name: 'chorus', bars: 8, i: 0.9 },
+        { name: 'bridge', bars: 4, i: 0.45 },
+        { name: 'chorus', bars: 8, i: 1.0 },
+        { name: 'outro', bars: 4, i: 0.35 }
+      ]
+    },
+    {
+      id: 'hyper-velocity',
+      title: 'Hyper Velocity',
+      artist: 'mania! sound team',
+      bpm: 222,
+      root: 'B', scale: 'phrygian',
+      mood: 'hardcore', swing: 0, seed: 3141,
+      color: '#ff6b81',
+      structure: [
+        { name: 'intro', bars: 4, i: 0.5 },
+        { name: 'drop', bars: 8, i: 0.9 },
+        { name: 'drop', bars: 8, i: 1.0 },
+        { name: 'break', bars: 4, i: 0.4 },
+        { name: 'drop', bars: 8, i: 1.0 },
+        { name: 'outro', bars: 4, i: 0.45 }
+      ]
+    },
+    {
+      id: 'crystal-echo',
+      title: 'Crystal Echo',
+      artist: 'mania! sound team',
+      bpm: 96,
+      root: 'D', scale: 'major',
+      mood: 'calm', swing: 0, seed: 6060,
+      color: '#66d9e8',
+      structure: [
+        { name: 'intro', bars: 4, i: 0.2 },
+        { name: 'verse', bars: 8, i: 0.4 },
+        { name: 'chorus', bars: 8, i: 0.65 },
+        { name: 'verse', bars: 8, i: 0.45 },
+        { name: 'chorus', bars: 8, i: 0.7 },
+        { name: 'outro', bars: 4, i: 0.25 }
+      ]
+    },
+    {
+      id: 'neon-cascade',
+      title: 'Neon Cascade',
+      artist: 'mania! sound team',
+      bpm: 176,
+      root: 'F#', scale: 'minor',
+      mood: 'hardcore', swing: 0, seed: 1212,
+      color: '#cc5de8',
+      structure: [
+        { name: 'intro', bars: 4, i: 0.45 },
+        { name: 'build', bars: 8, i: 0.7 },
+        { name: 'drop', bars: 8, i: 1.0 },
+        { name: 'break', bars: 4, i: 0.35 },
+        { name: 'drop', bars: 8, i: 1.0 },
+        { name: 'outro', bars: 4, i: 0.4 }
+      ]
     }
   ];
 

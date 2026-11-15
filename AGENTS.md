@@ -50,6 +50,20 @@ Open `http://localhost:12000`. A static server is required (the app uses classic
   falls back to `performance.now()`. Tests drive it manually via `engine.start(true)` + `engine.update(now)`.
 - **`Audio.hit()` and `Audio.ui()` are no-ops before `Audio.ensure()` resolves** (first user gesture
   unlocks the AudioContext). Never assume audio is ready.
+- **Three distinct sound layers, kept separate on purpose** (same contract as the single-file build):
+  `Audio.hit()` = note hitsound only (called from the engine on a real judgement, never on an empty
+  tap); `Audio.keyDown()/keyUp()` = keyboard click on *every* lane press/release (gated by
+  `keyClickEnabled`, wired in `screens.js` around `engine.press/release`); `Audio.ui()` = menu
+  button/tab clicks (gated by `uiSoundsEnabled`). Do not collapse these back into one sound.
+- **`Audio.keyDown()`/`startMenuMusic()` load real MP3s over the network** (`creamy-keyboard-v7.mp3`,
+  `2-03. BossaBossa.mp3`) into the AudioContext. They are no-ops until the samples decode, so both
+  fall back to a synth click / defer the menu loop (`pendingMenuMusic`). The modular build is served
+  over HTTP so it references the files directly; only the single-file build inlines them as base64.
+- **Menu music is driven from `main.js` `syncMenuMusic(name)`** — the BossaBossa loop plays on the
+  `title` screen only and stops on every other navigation. `menuMusicEnabled`/`menuMusicVolume`
+  toggle it live via the `Options.onChange` hook.
+- **New audio settings must be registered in `Options.AUDIO_KEYS`** so `O.set()` re-applies them
+  through `applyAudio()`, and added to the `audio` section of `Options.SCHEMA` + `Options.DEFAULTS`.
 
 ## Testing
 

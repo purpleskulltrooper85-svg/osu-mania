@@ -5,13 +5,24 @@
 
   const A = {};
   let ctx = null;
-  let master = null, musicBus = null, sfxBus = null;
+  let master = null, musicBus = null, sfxBus = null, menuBus = null;
   let analyser = null, freqData = null, timeData = null;
   let noiseBuf = null;
   let ready = false;
 
-  const vols = { master: 0.85, music: 0.65, effects: 0.8 };
+  const vols = { master: 0.85, music: 0.65, effects: 0.8, keyClick: 0.7, ui: 0.5, menuMusic: 0.5 };
   let session = null;
+
+  /* Real audio samples loaded over the network (the modular build is served
+     over HTTP, so it does not inline them like the single-file build does). */
+  const SAMPLE_URLS = {
+    keyClick: 'creamy-keyboard-v7.mp3',
+    menuMusic: '2-03. BossaBossa.mp3'
+  };
+  const samples = { keyClick: null, menuMusic: null };
+  let samplesLoaded = false;
+  let menuSource = null, menuGain = null;
+  let pendingMenuMusic = false;
 
   const AC = window.AudioContext || window.webkitAudioContext;
 
@@ -38,19 +49,41 @@
 
       musicBus = ctx.createGain();
       sfxBus = ctx.createGain();
+      menuBus = ctx.createGain();
 
       musicBus.connect(master);
       sfxBus.connect(master);
+      menuBus.connect(master);
       master.connect(analyser);
       analyser.connect(ctx.destination);
 
       noiseBuf = makeNoiseBuffer();
       A.applyVolumes();
       ready = true;
+      loadSamples();
     }
     if (ctx.state === 'suspended') return ctx.resume().then(() => ctx);
     return Promise.resolve(ctx);
   };
+
+  /* Decode the two real samples once the context exists. */
+  function loadSamples() {
+    const jobs = Object.keys(SAMPLE_URLS).map(function (name) {
+      return fetch(SAMPLE_URLS[name])
+        .then(function (r) { return r.arrayBuffer(); })
+        .then(function (ab) {
+          return new Promise(function (resolve) {
+            ctx.decodeAudioData(ab, resolve, function () { resolve(null); });
+          });
+        })
+        .then(function (buf) { samples[name] = buf; })
+        .catch(function () { /* keep the synth fallbacks */ });
+    });
+    Promise.all(jobs).then(function () {
+      samplesLoaded = true;
+      if (pendingMenuMusic) { pendingMenuMusic = false; A.startMenuMusic(); }
+    });
+  }
 
   A.isReady = () => ready && ctx && ctx.state === 'running';
   A.context = () => ctx;
@@ -66,6 +99,7 @@
     master.gain.value = vols.master;
     musicBus.gain.value = vols.music;
     sfxBus.gain.value = vols.effects;
+    menuBus.gain.value = vols.menuMusic;
   };
 
   A.getLevels = function () {
@@ -268,17 +302,92 @@
 
   A.ui = function (kind) {
     if (!A.isReady()) return;
+    if (vols.ui <= 0.001) return;
     const t0 = ctx.currentTime + 0.001;
-    if (kind === 'move') tone(sfxBus, t0, { type: 'sine', freq: 660, gain: 0.13, dur: 0.03, attack: 0.001, release: 0.04 });
+    const v = vols.ui;
+    if (kind === 'move') tone(sfxBus, t0, { type: 'sine', freq: 660, gain: 0.13 * v, dur: 0.03, attack: 0.001, release: 0.04 });
     else if (kind === 'select') {
-      tone(sfxBus, t0, { type: 'triangle', freq: 880, gain: 0.16, dur: 0.05, attack: 0.001, release: 0.07 });
-      tone(sfxBus, t0 + 0.05, { type: 'triangle', freq: 1320, gain: 0.14, dur: 0.06, attack: 0.001, release: 0.08 });
+      tone(sfxBus, t0, { type: 'triangle', freq: 880, gain: 0.16 * v, dur: 0.05, attack: 0.001, release: 0.07 });
+      tone(sfxBus, t0 + 0.05, { type: 'triangle', freq: 1320, gain: 0.14 * v, dur: 0.06, attack: 0.001, release: 0.08 });
     } else if (kind === 'back') {
-      tone(sfxBus, t0, { type: 'triangle', freq: 520, gain: 0.15, dur: 0.05, attack: 0.001, release: 0.08 });
-      tone(sfxBus, t0 + 0.05, { type: 'triangle', freq: 380, gain: 0.13, dur: 0.06, attack: 0.001, release: 0.09 });
+      tone(sfxBus, t0, { type: 'triangle', freq: 520, gain: 0.15 * v, dur: 0.05, attack: 0.001, release: 0.08 });
+      tone(sfxBus, t0 + 0.05, { type: 'triangle', freq: 380, gain: 0.13 * v, dur: 0.06, attack: 0.001, release: 0.09 });
     } else if (kind === 'error') {
-      tone(sfxBus, t0, { type: 'square', freq: 220, gain: 0.12, dur: 0.1, attack: 0.001, release: 0.1 });
+      tone(sfxBus, t0, { type: 'square', freq: 220, gain: 0.12 * v, dur: 0.1, attack: 0.001, release: 0.1 });
     }
+  };
+
+  /* ---------- keyboard clicks ---------- */
+
+  /* Mechanical keyboard click, separate from the note hitsound and the UI
+     click. Uses the real creamy-keyboard sample when decoded, else a synth
+     fallback so a lane press is never silent. */
+  A.keyDown = function () {
+    if (!A.isReady()) return;
+    const t0 = ctx.currentTime + 0.001;
+    if (samples.keyClick) {
+      playSample(samples.keyClick, sfxBus, t0, vols.keyClick, 1);
+      return;
+    }
+    tone(sfxBus, t0, { type: 'square', freq: 1500, gain: 0.09 * vols.keyClick, dur: 0.02, attack: 0.001, release: 0.02, filter: 5200, q: 6 });
+    noiseBurst(sfxBus, t0, { dur: 0.018, gain: 0.06 * vols.keyClick, freq: 5200 });
+  };
+  A.keyUp = function () {
+    if (!A.isReady() || !samples.keyClick) return;
+    playSample(samples.keyClick, sfxBus, ctx.currentTime + 0.001, vols.keyClick * 0.55, 0.92);
+  };
+
+  function playSample(buffer, dest, t0, gain, rate) {
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    if (rate && rate !== 1) src.playbackRate.value = rate;
+    const g = ctx.createGain();
+    g.gain.value = Math.max(0, gain);
+    src.connect(g);
+    g.connect(dest);
+    src.start(t0);
+    return src;
+  }
+
+  /* ---------- menu music ---------- */
+
+  A.startMenuMusic = function () {
+    if (!A.isReady() || menuSource) return;
+    if (vols.menuMusic <= 0.001) return;
+    if (!samples.menuMusic) { pendingMenuMusic = true; return; }
+    const src = ctx.createBufferSource();
+    src.buffer = samples.menuMusic;
+    src.loop = true;
+    const g = ctx.createGain();
+    g.gain.value = 0.0001;
+    src.connect(g);
+    g.connect(menuBus);
+    src.start();
+    g.gain.linearRampToValueAtTime(vols.menuMusic, ctx.currentTime + 0.9);
+    menuSource = src;
+    menuGain = g;
+  };
+
+  A.stopMenuMusic = function (fadeSec) {
+    if (!menuSource) return;
+    const src = menuSource, g = menuGain;
+    menuSource = null; menuGain = null;
+    const fade = fadeSec === undefined ? 0.4 : fadeSec;
+    const now = ctx.currentTime;
+    try {
+      g.gain.cancelScheduledValues(now);
+      g.gain.setValueAtTime(g.gain.value, now);
+      g.gain.linearRampToValueAtTime(0.0001, now + fade);
+      src.stop(now + fade + 0.05);
+    } catch (e) { /* already stopped */ }
+  };
+
+  A.menuMusicPlaying = function () { return !!menuSource; };
+
+  A.setMenuMusicVolume = function (v) {
+    vols.menuMusic = Math.max(0, Math.min(1, v));
+    if (menuGain) menuGain.gain.value = vols.menuMusic;
+    if (vols.menuMusic <= 0.001) A.stopMenuMusic(0.3);
   };
 
   /* ---------- song playback ---------- */

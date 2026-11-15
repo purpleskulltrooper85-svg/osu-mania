@@ -639,11 +639,16 @@
     }
 
     /* ---- input ---- */
+    /* Keyboard clicks are a separate layer from the note hitsound: they fire
+       on every physical lane press/release, so the player hears their keys
+       even when a tap misses every note. */
     Input.onDown(function (lane) {
+      if (all.keyClickEnabled) A.keyDown();
       if (paused || ended || !engine) return;
       engine.press(lane);
     });
     Input.onUp(function (lane) {
+      if (all.keyClickEnabled) A.keyUp();
       if (paused || ended || !engine) return;
       engine.release(lane);
     });

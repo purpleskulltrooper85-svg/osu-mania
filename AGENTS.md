@@ -124,3 +124,39 @@ context cannot start in headless mode — verify audio through `tests/audio.test
     `*cdn.tailwindcss.com*` in DevTools: the layout must not change.
 - Verify a "looks broken / only text" report by diffing a CDN-blocked render against a CDN-allowed
   one — identical pixels means the inlined CSS is complete and the real problem is elsewhere.
+
+## Single-file variant: song-select UX (recent work)
+
+- The song wheel must **update cards in place**, not rebuild `innerHTML` on every selection. The
+  list is rebuilt only when the visible set changes (filter / sort / search / first paint), keyed by
+  a `dataset.sig` signature of the song ids. Selection changes just toggle `is-selected` / `is-near`
+  classes and `margin-left`, which is what lets the CSS spring transitions animate. If you go back
+  to rebuilding on each render, the selection snaps instead of gliding.
+- Card styling (bg / border / shadow / opacity / stagger) lives in the in-place pass, not the class
+  string, so both code paths agree. `is-selected` / `is-near` and the `.song-card` transition are
+  defined in the custom `<style>` block (the second one), not in the compiled Tailwind block.
+- Mouse proximity selection lives in the mousemove handler (`updateProximity`): it finds the nearest
+  card within `PROXIMITY_PX` (52px), constrained to the wheel's column via the carousel's
+  `getBoundingClientRect`. It's rAF-throttled and uses `selectSong(id, true)` (no hitsound) so
+  hovering does not machine-gun the click. `nearSongId` tracks the highlighted card.
+- `selectSong(id, fromPointer)` is the single entry point for changing `config.selectedSongId`;
+  pointer, keyboard and random all route through it.
+- The animated menu background is `#menuBgCanvas`, drawn at the end of the main `render()` loop only
+  while `state.status === 'SONG_SELECT'`. It must stay transparent — the global `canvas {}` rule sets
+  `background-color:#000`, so `#menuBgCanvas` overrides it to `transparent`. Circle positions come
+  from `seedMenuCircles()` (seeded `mulberry32`, so the layout is stable across reloads) plus a
+  time-based drift and a pointer parallax that reuses `lastProxX/lastProxY`.
+- The options modal is tabbed (Gameplay / Input / Skin / Audio). `switchSettingsTab()` toggles the
+  `.settings-panel` elements and restyles the `.settings-tab-btn`s. All control ids are unchanged
+  from the pre-tab layout, so the existing bindings keep working. `openSettingsModal` re-applies the
+  active tab so the modal reopens where the user left off.
+- `config.noteScale` (default 1.15, range 0.85–1.5) scales note/receptor size and also widens the
+  playfield in `getLayout()`; there is a "Note Size" slider in the Gameplay tab.
+- Mechanical keyboard clicks are separate from hitsounds: `config.keyClickEnabled` +
+  `config.keyClickVolume`, played by `sound.playKeyDown()` / `sound.playKeyUp()` from
+  `handleLaneDown` / `handleLaneUp` (which run even outside `PLAYING` so the menu/song-select
+  keystrokes click too). The buffers are synthesised in the audio engine alongside pop/soft/tick.
+- Headless UI checks: `Network.setBlockedURLs {urls:['*cdn.tailwindcss.com*']}` proves the inlined
+  CSS is complete. Audio cannot start in headless, so instrument `AudioContext.prototype.createBufferSource`
+  and count `start()` calls to verify hitsounds / key clicks fire (with the toggle off and hitsound
+  muted, expect zero sources).

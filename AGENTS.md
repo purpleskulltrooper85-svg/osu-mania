@@ -155,8 +155,40 @@ context cannot start in headless mode — verify audio through `tests/audio.test
 - Mechanical keyboard clicks are separate from hitsounds: `config.keyClickEnabled` +
   `config.keyClickVolume`, played by `sound.playKeyDown()` / `sound.playKeyUp()` from
   `handleLaneDown` / `handleLaneUp` (which run even outside `PLAYING` so the menu/song-select
-  keystrokes click too). The buffers are synthesised in the audio engine alongside pop/soft/tick.
+  keystrokes click too). See the "audio split" section below for the current three-way design.
 - Headless UI checks: `Network.setBlockedURLs {urls:['*cdn.tailwindcss.com*']}` proves the inlined
   CSS is complete. Audio cannot start in headless, so instrument `AudioContext.prototype.createBufferSource`
   and count `start()` calls to verify hitsounds / key clicks fire (with the toggle off and hitsound
   muted, expect zero sources).
+
+## Single-file variant: audio split, songs & menu loop (recent work)
+
+- **Three separate sound categories** — keep them distinct, this is a hard requirement:
+  1. **Hitsound** (`playHit` / `playRelease`) — for **notes only**. `handleLaneDown` calls
+     `playHit()` *after* a candidate note is found, so an empty tap makes no hitsound.
+  2. **Keyboard click** (`playKeyDown` / `playKeyUp`) — the real `creamy-keyboard-v7.mp3` sample,
+     played on **every** lane key press/release (even outside `PLAYING`). Falls back to a
+     synthesized click if the sample has not decoded yet.
+  3. **UI click** (`playUI`) — a distinct short blip (`uiBuffer`) for menu buttons, tabs, song
+     selection, launch. Never reuse `playHit` for a button; it must not sound like a note.
+  All three go through `config.hitsoundVolume` / `keyClickVolume` / `uiVolume` respectively.
+- **Inlined audio**: `ASSETS.keyClick` and `ASSETS.menuMusic` are base64 `data:audio/mpeg` URIs
+  (see "1b. INLINED AUDIO ASSETS" section, right before the sound engine). They are decoded by
+  `SoundEngine._loadSamples()` via `fetch(dataURI)` + `decodeAudioData`. Never reference the raw
+  `.mp3` files from the single-file build — that would break the "one file, no assets" rule. The
+  base64 blob is ~3.7 MB, so it dominates the file and makes `grep` noisy; exclude it when
+  searching (e.g. `grep -v base64`).
+- **Menu music** (BossaBossa) loops on the song-select screen: `startMenuMusic()` on
+  `enterSongSelect` and on the first user gesture (`unlockAudio`, since browsers block audio until
+  then), `stopMenuMusic()` in `startSelectedSong`. `setMenuMusicVolume()` ramps the live gain.
+  `_pendingMenuMusic` defers the start until the sample finishes decoding.
+- **Menu background** (`renderMenuBackground`, `#menuBgCanvas`): 28 circles with sine wander +
+  constant drift + wrap-around + pointer parallax; ring circles draw two counter-rotating arcs so
+  the motion reads clearly. It only paints while `state.status === 'SONG_SELECT'` and must stay
+  transparent (the global `canvas {}` rule sets `background-color:#000`).
+- **Catalog** is 12 songs; the carousel renders one card per song (no slicing). Sorting by
+  "taps" sorts by `lnChance` ascending. `bossa_bossa` is the BossaBossa map (same track as the
+  menu loop) so players can actually play the song they hear.
+- Adding a song = append one object to `SONG_CATALOG` (id/title/artist/diffName/bpm/durationSec/
+  stars/lnChance/jumpChance/burstChance/category/badge/accent/chordRoots). `id` seeds the beatmap
+  RNG, so a new `id` = a new deterministic chart. Nothing else needs to change.

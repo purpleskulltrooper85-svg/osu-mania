@@ -10,7 +10,7 @@
   let noiseBuf = null;
   let ready = false;
 
-  const vols = { master: 0.85, music: 0.65, effects: 0.8, keyClick: 0.7, ui: 0.5, menuMusic: 0.5 };
+  const vols = { master: 0.85, music: 0.65, effects: 0.8, ui: 0.5, menuMusic: 0.5 };
   let session = null;
 
   /* Real audio samples loaded over the network (the modular build is served
@@ -290,6 +290,16 @@
     clap: function (t0, vol, strong) {
       noiseBurst(sfxBus, t0, { dur: 0.06, gain: 0.26 * vol, freq: 2200, filterType: 'bandpass', q: 1 });
       tone(sfxBus, t0, { type: 'sine', freq: strong ? 900 : 700, gain: 0.16 * vol, dur: 0.03, attack: 0.001, release: 0.05 });
+    },
+    /* The real creamy-keyboard sample. Falls back to a synth click until the
+       MP3 finishes decoding, so a hit is never silent. */
+    keyboard: function (t0, vol) {
+      if (samples.keyClick) {
+        playSample(samples.keyClick, sfxBus, t0, 0.9 * vol, 1);
+        return;
+      }
+      tone(sfxBus, t0, { type: 'square', freq: 1500, gain: 0.09 * vol, dur: 0.02, attack: 0.001, release: 0.02, filter: 5200, q: 6 });
+      noiseBurst(sfxBus, t0, { dur: 0.018, gain: 0.06 * vol, freq: 5200 });
     }
   };
 
@@ -315,26 +325,6 @@
     } else if (kind === 'error') {
       tone(sfxBus, t0, { type: 'square', freq: 220, gain: 0.12 * v, dur: 0.1, attack: 0.001, release: 0.1 });
     }
-  };
-
-  /* ---------- keyboard clicks ---------- */
-
-  /* Mechanical keyboard click, separate from the note hitsound and the UI
-     click. Uses the real creamy-keyboard sample when decoded, else a synth
-     fallback so a lane press is never silent. */
-  A.keyDown = function () {
-    if (!A.isReady()) return;
-    const t0 = ctx.currentTime + 0.001;
-    if (samples.keyClick) {
-      playSample(samples.keyClick, sfxBus, t0, vols.keyClick, 1);
-      return;
-    }
-    tone(sfxBus, t0, { type: 'square', freq: 1500, gain: 0.09 * vols.keyClick, dur: 0.02, attack: 0.001, release: 0.02, filter: 5200, q: 6 });
-    noiseBurst(sfxBus, t0, { dur: 0.018, gain: 0.06 * vols.keyClick, freq: 5200 });
-  };
-  A.keyUp = function () {
-    if (!A.isReady() || !samples.keyClick) return;
-    playSample(samples.keyClick, sfxBus, ctx.currentTime + 0.001, vols.keyClick * 0.55, 0.92);
   };
 
   function playSample(buffer, dest, t0, gain, rate) {

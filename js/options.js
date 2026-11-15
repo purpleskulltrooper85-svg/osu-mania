@@ -88,11 +88,10 @@
         { key: 'volEffects', label: 'Effects volume', type: 'range', min: 0, max: 1, step: 0.02, format: 'pct' },
         { key: 'hitsound', label: 'Hitsound', type: 'select', options: [
           { value: 'default', label: 'Default' }, { value: 'soft', label: 'Soft' },
-          { value: 'clap', label: 'Clap' }, { value: 'none', label: 'None' }
+          { value: 'clap', label: 'Clap' }, { value: 'keyboard', label: 'Keyboard' },
+          { value: 'none', label: 'None' }
         ], hint: 'Sound played when a note is hit (notes only).' },
         { key: 'hitsoundVolume', label: 'Hitsound volume', type: 'range', min: 0, max: 1, step: 0.02, format: 'pct' },
-        { key: 'keyClickEnabled', label: 'Keyboard clicks', type: 'toggle', hint: 'Play a click on every lane press, separate from the hitsound.' },
-        { key: 'keyClickVolume', label: 'Keyboard click volume', type: 'range', min: 0, max: 1, step: 0.02, format: 'pct' },
         { key: 'uiSoundsEnabled', label: 'UI click sounds', type: 'toggle', hint: 'Clicks on menu buttons and song selection.' },
         { key: 'uiVolume', label: 'UI click volume', type: 'range', min: 0, max: 1, step: 0.02, format: 'pct' },
         { key: 'menuMusicEnabled', label: 'Menu music', type: 'toggle', hint: 'Loop a track on the title menu.' },
@@ -156,8 +155,6 @@
     volEffects: 0.8,
     hitsound: 'default',
     hitsoundVolume: 0.7,
-    keyClickEnabled: true,
-    keyClickVolume: 0.7,
     uiSoundsEnabled: true,
     uiVolume: 0.5,
     menuMusicEnabled: true,
@@ -253,12 +250,11 @@
     A.setVolume('master', O.get('volMaster'));
     A.setVolume('music', O.get('volMusic'));
     A.setVolume('effects', O.get('volEffects'));
-    A.setVolume('keyClick', O.get('keyClickEnabled') ? O.get('keyClickVolume') : 0);
     A.setVolume('ui', O.get('uiSoundsEnabled') ? O.get('uiVolume') : 0);
     A.setMenuMusicVolume(O.get('menuMusicEnabled') ? O.get('menuMusicVolume') : 0);
   };
 
-  O.AUDIO_KEYS = ['volMaster', 'volMusic', 'volEffects', 'keyClickEnabled', 'keyClickVolume',
+  O.AUDIO_KEYS = ['volMaster', 'volMusic', 'volEffects',
     'uiSoundsEnabled', 'uiVolume', 'menuMusicEnabled', 'menuMusicVolume'];
 
   /* effective values once mods are folded in */

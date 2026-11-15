@@ -50,15 +50,18 @@ Open `http://localhost:12000`. A static server is required (the app uses classic
   falls back to `performance.now()`. Tests drive it manually via `engine.start(true)` + `engine.update(now)`.
 - **`Audio.hit()` and `Audio.ui()` are no-ops before `Audio.ensure()` resolves** (first user gesture
   unlocks the AudioContext). Never assume audio is ready.
-- **Three distinct sound layers, kept separate on purpose** (same contract as the single-file build):
-  `Audio.hit()` = note hitsound only (called from the engine on a real judgement, never on an empty
-  tap); `Audio.keyDown()/keyUp()` = keyboard click on *every* lane press/release (gated by
-  `keyClickEnabled`, wired in `screens.js` around `engine.press/release`); `Audio.ui()` = menu
-  button/tab clicks (gated by `uiSoundsEnabled`). Do not collapse these back into one sound.
-- **`Audio.keyDown()`/`startMenuMusic()` load real MP3s over the network** (`creamy-keyboard-v7.mp3`,
-  `2-03. BossaBossa.mp3`) into the AudioContext. They are no-ops until the samples decode, so both
-  fall back to a synth click / defer the menu loop (`pendingMenuMusic`). The modular build is served
-  over HTTP so it references the files directly; only the single-file build inlines them as base64.
+- **Two distinct sound layers, kept separate on purpose** (same contract as the single-file build):
+  `Audio.hit(kind, vol)` = note hitsound only (called from the engine on a real judgement, never on
+  an empty tap); `Audio.ui()` = menu button/tab clicks (gated by `uiSoundsEnabled`). Do not collapse
+  these back into one sound.
+- **The "keyboard" hitsound style plays the creamy-keyboard sample**: `Audio.hit('keyboard', …)`
+  routes to `samples.keyClick` (`creamy-keyboard-v7.mp3`), falling back to a synth click until it
+  decodes. There is **no** separate per-press keyboard layer and **no** release sound — exactly one
+  click per struck note.
+- **`startMenuMusic()` loads a real MP3 over the network** (`2-03. BossaBossa.mp3`) into the
+  AudioContext. It is a no-op until the sample decodes and defers the menu loop (`pendingMenuMusic`).
+  The modular build is served over HTTP so it references the file directly; only the single-file
+  build inlines it as base64.
 - **Menu music is driven from `main.js` `syncMenuMusic(name)`** — the BossaBossa loop plays on the
   `title` screen only and stops on every other navigation. `menuMusicEnabled`/`menuMusicVolume`
   toggle it live via the `Options.onChange` hook.
@@ -166,26 +169,24 @@ context cannot start in headless mode — verify audio through `tests/audio.test
   active tab so the modal reopens where the user left off.
 - `config.noteScale` (default 1.15, range 0.85–1.5) scales note/receptor size and also widens the
   playfield in `getLayout()`; there is a "Note Size" slider in the Gameplay tab.
-- Mechanical keyboard clicks are separate from hitsounds: `config.keyClickEnabled` +
-  `config.keyClickVolume`, played by `sound.playKeyDown()` / `sound.playKeyUp()` from
-  `handleLaneDown` / `handleLaneUp` (which run even outside `PLAYING` so the menu/song-select
-  keystrokes click too). See the "audio split" section below for the current three-way design.
+- The hitsound is the only click. There is **no** separate keyboard-click layer and **no** release
+  sound: `Audio.hit('keyboard', …)` plays the creamy-keyboard sample as one of the selectable
+  hitsound styles. Lane presses with no note are silent. See the "audio split" section below.
 - Headless UI checks: `Network.setBlockedURLs {urls:['*cdn.tailwindcss.com*']}` proves the inlined
   CSS is complete. Audio cannot start in headless, so instrument `AudioContext.prototype.createBufferSource`
-  and count `start()` calls to verify hitsounds / key clicks fire (with the toggle off and hitsound
-  muted, expect zero sources).
+  and count `start()` calls to verify hitsounds fire (mute the hitsound and expect zero sources).
 
 ## Single-file variant: audio split, songs & menu loop (recent work)
 
-- **Three separate sound categories** — keep them distinct, this is a hard requirement:
-  1. **Hitsound** (`playHit` / `playRelease`) — for **notes only**. `handleLaneDown` calls
-     `playHit()` *after* a candidate note is found, so an empty tap makes no hitsound.
-  2. **Keyboard click** (`playKeyDown` / `playKeyUp`) — the real `creamy-keyboard-v7.mp3` sample,
-     played on **every** lane key press/release (even outside `PLAYING`). Falls back to a
-     synthesized click if the sample has not decoded yet.
-  3. **UI click** (`playUI`) — a distinct short blip (`uiBuffer`) for menu buttons, tabs, song
+- **Two separate sound categories** — keep them distinct, this is a hard requirement:
+  1. **Hitsound** (`playHit`) — for **notes only**. `handleLaneDown` calls `playHit()` *after* a
+     candidate note is found, so an empty tap makes no hitsound. The selectable styles are
+     `pop` | `soft` | `tick` | `keyboard`; `keyboard` plays the real `creamy-keyboard-v7.mp3`
+     sample (falls back to a synth click until it decodes). There is **no** release sound — exactly
+     one click per hit.
+  2. **UI click** (`playUI`) — a distinct short blip (`uiBuffer`) for menu buttons, tabs, song
      selection, launch. Never reuse `playHit` for a button; it must not sound like a note.
-  All three go through `config.hitsoundVolume` / `keyClickVolume` / `uiVolume` respectively.
+  Both go through `config.hitsoundVolume` / `uiVolume` respectively.
 - **Inlined audio**: `ASSETS.keyClick` and `ASSETS.menuMusic` are base64 `data:audio/mpeg` URIs
   (see "1b. INLINED AUDIO ASSETS" section, right before the sound engine). They are decoded by
   `SoundEngine._loadSamples()` via `fetch(dataURI)` + `decodeAudioData`. Never reference the raw

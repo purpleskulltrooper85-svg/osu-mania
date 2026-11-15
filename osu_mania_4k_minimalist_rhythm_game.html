@@ -399,23 +399,6 @@
               </button>
             </div>
           </div>
-
-          <!-- Mechanical keyboard click toggle -->
-          <div class="flex items-center justify-between bg-neutral-900/50 border border-neutral-800/80 rounded-xl p-3">
-            <div>
-              <div class="text-xs text-neutral-200 font-medium">Keyboard Click Sounds</div>
-              <div class="text-[10px] text-neutral-500">Mechanical switch click &amp; clack on key press</div>
-            </div>
-            <button id="toggleKeyClick" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-black border border-white transition">ON</button>
-          </div>
-
-          <div class="bg-neutral-900/50 border border-neutral-800/80 rounded-xl p-3">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-neutral-300">Keyboard Click Volume</span>
-              <span id="valKeyClickVol" class="font-mono text-white">70%</span>
-            </div>
-            <input type="range" id="sliderKeyClickVol" min="0" max="100" step="1" value="70" class="w-full" />
-          </div>
         </div>
 
         <!-- SKIN -->
@@ -454,7 +437,7 @@
         <div data-panel="audio" class="settings-panel hidden space-y-4">
           <div>
             <label class="block text-[11px] uppercase tracking-wider text-neutral-400 font-semibold mb-1.5">Hitsound Style (Click to Preview)</label>
-            <div class="grid grid-cols-3 gap-1.5">
+            <div class="grid grid-cols-2 gap-1.5">
               <button data-sfx="pop" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
                 <div class="text-xs font-bold text-white">Pop</div>
                 <div class="text-[10px] text-neutral-400">Bubble Snap</div>
@@ -466,6 +449,10 @@
               <button data-sfx="tick" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
                 <div class="text-xs font-bold text-white">Crisp Tick</div>
                 <div class="text-[10px] text-neutral-400">Metronome</div>
+              </button>
+              <button data-sfx="keyboard" class="sfx-btn py-2 px-2.5 rounded-xl border text-center transition">
+                <div class="text-xs font-bold text-white">Keyboard</div>
+                <div class="text-[10px] text-neutral-400">Mechanical</div>
               </button>
             </div>
           </div>
@@ -584,9 +571,7 @@
         noteScale: 1.15,      // 0.85 to 1.5 (note & receptor size multiplier)
         audioOffset: 0,       // ms (-100 to +100)
         hitsoundVolume: 0.85, // 0 to 1 — notes ONLY
-        hitsoundType: 'pop',  // 'pop' | 'soft' | 'tick'
-        keyClickEnabled: true, // mechanical keyboard click on lane press/release
-        keyClickVolume: 0.7,   // 0 to 1
+        hitsoundType: 'pop',  // 'pop' | 'soft' | 'tick' | 'keyboard'
         uiVolume: 0.5,         // 0 to 1 — menu / button clicks ONLY
         uiSoundsEnabled: true, // menu & button click sounds
         menuMusicEnabled: true, // BossaBossa loops on the song-select screen
@@ -902,7 +887,7 @@
 
       // =========================================================================
       // 1b. INLINED AUDIO ASSETS (base64 data URIs keep this a true single file)
-      //     - keyClick : creamy-keyboard-v7.mp3  (mechanical keyboard sample)
+      //     - keyClick : creamy-keyboard-v7.mp3  (the "Keyboard" hitsound style)
       //     - menuMusic: 2-03. BossaBossa.mp3     (song-select background loop)
       // =========================================================================
       const ASSETS = {
@@ -922,9 +907,6 @@
             soft: null,
             tick: null
           };
-          this.releaseBuffer = null;
-          this.keyDownBuffer = null;
-          this.keyUpBuffer = null;
           this.uiBuffer = null;
 
           // Real audio samples (decoded from inlined data URIs)
@@ -1042,21 +1024,7 @@
             this.buffers.tick = buf;
           }
 
-          // 4. Subtle LN tail release pop
-          {
-            const rLen = Math.floor(sr * 0.032);
-            const rBuf = this.ctx.createBuffer(1, rLen, sr);
-            const rData = rBuf.getChannelData(0);
-            for (let i = 0; i < rLen; i++) {
-              const t = i / sr;
-              const f = 220 + 420 * Math.exp(-t * 180);
-              const s = Math.sin(2 * Math.PI * f * t) * Math.exp(-t * 140) * 0.5;
-              rData[i] = s;
-            }
-            this.releaseBuffer = rBuf;
-          }
-
-          // 5. UI CLICK: distinct soft "tick" for menu buttons (NOT the hitsound,
+          // 4. UI CLICK: distinct soft "tick" for menu buttons (NOT the hitsound,
           //    NOT the keyboard click). A short, dry, mid-frequency blip.
           {
             const uLen = Math.floor(sr * 0.030);
@@ -1073,78 +1041,31 @@
           }
         }
 
-        // Fallback synthesized key click, used only if the real sample fails to load.
-        _playSynthKeyClick() {
-          const src = this.ctx.createBufferSource();
-          src.buffer = this.keyDownBuffer;
-          const gain = this.ctx.createGain();
-          gain.gain.value = config.keyClickVolume * 0.5;
-          src.connect(gain);
-          gain.connect(this.masterGain);
-          src.start(0);
-        }
-
+        // Note hitsound. The "keyboard" style uses the real creamy-keyboard
+        // sample (falls back to a synth click until it decodes); every other
+        // style is one of the synthesized buffers.
         playHit() {
           if (config.hitsoundVolume <= 0.001) return;
           this.init();
-          const chosenBuf = this.buffers[config.hitsoundType] || this.buffers.pop;
+
+          let buf = this.buffers[config.hitsoundType];
+          if (config.hitsoundType === 'keyboard') {
+            if (this.samples.keyClick) {
+              buf = this.samples.keyClick;
+            } else {
+              this._loadSamples();
+              buf = this.buffers.pop;
+            }
+          }
+          if (!buf) buf = this.buffers.pop;
+
           const src = this.ctx.createBufferSource();
-          src.buffer = chosenBuf;
+          src.buffer = buf;
           const gain = this.ctx.createGain();
           gain.gain.value = config.hitsoundVolume * 0.85;
           src.connect(gain);
           gain.connect(this.masterGain);
           src.start(0);
-        }
-
-        playRelease() {
-          if (config.hitsoundVolume <= 0.001) return;
-          this.init();
-          const src = this.ctx.createBufferSource();
-          src.buffer = this.releaseBuffer;
-          const gain = this.ctx.createGain();
-          gain.gain.value = config.hitsoundVolume * 0.45;
-          src.connect(gain);
-          gain.connect(this.masterGain);
-          src.start(0);
-        }
-
-        // Keyboard click: the real "creamy keyboard" sample (falls back to synth).
-        // Plays on lane key down/up regardless of game state; only notes use playHit().
-        playKeyDown() {
-          if (!config.keyClickEnabled || config.keyClickVolume <= 0.001) return;
-          this.init();
-          if (this.samples.keyClick) {
-            const src = this.ctx.createBufferSource();
-            src.buffer = this.samples.keyClick;
-            src.playbackRate.value = 1.0;
-            const gain = this.ctx.createGain();
-            gain.gain.value = config.keyClickVolume * 0.9;
-            src.connect(gain);
-            gain.connect(this.masterGain);
-            src.start(0);
-          } else {
-            this._loadSamples();
-            this._playSynthKeyClick();
-          }
-        }
-
-        playKeyUp() {
-          if (!config.keyClickEnabled || config.keyClickVolume <= 0.001) return;
-          this.init();
-          if (this.samples.keyClick) {
-            const src = this.ctx.createBufferSource();
-            src.buffer = this.samples.keyClick;
-            src.playbackRate.value = 0.92;   // slightly lower on release
-            const gain = this.ctx.createGain();
-            gain.gain.value = config.keyClickVolume * 0.55;
-            src.connect(gain);
-            gain.connect(this.masterGain);
-            src.start(0);
-          } else {
-            this._loadSamples();
-            this._playSynthKeyClick();
-          }
         }
 
         // UI click: menu buttons, tab switches, song selection, etc.
@@ -1605,10 +1526,6 @@
         if (state.lanePressed[lane]) return;
         state.lanePressed[lane] = true;
 
-        // Keyboard click: its own sound (the creamy-keyboard sample), played on
-        // every key press — completely separate from the note hitsound.
-        sound.playKeyDown();
-
         if (state.status !== 'PLAYING') return;
 
         const effectiveTime = state.songTimeMs - config.audioOffset;
@@ -1627,7 +1544,7 @@
 
         if (!candidate) return;
 
-        // Hitsound: ONLY when an actual note is struck.
+        // Hitsound: one click per hit, ONLY when an actual note is struck.
         sound.playHit();
 
         const errorMs = effectiveTime - candidate.time;
@@ -1651,8 +1568,6 @@
         if (!state.lanePressed[lane]) return;
         state.lanePressed[lane] = false;
 
-        sound.playKeyUp();
-
         if (state.status !== 'PLAYING') return;
 
         const holdNote = state.activeHoldNotes[lane];
@@ -1669,7 +1584,6 @@
 
         if (absReleaseDiff <= TIMING.MISS * 1.35) {
           holdNote.released = true;
-          sound.playRelease();
           const relJudge = classifyTiming(absReleaseDiff / 1.35);
           registerJudgement(relJudge, releaseError);
         } else {
@@ -2337,7 +2251,7 @@
         }
 
         // 4. Update Bottom Footer Profile & Hitsound Label
-        const sfxNames = { pop: 'Pop', soft: 'Soft', tick: 'Tick' };
+        const sfxNames = { pop: 'Pop', soft: 'Soft', tick: 'Tick', keyboard: 'Keyboard' };
         document.getElementById('footerHitsoundLabel').textContent = sfxNames[config.hitsoundType] || 'Pop';
         document.getElementById('profileTotalScore').textContent = (savedScores.totalScore || 0).toLocaleString();
         document.getElementById('profilePlayCount').textContent = savedScores.playCount || 0;
@@ -2382,7 +2296,7 @@
       });
 
       document.getElementById('btnQuickHitsoundCycle').addEventListener('click', () => {
-        const order = ['pop', 'soft', 'tick'];
+        const order = ['pop', 'soft', 'tick', 'keyboard'];
         const next = order[(order.indexOf(config.hitsoundType) + 1) % order.length];
         config.hitsoundType = next;
         saveConfig();
@@ -2708,16 +2622,6 @@
         document.getElementById('sliderHitsoundVol').value = volPct;
         document.getElementById('valHitsoundVol').textContent = `${volPct}%`;
 
-        const kcVolPct = Math.round(config.keyClickVolume * 100);
-        document.getElementById('sliderKeyClickVol').value = kcVolPct;
-        document.getElementById('valKeyClickVol').textContent = `${kcVolPct}%`;
-
-        const toggleKeyClick = document.getElementById('toggleKeyClick');
-        toggleKeyClick.textContent = config.keyClickEnabled ? 'ON' : 'OFF';
-        toggleKeyClick.className = config.keyClickEnabled
-          ? 'px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-black border border-white transition'
-          : 'px-2.5 py-1 rounded-lg text-xs font-medium bg-neutral-900 text-neutral-400 border border-neutral-800 transition';
-
         const toggleMusic = document.getElementById('toggleMusic');
         toggleMusic.textContent = config.musicEnabled ? 'ON' : 'OFF';
         toggleMusic.className = config.musicEnabled
@@ -2780,7 +2684,7 @@
           config.hitsoundType = btn.dataset.sfx;
           saveConfig();
           updateSettingsUI();
-          sound.playUI();
+          sound.playHit();
           if (state.status === 'SONG_SELECT') renderSongSelectUI();
         });
       });
@@ -2809,19 +2713,6 @@
         saveConfig();
         updateSettingsUI();
         sound.playHit();
-      });
-
-      document.getElementById('toggleKeyClick').addEventListener('click', () => {
-        config.keyClickEnabled = !config.keyClickEnabled;
-        saveConfig();
-        updateSettingsUI();
-        if (config.keyClickEnabled) sound.playKeyDown();
-      });
-
-      document.getElementById('sliderKeyClickVol').addEventListener('input', (e) => {
-        config.keyClickVolume = Number(e.target.value) / 100;
-        saveConfig();
-        updateSettingsUI();
       });
 
       document.getElementById('toggleMusic').addEventListener('click', () => {

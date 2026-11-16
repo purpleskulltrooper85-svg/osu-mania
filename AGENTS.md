@@ -1,209 +1,84 @@
-# AGENTS.md — mania!
-
-Repository-specific knowledge for future agent sessions.
+# AGENTS.md — mania! (osu!mania prototype)
 
 ## What this is
 
 A dependency-free browser prototype of **osu!mania** (vertical-scrolling rhythm game, 4K–7K).
-Plain HTML + CSS + canvas + Web Audio. No build step, no npm packages, no external assets.
-All music is synthesised at runtime and all charts are generated from that music.
+
+It is a **single self-contained file**: `index.html` holds the markup, a compiled Tailwind
+`<style>` block, and the entire game script inline. The two audio samples are embedded as base64
+`data:audio/mpeg` URIs, so there are no external assets and no build step to run the game.
 
 ## Running it
 
-```bash
-python3 -m http.server 12000     # serve from the repo root
-```
+Just open `index.html` in a browser — no server needed (everything is inline). To serve it:
 
-Open `http://localhost:12000`. A static server is required (the app uses classic
-`<script src>` tags, which `file://` blocks for module-adjacent reasons and for
-`fetch`-free but still origin-sensitive APIs).
+```
+python3 -m http.server 12000     # then open http://localhost:12000
+```
 
 ## Layout
 
-- `index.html` — defines the script load order. **Adding a module means adding a `<script>` tag here.**
-- `css/style.css` — one stylesheet, CSS custom properties for theming, responsive via
-  media queries and `clamp()`.
-- `js/*.js` — 12 IIFE modules attached to the `window.Mania` namespace.
-- `tests/*.test.js` — Node test suites (see below).
+- `index.html` — the whole game (markup + inlined CSS + inlined script + inlined audio).
+- `README.md` — player-facing description.
+
+There is **no** `js/`, `css/` or `tests/` tree: the modular build was removed in favour of the
+single file.
 
 ## Conventions
 
-- Every JS file is an IIFE: `(function () { 'use strict'; ... })();`
-- Modules read their dependencies from `window.Mania.X` at the top of the IIFE.
-- Cross-module wiring happens through the `window.Mania` namespace, never through globals.
-- DOM helpers live in `js/utils.js` (`U.el`, `U.icon`, `U.fmt`, `U.clamp`, `U.rng`, ...).
-- Tuning constants live in `js/config.js` — prefer editing `Config` over hard-coding numbers.
+- One big IIFE `(function () { 'use strict'; ... })();` holds the game script.
+- Tuning constants live together near the top of the script (timing windows, judgements, defaults).
 - Comments explain *why*, not *what*. Keep them sparse.
+- The compiled Tailwind CSS is inlined in the first `<style>` block. **If you add new Tailwind
+  classes to the markup you must regenerate it** or the classes silently do nothing:
+  `npx tailwindcss@3.4.17 -i input.css -o out.css --content ./index.html --minify`, then paste
+  `out.css` between the first `<style>...</style>` pair. Custom (non-Tailwind) rules live in the
+  second `<style>` block.
 
 ## Architecture invariants (easy to break)
 
-- **The render loop lives in `main.js`.** It calls `screen.draw(now)` on the current screen.
-  The pause screen re-draws the game behind it via `app.screenByName('game').draw(...)`.
-- **Pause is an overlay, not a screen swap.** `app.go('pause')` stacks an overlay and keeps the
-  live `gameScreen`. `app.go('game')` resumes it if `gameScreen.isLive()`.
-- **Screens read construction params from `app.pendingParams`** (set by `app.go`), because
-  `SC[name](app)` runs *before* `screen.onEnter(params)`. Don't read params only in `onEnter`.
-- **`ENDS_RUN`** in `main.js` lists screens that end the current run (`title`, `select`, `results`).
-- **Charts are cached and shared** (`Beatmap.cached`). The engine **clones** the note list before
-  applying Mirror/Random, so mods never mutate the cache. Keep it that way.
-- **The engine clock comes from audio** when a song is playing (`Audio.songTime()`); otherwise it
-  falls back to `performance.now()`. Tests drive it manually via `engine.start(true)` + `engine.update(now)`.
-- **`Audio.hit()` and `Audio.ui()` are no-ops before `Audio.ensure()` resolves** (first user gesture
-  unlocks the AudioContext). Never assume audio is ready.
-- **Two distinct sound layers, kept separate on purpose** (same contract as the single-file build):
-  `Audio.hit(kind, vol)` = note hitsound only (called from the engine on a real judgement, never on
-  an empty tap); `Audio.ui()` = menu button/tab clicks (gated by `uiSoundsEnabled`). Do not collapse
-  these back into one sound.
-- **The "keyboard" hitsound style plays the creamy-keyboard sample**: `Audio.hit('keyboard', …)`
-  routes to `samples.keyClick` (`creamy-keyboard-v7.mp3`), falling back to a synth click until it
-  decodes. There is **no** separate per-press keyboard layer and **no** release sound — exactly one
-  click per struck note.
-- **`startMenuMusic()` loads a real MP3 over the network** (`2-03. BossaBossa.mp3`) into the
-  AudioContext. It is a no-op until the sample decodes and defers the menu loop (`pendingMenuMusic`).
-  The modular build is served over HTTP so it references the file directly; only the single-file
-  build inlines it as base64.
-- **Menu music is driven from `main.js` `syncMenuMusic(name)`** — the BossaBossa loop plays on the
-  `title` screen only and stops on every other navigation. `menuMusicEnabled`/`menuMusicVolume`
-  toggle it live via the `Options.onChange` hook.
-- **New audio settings must be registered in `Options.AUDIO_KEYS`** so `O.set()` re-applies them
-  through `applyAudio()`, and added to the `audio` section of `Options.SCHEMA` + `Options.DEFAULTS`.
+- **Audio cannot start before a user gesture.** `Audio.init()`/`unlockAudio` run on the first
+  pointer/key event; before that the AudioContext is suspended and every sound is a no-op. Never
+  assume audio is ready.
+- **Two distinct sound categories** — keep them separate:
+  1. **Hitsound** (`playHit`) — for **notes only**. `handleLaneDown` calls `playHit()` *after* a
+     candidate note is found, so an empty tap makes no hitsound. Styles: `pop` | `soft` | `tick` |
+     `keyboard`; `keyboard` plays the inlined creamy-keyboard sample. There is **no** release
+     sound — exactly one click per hit.
+  2. **UI click** (`playUI`) — a short blip for menu buttons, tabs, song selection, launch. Never
+     reuse `playHit` for a button.
+- **The creamy-keyboard sample opens with ~115ms of silence.** Its click transient is at
+  `CLICK_OFFSET` (0.115s); play from there for `CLICK_TAIL` (0.030s) and fade only the final 12ms.
+  Cutting from offset 0 plays silence — this regressed once and made the hitsound inaudible.
+- **Inlined audio**: `ASSETS.keyClick` and `ASSETS.menuMusic` are base64 `data:audio/mpeg` URIs,
+  decoded by `SoundEngine._loadSamples()` via `fetch(dataURI)` + `decodeAudioData`. Never reference
+  the raw `.mp3` files — that would break the "one file, no assets" rule. The base64 blob is
+  ~3.7 MB, so it dominates the file and makes `grep` noisy; exclude it when searching
+  (e.g. `grep -v base64`).
+- **Menu music** (BossaBossa) loops on the song-select screen and stops elsewhere. `setMenuMusicVolume`
+  ramps the live gain; `_pendingMenuMusic` defers the start until the sample finishes decoding.
+- **Canvas sizing is DPR-aware**; read geometry from the layout helper rather than assuming CSS
+  pixels.
+- **Note heads always span the lane width** — in mania the note style only changes corner rounding.
+  Never branch the note geometry on the style.
+- **Long notes** are judged on release *and* on reaching the tail; dropping one early counts as a
+  miss.
 
 ## Testing
 
-All suites run under plain Node with a small DOM/`performance`/`AudioContext` stub at the top of
-each file:
+There is no test harness in this repo. Verify changes by:
 
-```bash
-node tests/logic.test.js        # song + beatmap generation
-node tests/difficulty.test.js   # difficulty progression
-node tests/audio.test.js        # synth scheduling against a mock AudioContext
-node tests/engine.test.js       # judgement, scoring, long notes, health, autoplay
-node tests/cache.test.js        # mods must not corrupt the shared chart cache
-```
-
-Browser-level checks were done with headless Chromium over the Chrome DevTools Protocol
-(`--headless=new --remote-debugging-port=...`) driving `Runtime.evaluate` and
-`Input.dispatchKeyEvent`. This is the reliable way to smoke-test the UI here because the audio
-context cannot start in headless mode — verify audio through `tests/audio.test.js` instead.
+- Parsing the inline script: extract `<script>` bodies and `new Function(...)` each (Node).
+- Driving the real page headless (Chromium via CDP): click through the UI and assert state.
+  Audio can't be heard headless, so instrument `AudioContext.prototype.createBufferSource` and
+  record each `start(when, offset, duration)` call to confirm which sound fired and how long it is.
+- Rendering a click offline with `OfflineAudioContext` and measuring peak/RMS to prove it is
+  audible (not just "code ran").
 
 ## Gotchas discovered
 
-- `document.hidden` must be guarded with `typeof document !== 'undefined'` in any code path the
-  Node tests touch (the audio scheduler does this).
-- A manual `song.stop()` must clear the module-level `session` reference or `Audio.currentSong()`
-  keeps returning a dead session.
-- Long notes are judged on release *and* on reaching the tail (`updateHoldNotes`); dropping one
-  early must count as a miss.
-- Canvas sizing is DPR-aware; always read geometry from `Renderer.geometry()` rather than assuming
-  CSS pixels.
-- `.scrim` carries `backdrop-filter`, so it paints in the positioned layer. Without `z-index: -1`
-  and `pointer-events: none` it covers the static menu buttons, blurring them and eating clicks.
-  Each `.screen` also sets `isolation: isolate` so that negative z-index cannot escape behind the
-  canvas.
-- JS `.click()` bypasses hit-testing, so it will happily "pass" on a button that is actually
-  covered or off-screen. Smoke-test navigation with real input events
-  (`Input.dispatchMouseEvent`) and assert `document.elementFromPoint` resolves to the target
-  button. This is what caught both the scrim overlay and the below-the-fold Play button.
-- On song select the info panels scroll inside `.select-side-scroll` while `.select-actions` stays
-  pinned; on mobile the list caps at `max-height: 42%` so the action bar is always reachable.
-- `app.go('pause')` stacks an overlay over the live game. Any screen shown *from* pause (Options)
-  replaces the pause overlay, so the pause branch must detach the previous screen and re-attach the
-  live game screen. Otherwise the stale menu stays in `#screen-root` underneath and "menus just
-  stay there". `#rotate-hint` also carries class `overlay`, so never count overlays by class alone.
-- Long notes: a key already held when the head enters the window is latched by `latchHeld`, and the
-  head is judged when it reaches the line (not on the first key event). This is what makes an early
-  press score MAX instead of dropping the note. `laneDown` tracks physical key state separately
-  from `holdNote`.
-- osu!mania visuals: lane colours are white outer / blue inner / yellow centre
-  (`C.KEY_MODES[*].colors`, mirrored by `Renderer.maniaLaneColor` for skins); notes are
-  rounded-square heads with a white border, long notes are a capsule body plus a tail cap; receptors
-  are outlined lane-wide bars that fill and glow when pressed. Default scroll is **down**.
-- Note heads must ALWAYS span the lane width — in mania the style only changes corner rounding.
-  An earlier `circle` style drew a literal `arc()` with diameter = note height, which showed a tiny
-  dot floating in a wide lane. `drawNoteShape` now always fills `roundRect(laneW, noteH)` and picks
-  the radius via `cornerRadius(style, w, h)`. Never branch the note geometry on the style.
-- Note height is `laneW * C.NOTE.heightRatio * noteScale`, where `noteScale` is the user-facing
-  "Note size" option threaded through every `R.resize({...})` call. If you add a new resize call,
-  pass `noteScale` too or the slider silently stops working.
-- `index.html` links every script with a `?v=N` query string. GitHub Pages caches for ~10 minutes;
-  without the stamp a fresh push looks unchanged in a browser that already loaded the old files.
-  Bump `N` whenever you want to be sure clients pick up new JS.
-- `osu_mania_4k_minimalist_rhythm_game.html` is a **single-file** variant of the game (all markup,
-  CSS and JS inline) that someone drops in from outside. It does NOT use `index.html`/`js/`. It
-  must stay self-contained: never depend on a runtime CDN. It once loaded
-  `<script src="https://cdn.tailwindcss.com">`, and when that request failed (offline, adblocker,
-  proxy) every utility class was missing, so the whole UI collapsed to `position:static` and the
-  page showed only plain text. The fix is a compiled Tailwind (v3.4.17) `<style>` block inlined in
-  `<head>`. If you edit the markup, regenerate that CSS (see below) or new classes will silently
-  do nothing.
-  - Regenerate: `npx tailwindcss@3.4.17 -i input.css -o out.css --content ./osu_mania_4k_minimalist_rhythm_game.html --minify`,
-    then paste `out.css` between the first `<style>...</style>` pair. Verify by blocking
-    `*cdn.tailwindcss.com*` in DevTools: the layout must not change.
-- Verify a "looks broken / only text" report by diffing a CDN-blocked render against a CDN-allowed
-  one — identical pixels means the inlined CSS is complete and the real problem is elsewhere.
-
-## Single-file variant: song-select UX (recent work)
-
-- The song wheel must **update cards in place**, not rebuild `innerHTML` on every selection. The
-  list is rebuilt only when the visible set changes (filter / sort / search / first paint), keyed by
-  a `dataset.sig` signature of the song ids. Selection changes just toggle `is-selected` / `is-near`
-  classes and `margin-left`, which is what lets the CSS spring transitions animate. If you go back
-  to rebuilding on each render, the selection snaps instead of gliding.
-- Card styling (bg / border / shadow / opacity / stagger) lives in the in-place pass, not the class
-  string, so both code paths agree. `is-selected` / `is-near` and the `.song-card` transition are
-  defined in the custom `<style>` block (the second one), not in the compiled Tailwind block.
-- Mouse proximity selection lives in the mousemove handler (`updateProximity`): it finds the nearest
-  card within `PROXIMITY_PX` (52px), constrained to the wheel's column via the carousel's
-  `getBoundingClientRect`. It's rAF-throttled and uses `selectSong(id, true)` (no hitsound) so
-  hovering does not machine-gun the click. `nearSongId` tracks the highlighted card.
-- `selectSong(id, fromPointer)` is the single entry point for changing `config.selectedSongId`;
-  pointer, keyboard and random all route through it.
-- The animated menu background is `#menuBgCanvas`, drawn at the end of the main `render()` loop only
-  while `state.status === 'SONG_SELECT'`. It must stay transparent — the global `canvas {}` rule sets
-  `background-color:#000`, so `#menuBgCanvas` overrides it to `transparent`. Circle positions come
-  from `seedMenuCircles()` (seeded `mulberry32`, so the layout is stable across reloads) plus a
-  time-based drift and a pointer parallax that reuses `lastProxX/lastProxY`.
-- The options modal is tabbed (Gameplay / Input / Skin / Audio). `switchSettingsTab()` toggles the
-  `.settings-panel` elements and restyles the `.settings-tab-btn`s. All control ids are unchanged
-  from the pre-tab layout, so the existing bindings keep working. `openSettingsModal` re-applies the
-  active tab so the modal reopens where the user left off.
-- `config.noteScale` (default 1.15, range 0.85–1.5) scales note/receptor size and also widens the
-  playfield in `getLayout()`; there is a "Note Size" slider in the Gameplay tab.
-- The hitsound is the only click. There is **no** separate keyboard-click layer and **no** release
-  sound: `Audio.hit('keyboard', …)` plays the creamy-keyboard sample as one of the selectable
-  hitsound styles. Lane presses with no note are silent. See the "audio split" section below.
-- Headless UI checks: `Network.setBlockedURLs {urls:['*cdn.tailwindcss.com*']}` proves the inlined
-  CSS is complete. Audio cannot start in headless, so instrument `AudioContext.prototype.createBufferSource`
-  and count `start()` calls to verify hitsounds fire (mute the hitsound and expect zero sources).
-
-## Single-file variant: audio split, songs & menu loop (recent work)
-
-- **Two separate sound categories** — keep them distinct, this is a hard requirement:
-  1. **Hitsound** (`playHit`) — for **notes only**. `handleLaneDown` calls `playHit()` *after* a
-     candidate note is found, so an empty tap makes no hitsound. The selectable styles are
-     `pop` | `soft` | `tick` | `keyboard`; `keyboard` plays the real `creamy-keyboard-v7.mp3`
-     sample (falls back to a synth click until it decodes). There is **no** release sound — exactly
-     one click per hit.
-  2. **UI click** (`playUI`) — a distinct short blip (`uiBuffer`) for menu buttons, tabs, song
-     selection, launch. Never reuse `playHit` for a button; it must not sound like a note.
-  Both go through `config.hitsoundVolume` / `uiVolume` respectively.
-- **Inlined audio**: `ASSETS.keyClick` and `ASSETS.menuMusic` are base64 `data:audio/mpeg` URIs
-  (see "1b. INLINED AUDIO ASSETS" section, right before the sound engine). They are decoded by
-  `SoundEngine._loadSamples()` via `fetch(dataURI)` + `decodeAudioData`. Never reference the raw
-  `.mp3` files from the single-file build — that would break the "one file, no assets" rule. The
-  base64 blob is ~3.7 MB, so it dominates the file and makes `grep` noisy; exclude it when
-  searching (e.g. `grep -v base64`).
-- **Menu music** (BossaBossa) loops on the song-select screen: `startMenuMusic()` on
-  `enterSongSelect` and on the first user gesture (`unlockAudio`, since browsers block audio until
-  then), `stopMenuMusic()` in `startSelectedSong`. `setMenuMusicVolume()` ramps the live gain.
-  `_pendingMenuMusic` defers the start until the sample finishes decoding.
-- **Menu background** (`renderMenuBackground`, `#menuBgCanvas`): 28 circles with sine wander +
-  constant drift + wrap-around + pointer parallax; ring circles draw two counter-rotating arcs so
-  the motion reads clearly. It only paints while `state.status === 'SONG_SELECT'` and must stay
-  transparent (the global `canvas {}` rule sets `background-color:#000`).
-- **Catalog** is 12 songs; the carousel renders one card per song (no slicing). Sorting by
-  "taps" sorts by `lnChance` ascending. `bossa_bossa` is the BossaBossa map (same track as the
-  menu loop) so players can actually play the song they hear.
-- Adding a song = append one object to `SONG_CATALOG` (id/title/artist/diffName/bpm/durationSec/
-  stars/lnChance/jumpChance/burstChance/category/badge/accent/chordRoots). `id` seeds the beatmap
-  RNG, so a new `id` = a new deterministic chart. Nothing else needs to change.
+- JS `.click()` bypasses hit-testing, so it happily "passes" on a covered or off-screen button.
+  Smoke-test navigation with real input events and check `document.elementFromPoint`.
+- The song wheel updates cards **in place** (class/margin toggles) rather than rebuilding
+  `innerHTML`, so the CSS spring transitions animate. Rebuilding snaps instead of gliding.
+- `document.hidden` is guarded with `typeof document !== 'undefined'` where the scheduler touches it.

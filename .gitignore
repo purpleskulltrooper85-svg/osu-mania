@@ -1,0 +1,6 @@
+*.base64
+*.mp3
+*.jpg
+*.png
+*.pyc
+__pycache__/

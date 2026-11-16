@@ -815,6 +815,11 @@
         MISS:      155.0
       };
 
+      // How much of the creamy-keyboard sample to play per hit. The sample is
+      // ~0.18s long; only its first attack reads as a click, so we cut it here
+      // and fade the cut edge so the truncation doesn't pop.
+      const CLICK_TAIL = 0.055;
+
       const JUDGEMENT_META = {
         MARVELOUS: { label: 'MARVELOUS!', color: '#FFFFFF', weight: 305, scoreWeight: 320, hp: 0.008 },
         PERFECT:   { label: 'PERFECT!',   color: '#FFE680', weight: 300, scoreWeight: 300, hp: 0.006 },
@@ -1043,18 +1048,22 @@
 
         // Note hitsound. The "keyboard" style uses the real creamy-keyboard
         // sample (falls back to a synth click until it decodes); every other
-        // style is one of the synthesized buffers.
+        // style is one of the synthesized buffers. The keyboard sample is
+        // truncated to its first CLICK_TAIL seconds so it reads as a crisp
+        // click, not the sample's full decay.
         playHit() {
           if (config.hitsoundVolume <= 0.001) return;
           this.init();
 
           let buf = this.buffers[config.hitsoundType];
-          if (config.hitsoundType === 'keyboard') {
+          let isKeyboard = config.hitsoundType === 'keyboard';
+          if (isKeyboard) {
             if (this.samples.keyClick) {
               buf = this.samples.keyClick;
             } else {
               this._loadSamples();
               buf = this.buffers.pop;
+              isKeyboard = false;
             }
           }
           if (!buf) buf = this.buffers.pop;
@@ -1065,7 +1074,15 @@
           gain.gain.value = config.hitsoundVolume * 0.85;
           src.connect(gain);
           gain.connect(this.masterGain);
-          src.start(0);
+          if (isKeyboard) {
+            // Fade the cut edge so the truncated sample ends cleanly.
+            const t0 = this.ctx.currentTime;
+            gain.gain.setValueAtTime(gain.gain.value, t0);
+            gain.gain.linearRampToValueAtTime(0, t0 + CLICK_TAIL);
+            src.start(t0, 0, CLICK_TAIL);
+          } else {
+            src.start(0);
+          }
         }
 
         // UI click: menu buttons, tab switches, song selection, etc.

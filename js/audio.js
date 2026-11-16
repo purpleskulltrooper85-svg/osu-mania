@@ -13,6 +13,10 @@
   const vols = { master: 0.85, music: 0.65, effects: 0.8, ui: 0.5, menuMusic: 0.5 };
   let session = null;
 
+  /* How much of the creamy-keyboard sample to play per hit. The sample is
+     ~0.18s long; only its first attack reads as a click, so we cut it here. */
+  const CLICK_TAIL = 0.055;
+
   /* Real audio samples loaded over the network (the modular build is served
      over HTTP, so it does not inline them like the single-file build does). */
   const SAMPLE_URLS = {
@@ -291,11 +295,12 @@
       noiseBurst(sfxBus, t0, { dur: 0.06, gain: 0.26 * vol, freq: 2200, filterType: 'bandpass', q: 1 });
       tone(sfxBus, t0, { type: 'sine', freq: strong ? 900 : 700, gain: 0.16 * vol, dur: 0.03, attack: 0.001, release: 0.05 });
     },
-    /* The real creamy-keyboard sample. Falls back to a synth click until the
-       MP3 finishes decoding, so a hit is never silent. */
+    /* The real creamy-keyboard sample, cut to its first attack (~55ms) so a
+       hit reads as a crisp click. Falls back to a synth click until the MP3
+       finishes decoding, so a hit is never silent. */
     keyboard: function (t0, vol) {
       if (samples.keyClick) {
-        playSample(samples.keyClick, sfxBus, t0, 0.9 * vol, 1);
+        playSample(samples.keyClick, sfxBus, t0, 0.9 * vol, 1, CLICK_TAIL);
         return;
       }
       tone(sfxBus, t0, { type: 'square', freq: 1500, gain: 0.09 * vol, dur: 0.02, attack: 0.001, release: 0.02, filter: 5200, q: 6 });
@@ -327,15 +332,23 @@
     }
   };
 
-  function playSample(buffer, dest, t0, gain, rate) {
+  function playSample(buffer, dest, t0, gain, rate, dur) {
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     if (rate && rate !== 1) src.playbackRate.value = rate;
     const g = ctx.createGain();
-    g.gain.value = Math.max(0, gain);
+    const level = Math.max(0, gain);
+    g.gain.value = level;
     src.connect(g);
     g.connect(dest);
-    src.start(t0);
+    if (dur && dur < buffer.duration) {
+      /* Cut the sample short and fade the cut edge so it ends cleanly. */
+      g.gain.setValueAtTime(level, t0);
+      g.gain.linearRampToValueAtTime(0, t0 + dur);
+      src.start(t0, 0, dur);
+    } else {
+      src.start(t0);
+    }
     return src;
   }
 

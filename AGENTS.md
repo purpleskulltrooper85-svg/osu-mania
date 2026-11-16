@@ -41,15 +41,18 @@ single file.
   pointer/key event; before that the AudioContext is suspended and every sound is a no-op. Never
   assume audio is ready.
 - **Two distinct sound categories** — keep them separate:
-  1. **Hitsound** (`playHit`) — for **notes only**. `handleLaneDown` calls `playHit()` *after* a
-     candidate note is found, so an empty tap makes no hitsound. Styles: `pop` | `soft` | `tick` |
-     `keyboard`; `keyboard` plays the inlined creamy-keyboard sample. There is **no** release
-     sound — exactly one click per hit.
+  1. **Hitsound** (`playHit`) — fires on **every lane key press**, not just on notes. Styles:
+     `pop` | `soft` | `tick` | `keyboard`; `keyboard` plays the inlined creamy-keyboard sample.
+     There is **no** release sound — exactly one click per press.
   2. **UI click** (`playUI`) — a short blip for menu buttons, tabs, song selection, launch. Never
      reuse `playHit` for a button.
 - **The creamy-keyboard sample opens with ~115ms of silence.** Its click transient is at
-  `CLICK_OFFSET` (0.115s); play from there for `CLICK_TAIL` (0.030s) and fade only the final 12ms.
+  `CLICK_OFFSET` (0.115s); play from there for `CLICK_TAIL` (0.048s) and fade only the final 12ms.
   Cutting from offset 0 plays silence — this regressed once and made the hitsound inaudible.
+- **The synth backing beat has no off switch.** It is the *only* audio for songs with no `track`,
+  so it always plays during gameplay; `scheduleMusic` returns early only when the song carries a
+  real `track` (that track plays instead) or when the audio context is not running. There is no
+  `musicEnabled` config field and no settings toggle — removing one silenced trackless songs.
 - **Inlined audio**: `ASSETS.keyClick` and `ASSETS.menuMusic` are base64 `data:audio/mpeg` URIs,
   decoded by `SoundEngine._loadSamples()` via `fetch(dataURI)` + `decodeAudioData`. Never reference
   the raw `.mp3` files — that would break the "one file, no assets" rule. The base64 blob is
